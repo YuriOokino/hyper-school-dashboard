@@ -1,4 +1,4 @@
-import StudentDashboard from '../student_dashboard_layout.jsx'
+import StudentDashboard from './StudentDashboard.jsx'
 
 function App() {
   return (
