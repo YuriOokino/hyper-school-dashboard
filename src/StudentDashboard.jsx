@@ -250,29 +250,6 @@ export default function StudentDashboard() {
         
         <main className="flex-1 overflow-y-auto">
           <div className="p-6">
-            {/* Daily Goals - Full Width Above Everything */}
-            <div className="mb-6">
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">DAILY GOALS</h2>
-              <div className="grid grid-cols-4 gap-4">
-                <div className="bg-white p-6 text-center h-32 flex flex-col justify-center">
-                  <p className="text-sm text-gray-500">Think</p>
-                  <p className="text-xl font-bold">1/5 LESSONS</p>
-                </div>
-                <div className="bg-white p-6 text-center h-32 flex flex-col justify-center">
-                  <p className="text-sm text-gray-500">Move</p>
-                  <p className="text-xl font-bold">6K/5K STEPS</p>
-                </div>
-                <div className="bg-white p-6 text-center h-32 flex flex-col justify-center">
-                  <p className="text-sm text-gray-500">Connect</p>
-                  <p className="text-xl font-bold">87 MOOD SCORE</p>
-                </div>
-                <div className="bg-white p-6 text-center h-32 flex flex-col justify-center">
-                  <p className="text-sm text-gray-500">Thrive</p>
-                  <p className="text-xl font-bold">1/3 SKILLS</p>
-                </div>
-              </div>
-            </div>
-
             {activePage === 'learning' ? (
               <>
                 {/* Full Width Mastery Section */}
@@ -284,43 +261,67 @@ export default function StudentDashboard() {
                   />
                 </div>
                 
-                {/* Two Column Layout for Rest of Content */}
-                <div className="flex gap-4">
-                  <div className="flex-1 space-y-4">
-                    <LearningContent 
-                      masteryData={masteryData} 
-                      getColorClasses={getColorClasses} 
-                      showMasteryOnly={false}
-                    />
-                  </div>
-                  <div className="w-80">
-                    <RightPanel />
-                  </div>
+                {/* Full Width Content */}
+                <div className="space-y-4">
+                  <LearningContent 
+                    masteryData={masteryData} 
+                    getColorClasses={getColorClasses} 
+                    showMasteryOnly={false}
+                  />
                 </div>
               </>
             ) : (
-              <div className="flex gap-4">
-                {/* Middle Panel */}
-                <div className="flex-1 space-y-4">
-                  {activePage === 'dashboard' ? (
-                    <DashboardContent 
-                      activeTab={activeTab} 
-                      setActiveTab={setActiveTab} 
-                      currentChallenges={currentChallenges} 
-                    />
-                  ) : (
-                    <div className="p-6">
-                      <h1 className="text-2xl font-bold">Coming Soon</h1>
-                      <p>This page is under development.</p>
+              <>
+                {/* Daily Goals - Only on Dashboard */}
+                {activePage === 'dashboard' && (
+                  <div className="mb-6">
+                    <h2 className="text-2xl font-bold text-gray-900 mb-4">DAILY GOALS</h2>
+                    <div className="grid grid-cols-4 gap-4">
+                      <div className="bg-white p-6 text-center h-32 flex flex-col justify-center">
+                        <p className="text-sm text-gray-500">Think</p>
+                        <p className="text-xl font-bold">1/5 LESSONS</p>
+                      </div>
+                      <div className="bg-white p-6 text-center h-32 flex flex-col justify-center">
+                        <p className="text-sm text-gray-500">Move</p>
+                        <p className="text-xl font-bold">6K/5K STEPS</p>
+                      </div>
+                      <div className="bg-white p-6 text-center h-32 flex flex-col justify-center">
+                        <p className="text-sm text-gray-500">Connect</p>
+                        <p className="text-xl font-bold">87 MOOD SCORE</p>
+                      </div>
+                      <div className="bg-white p-6 text-center h-32 flex flex-col justify-center">
+                        <p className="text-sm text-gray-500">Thrive</p>
+                        <p className="text-xl font-bold">1/3 SKILLS</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                <div className="flex gap-4">
+                  {/* Middle Panel */}
+                  <div className="flex-1 space-y-4">
+                    {activePage === 'dashboard' ? (
+                      <DashboardContent 
+                        activeTab={activeTab} 
+                        setActiveTab={setActiveTab} 
+                        currentChallenges={currentChallenges} 
+                      />
+                    ) : (
+                      <div className="p-6">
+                        <h1 className="text-2xl font-bold">Coming Soon</h1>
+                        <p>This page is under development.</p>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Right Panel - Only on Dashboard */}
+                  {activePage === 'dashboard' && (
+                    <div className="w-80">
+                      <RightPanel />
                     </div>
                   )}
                 </div>
-
-                {/* Right Panel */}
-                <div className="w-80">
-                  <RightPanel />
-                </div>
-              </div>
+              </>
             )}
           </div>
         </main>

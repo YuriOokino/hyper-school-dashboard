@@ -24,20 +24,7 @@ export default function TopNavigation({ activePage, setActivePage }) {
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
               </svg>
-              <span className="font-medium">Dashboard</span>
-            </button>
-            <button 
-              onClick={() => setActivePage('rewards')}
-              className={`flex items-center space-x-2 pb-4 ${
-                activePage === 'rewards' 
-                  ? 'text-blue-600 border-b-2 border-blue-600' 
-                  : 'text-gray-500 hover:text-gray-700'
-              }`}
-            >
-              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              <span className="font-medium">Rewards</span>
+              <span className="font-medium">Overview</span>
             </button>
             <button 
               onClick={() => setActivePage('learning')}
@@ -51,6 +38,19 @@ export default function TopNavigation({ activePage, setActivePage }) {
                 <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
               </svg>
               <span className="font-medium">Learning</span>
+            </button>
+            <button 
+              onClick={() => setActivePage('rewards')}
+              className={`flex items-center space-x-2 pb-4 ${
+                activePage === 'rewards' 
+                  ? 'text-blue-600 border-b-2 border-blue-600' 
+                  : 'text-gray-500 hover:text-gray-700'
+              }`}
+            >
+              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <span className="font-medium">Rewards</span>
             </button>
             <button 
               onClick={() => setActivePage('squad')}

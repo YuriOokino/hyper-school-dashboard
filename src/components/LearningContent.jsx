@@ -113,8 +113,8 @@ export default function LearningContent({ masteryData, getColorClasses, showMast
   const AllLessonsSection = () => (
     <div className="bg-white p-6">
       <h2 className="text-2xl font-bold mb-6">ALL LESSONS</h2>
-      <div className="flex items-center space-x-4 mb-6 w-full">
-        <div className="relative flex-1">
+      <div className="flex items-center justify-between mb-6 w-full">
+        <div className="relative" style={{ width: '400px' }}>
           <input 
             type="text" 
             placeholder="Search lesson or subject"
@@ -124,20 +124,22 @@ export default function LearningContent({ masteryData, getColorClasses, showMast
             <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd" />
           </svg>
         </div>
-        <div className="flex items-center space-x-2">
-          <span className="text-sm">Incomplete only</span>
-          <div className="relative">
-            <input type="checkbox" className="sr-only" defaultChecked />
-            <div className="w-10 h-6 bg-blue-600 rounded-full shadow-inner"></div>
-            <div className="absolute top-1 right-1 w-4 h-4 bg-white rounded-full shadow transform transition-transform"></div>
+        <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-2">
+            <span className="text-sm">Incomplete only</span>
+            <div className="relative">
+              <input type="checkbox" className="sr-only" defaultChecked />
+              <div className="w-10 h-6 bg-blue-600 rounded-full shadow-inner"></div>
+              <div className="absolute top-1 right-1 w-4 h-4 bg-white rounded-full shadow transform transition-transform"></div>
+            </div>
           </div>
+          <button className="flex items-center space-x-2 px-3 py-2 border border-gray-300">
+            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 16a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" />
+            </svg>
+            <span className="text-sm">Filters</span>
+          </button>
         </div>
-        <button className="flex items-center space-x-2 px-3 py-2 border border-gray-300">
-          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-            <path d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 16a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" />
-          </svg>
-          <span className="text-sm">Filters</span>
-        </button>
       </div>
 
       <div className="overflow-x-auto">
