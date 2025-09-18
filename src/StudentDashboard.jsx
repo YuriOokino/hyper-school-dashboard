@@ -1,8 +1,62 @@
 export default function StudentDashboard() {
   return (
-    <div className="grid grid-cols-12 gap-4 p-6 bg-gray-50 min-h-screen">
-      {/* Sidebar */}
-      <aside className="col-span-2 bg-white shadow rounded-2xl p-4 flex flex-col justify-between">
+    <div className="min-h-screen bg-gray-50">
+      {/* Top Navigation */}
+      <nav className="bg-white shadow-sm border-b">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            <div className="flex space-x-8">
+              <a href="#" className="flex items-center space-x-2 text-blue-600 border-b-2 border-blue-600 pb-4">
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+                </svg>
+                <span className="font-medium">Dashboard</span>
+              </a>
+              <a href="#" className="flex items-center space-x-2 text-gray-500 hover:text-gray-700 pb-4">
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span className="font-medium">Rewards</span>
+              </a>
+              <a href="#" className="flex items-center space-x-2 text-gray-500 hover:text-gray-700 pb-4">
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
+                </svg>
+                <span className="font-medium">Learning</span>
+              </a>
+              <a href="#" className="flex items-center space-x-2 text-gray-500 hover:text-gray-700 pb-4">
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z" />
+                </svg>
+                <span className="font-medium">Squad</span>
+              </a>
+            </div>
+            <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-2 text-gray-700">
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
+                </svg>
+                <span className="font-semibold">240/500</span>
+              </div>
+              <button className="text-gray-500 hover:text-gray-700">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-5 5-5-5h5v-5a7.5 7.5 0 00-15 0v5h5l-5 5-5-5h5v-5a7.5 7.5 0 0115 0v5z" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      <div className="grid grid-cols-12 gap-4 p-6">
+        {/* Sidebar */}
+        <aside className="col-span-2 bg-white shadow rounded-2xl p-4 flex flex-col justify-between">
+          {/* Image Placeholder */}
+          <div className="w-full h-32 bg-gray-200 rounded-xl mb-4 flex items-center justify-center">
+            <svg className="w-12 h-12 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clipRule="evenodd" />
+            </svg>
+          </div>
         <div>
           <div className="mb-6">
             <div className="w-16 h-16 bg-gray-200 rounded-full mb-2" />
@@ -58,45 +112,115 @@ export default function StudentDashboard() {
         </div>
 
         {/* Challenges List */}
-        <div className="bg-white p-4 rounded-2xl shadow">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-semibold">Challenges</h2>
-            <select className="text-sm border rounded px-2 py-1">
+        <div className="bg-white p-6 rounded-2xl shadow">
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-2xl font-bold text-gray-900">TODAY'S CHALLENGES</h2>
+            <select className="text-sm border border-gray-300 rounded-lg px-3 py-2 bg-white">
               <option>Today</option>
               <option>This Week</option>
             </select>
           </div>
-          <div className="flex space-x-4 text-sm mb-4">
-            <button className="text-blue-600 underline">Knowledge</button>
-            <button>Physical health</button>
-            <button>Mental health</button>
-            <button>Life skills</button>
+          <div className="flex space-x-6 text-sm mb-6 border-b border-gray-200">
+            <button className="text-gray-500 hover:text-gray-700 pb-2">Knowledge</button>
+            <button className="text-blue-600 border-b-2 border-blue-600 pb-2 font-medium">Physical Health</button>
+            <button className="text-gray-500 hover:text-gray-700 pb-2">Mental health</button>
+            <button className="text-gray-500 hover:text-gray-700 pb-2">Life skills</button>
           </div>
-          <ul className="space-y-3">
-            <li className="flex justify-between items-center">
-              <div>
-                <p className="font-semibold">Challenge Name</p>
-                <p className="text-xs text-gray-500">Progress</p>
+          <div className="space-y-4">
+            {/* WALK 5K STEPS - Completed */}
+            <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+              <div className="flex items-center space-x-4">
+                <div className="w-12 h-12 bg-gray-800 rounded-full flex items-center justify-center">
+                  <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
+                  </svg>
+                </div>
+                <div>
+                  <div className="text-sm font-bold text-gray-900">WALK 5K STEPS</div>
+                  <div className="text-sm text-gray-600">6,738 steps</div>
+                  <div className="w-full h-0.5 bg-gray-200 mt-1"></div>
+                </div>
               </div>
-              <div className="flex gap-2 items-center">
-                <p className="text-xs text-gray-400">Done!</p>
-                <button className="text-sm bg-gray-100 px-3 py-1 rounded">Review</button>
+              <div className="flex items-center space-x-3">
+                <span className="text-sm font-medium text-green-600">Done!</span>
+                <button className="bg-black text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center space-x-2">
+                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
+                  </svg>
+                  <span>Redeem points</span>
+                </button>
               </div>
-            </li>
-            <li className="flex justify-between items-center">
-              <div>
-                <p className="font-semibold">Challenge Name</p>
-                <p className="text-xs text-gray-500">In progress</p>
+            </div>
+
+            {/* 10 MIN BREATHING EXERCISE - In Progress */}
+            <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+              <div className="flex items-center space-x-4">
+                <div className="w-12 h-12 bg-gray-800 rounded-full flex items-center justify-center">
+                  <span className="text-white font-bold text-sm">50</span>
+                </div>
+                <div>
+                  <div className="text-sm font-bold text-gray-900">10 MIN BREATHING EXERCISE</div>
+                  <div className="text-sm text-gray-600">0 minutes logged</div>
+                  <div className="w-full h-0.5 bg-gray-200 mt-1"></div>
+                </div>
               </div>
-              <button className="text-sm bg-gray-100 px-3 py-1 rounded">Continue</button>
-            </li>
-            <li className="flex justify-between items-center">
-              <div>
-                <p className="font-semibold">Challenge Name</p>
+              <div className="flex items-center space-x-3">
+                <span className="text-sm text-gray-500">-10:40:23</span>
+                <button className="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium flex items-center space-x-2">
+                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clipRule="evenodd" />
+                  </svg>
+                  <span>Sync data</span>
+                </button>
               </div>
-              <button className="text-sm bg-gray-100 px-3 py-1 rounded">Start</button>
-            </li>
-          </ul>
+            </div>
+
+            {/* BEAT YOUR JUMP-ROPE RECORD - Pending */}
+            <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+              <div className="flex items-center space-x-4">
+                <div className="w-12 h-12 bg-gray-800 rounded-full flex items-center justify-center">
+                  <span className="text-white font-bold text-sm">90</span>
+                </div>
+                <div>
+                  <div className="text-sm font-bold text-gray-900">BEAT YOUR JUMP-ROPE RECORD</div>
+                  <div className="text-sm text-gray-600">Do 30+ consecutive jumps</div>
+                  <div className="w-full h-0.5 bg-gray-200 mt-1"></div>
+                </div>
+              </div>
+              <div className="flex items-center space-x-3">
+                <span className="text-sm text-gray-500">-10:40:23</span>
+                <button className="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium flex items-center space-x-2">
+                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clipRule="evenodd" />
+                  </svg>
+                  <span>Sync data</span>
+                </button>
+              </div>
+            </div>
+
+            {/* 20 MIN BIKE RIDE - Pending */}
+            <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+              <div className="flex items-center space-x-4">
+                <div className="w-12 h-12 bg-gray-800 rounded-full flex items-center justify-center">
+                  <span className="text-white font-bold text-sm">150</span>
+                </div>
+                <div>
+                  <div className="text-sm font-bold text-gray-900">20 MIN BIKE RIDE</div>
+                  <div className="text-sm text-gray-600">0 minutes logged</div>
+                  <div className="w-full h-0.5 bg-gray-200 mt-1"></div>
+                </div>
+              </div>
+              <div className="flex items-center space-x-3">
+                <span className="text-sm text-gray-500">-10:40:23</span>
+                <button className="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium flex items-center space-x-2">
+                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clipRule="evenodd" />
+                  </svg>
+                  <span>Sync data</span>
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </main>
 
@@ -114,38 +238,63 @@ export default function StudentDashboard() {
           </div>
 
           {/* Today's Summary */}
-          <div className="bg-white shadow rounded-2xl p-4">
-            <h2 className="text-xl font-semibold mb-2">Today's Summary</h2>
-            <div className="grid grid-cols-2 gap-4">
+          <div className="bg-white shadow rounded-2xl p-6">
+            <h2 className="text-xl font-bold mb-4 text-gray-900">TODAY'S SUMMARY</h2>
+            <div className="grid grid-cols-2 gap-6">
               <div className="text-sm">
-                <p className="text-gray-500">Points Earned Today</p>
-                <p className="text-lg font-bold">240</p>
+                <div className="flex items-center space-x-2 mb-1">
+                  <svg className="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
+                  </svg>
+                  <p className="text-gray-500">HC earned today</p>
+                </div>
+                <p className="text-lg font-bold text-gray-900">240</p>
               </div>
               <div className="text-sm">
-                <p className="text-gray-500">Challenges Completed</p>
-                <p className="text-lg font-bold">3/5</p>
+                <div className="flex items-center space-x-2 mb-1">
+                  <svg className="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
+                  </svg>
+                  <p className="text-gray-500">Mood Check-In</p>
+                </div>
+                <p className="text-lg font-bold text-gray-900">240</p>
               </div>
               <div className="text-sm">
-                <p className="text-gray-500">Mood Check-in</p>
-                <p className="text-lg font-bold">Yes</p>
+                <p className="text-gray-500 mb-1">Challenges completed</p>
+                <p className="text-lg font-bold text-gray-900">3/5</p>
               </div>
               <div className="text-sm">
-                <p className="text-gray-500">Last Challenge</p>
-                <p className="text-lg font-bold">Walk 5K Steps</p>
+                <p className="text-gray-500 mb-1">Las Challenge</p>
+                <p className="text-lg font-bold text-gray-900">Walk 5K steps</p>
               </div>
             </div>
           </div>
 
           {/* Social & Support */}
-          <div className="bg-white shadow rounded-2xl p-4">
-            <h2 className="text-xl font-semibold mb-2">Connections</h2>
-            <div className="space-y-2 text-sm">
-              <p><span className="font-medium">Guide:</span> “Nice job on your last quiz! Ready for the next challenge?”</p>
-              <p><span className="font-medium">Squad:</span> Sarah completed 3 challenges. Want to team up?</p>
+          <div className="bg-white shadow rounded-2xl p-6">
+            <h2 className="text-xl font-bold mb-4 text-gray-900">CONNECT</h2>
+            <div className="space-y-4">
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 bg-gray-200 rounded-full"></div>
+                <div className="flex-1">
+                  <p className="font-semibold text-gray-900">Name Lastname</p>
+                  <p className="text-sm text-gray-500">Title</p>
+                </div>
+                <a href="#" className="text-blue-600 text-sm font-medium">Chat</a>
+              </div>
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 bg-gray-200 rounded-full"></div>
+                <div className="flex-1">
+                  <p className="font-semibold text-gray-900">Name Lastname</p>
+                  <p className="text-sm text-gray-500">Title</p>
+                </div>
+                <a href="#" className="text-blue-600 text-sm font-medium">Chat</a>
+              </div>
             </div>
           </div>
         </div>
       </aside>
+      </div>
     </div>
   );
 }
