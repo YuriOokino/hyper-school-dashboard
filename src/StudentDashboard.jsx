@@ -92,7 +92,7 @@ export default function StudentDashboard() {
           <div className="grid grid-cols-12 gap-4 items-center h-16">
             <div className="col-span-2 flex items-center">
               <img 
-                src="/src/assets/icons/Logo-light.png" 
+                src="/assets/icons/Logo-light.png" 
                 alt="Hyper School Logo" 
                 className="h-12 w-auto"
               />
