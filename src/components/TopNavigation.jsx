@@ -1,20 +1,16 @@
 import { useState } from 'react';
 
-export default function TopNavigation({ activePage, setActivePage }) {
+export default function TopNavigation({ activePage, setActivePage, activeTab, setActiveTab }) {
   return (
     <nav className="bg-white shadow-sm border-b">
       <div className="px-6">
         <div className="grid grid-cols-12 gap-4 items-center h-16">
-          <div className="col-span-2 flex items-center">
-            <img 
-              src="/assets/icons/Logo-light.png" 
-              alt="Hyper School Logo" 
-              className="h-12 w-auto"
-            />
-          </div>
-          <div className="col-span-6 flex items-center space-x-8">
+          <div className="col-span-8 flex items-center space-x-8">
             <button 
-              onClick={() => setActivePage('dashboard')}
+              onClick={() => {
+                setActivePage('dashboard');
+                if (setActiveTab) setActiveTab('knowledge');
+              }}
               className={`flex items-center space-x-2 pb-4 ${
                 activePage === 'dashboard' 
                   ? 'text-blue-600 border-b-2 border-blue-600' 
@@ -27,7 +23,10 @@ export default function TopNavigation({ activePage, setActivePage }) {
               <span className="font-medium">Overview</span>
             </button>
             <button 
-              onClick={() => setActivePage('learning')}
+              onClick={() => {
+                setActivePage('learning');
+                if (setActiveTab) setActiveTab('classes');
+              }}
               className={`flex items-center space-x-2 pb-4 ${
                 activePage === 'learning' 
                   ? 'text-blue-600 border-b-2 border-blue-600' 

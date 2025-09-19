@@ -3,12 +3,15 @@ import TopNavigation from './components/TopNavigation';
 import Sidebar from './components/Sidebar';
 import DashboardContent from './components/DashboardContent';
 import LearningContent from './components/LearningContent';
+import LessonContent from './components/LessonContent';
+import SquadContent from './components/SquadContent';
 import RightPanel from './components/RightPanel';
 import ChatButton from './components/ChatButton';
 
 export default function StudentDashboard() {
   const [activeTab, setActiveTab] = useState('knowledge');
   const [activePage, setActivePage] = useState('dashboard');
+  const [showLesson, setShowLesson] = useState(false);
 
   const masteryData = [
     {
@@ -22,7 +25,9 @@ export default function StudentDashboard() {
       icon: "calculator",
       color: "blue",
       topics: ["Algebra", "Geometry", "Statistics"],
-      weakAreas: ["Calculus"]
+      weakAreas: ["Calculus"],
+      currentPoints: 1200,
+      nextLevelPoints: 2000
     },
     {
       subject: "Science",
@@ -35,7 +40,9 @@ export default function StudentDashboard() {
       icon: "atom",
       color: "green",
       topics: ["Physics", "Chemistry", "Biology"],
-      weakAreas: ["Organic Chemistry"]
+      weakAreas: ["Organic Chemistry"],
+      currentPoints: 2250,
+      nextLevelPoints: 3000
     },
     {
       subject: "English",
@@ -48,7 +55,9 @@ export default function StudentDashboard() {
       icon: "book",
       color: "purple",
       topics: ["Grammar", "Literature"],
-      weakAreas: ["Writing", "Poetry"]
+      weakAreas: ["Writing", "Poetry"],
+      currentPoints: 900,
+      nextLevelPoints: 2000
     },
     {
       subject: "History",
@@ -61,14 +70,16 @@ export default function StudentDashboard() {
       icon: "globe",
       color: "yellow",
       topics: ["World History", "Ancient Civilizations"],
-      weakAreas: []
+      weakAreas: [],
+      currentPoints: 3200,
+      nextLevelPoints: 4000
     }
   ];
 
   const knowledgeChallenges = [
     {
       id: 1,
-      name: "MATH QUIZ",
+      name: "REVIEW LINEAR EQUATIONS",
       description: "Algebra basics",
       points: 90,
       status: "completed",
@@ -242,35 +253,60 @@ export default function StudentDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <TopNavigation activePage={activePage} setActivePage={setActivePage} />
-      
-      <div className="flex h-screen">
+    <div className="h-screen bg-gray-50 flex overflow-hidden">
+      <div className="w-64 flex-shrink-0 h-screen">
         <Sidebar />
+      </div>
+      
+      <div className="flex-1 flex flex-col min-w-0 h-screen">
+        <div className="flex-shrink-0">
+          <TopNavigation 
+            activePage={activePage} 
+            setActivePage={(page) => {
+              setActivePage(page);
+              if (page !== 'learning') {
+                setShowLesson(false);
+              }
+            }} 
+            activeTab={activeTab} 
+            setActiveTab={setActiveTab} 
+          />
+        </div>
         
         <main className="flex-1 overflow-y-auto">
-          <div className="p-6">
-            {activePage === 'learning' ? (
-              <>
-                {/* Full Width Mastery Section */}
-                <div className="mb-6">
-                  <LearningContent 
-                    masteryData={masteryData} 
-                    getColorClasses={getColorClasses} 
-                    showMasteryOnly={true}
-                  />
-                </div>
-                
-                {/* Full Width Content */}
-                <div className="space-y-4">
-                  <LearningContent 
-                    masteryData={masteryData} 
-                    getColorClasses={getColorClasses} 
-                    showMasteryOnly={false}
-                  />
-                </div>
-              </>
-            ) : (
+          {showLesson ? (
+            <LessonContent 
+              onBackToLearning={() => setShowLesson(false)} 
+              activeTab={activeTab}
+              setActiveTab={setActiveTab}
+              activePage={activePage}
+              setActivePage={setActivePage}
+            />
+          ) : (
+            <div className="p-6">
+              {activePage === 'learning' ? (
+                <>
+                  {/* Full Width Mastery Section */}
+                  <div className="mb-6">
+                    <LearningContent 
+                      masteryData={masteryData} 
+                      getColorClasses={getColorClasses} 
+                      showMasteryOnly={true}
+                      onLessonClick={() => setShowLesson(true)}
+                    />
+                  </div>
+                  
+                  {/* Full Width Content */}
+                  <div className="space-y-4">
+                    <LearningContent 
+                      masteryData={masteryData} 
+                      getColorClasses={getColorClasses} 
+                      showMasteryOnly={false}
+                      onLessonClick={() => setShowLesson(true)}
+                    />
+                  </div>
+                </>
+              ) : (
               <>
                 {/* Daily Goals - Only on Dashboard */}
                 {activePage === 'dashboard' && (
@@ -300,18 +336,25 @@ export default function StudentDashboard() {
                 <div className="flex gap-4">
                   {/* Middle Panel */}
                   <div className="flex-1 space-y-4">
-                    {activePage === 'dashboard' ? (
-                      <DashboardContent 
-                        activeTab={activeTab} 
-                        setActiveTab={setActiveTab} 
-                        currentChallenges={currentChallenges} 
-                      />
-                    ) : (
-                      <div className="p-6">
-                        <h1 className="text-2xl font-bold">Coming Soon</h1>
-                        <p>This page is under development.</p>
-                      </div>
-                    )}
+                  {activePage === 'dashboard' ? (
+                    <DashboardContent 
+                      activeTab={activeTab} 
+                      setActiveTab={setActiveTab} 
+                      currentChallenges={currentChallenges} 
+                    />
+                  ) : activePage === 'squad' ? (
+                    <SquadContent />
+                  ) : activePage === 'rewards' ? (
+                    <div className="p-6">
+                      <h1 className="text-2xl font-bold">Rewards</h1>
+                      <p>This page is under development.</p>
+                    </div>
+                  ) : (
+                    <div className="p-6">
+                      <h1 className="text-2xl font-bold">Coming Soon</h1>
+                      <p>This page is under development.</p>
+                    </div>
+                  )}
                   </div>
 
                   {/* Right Panel - Only on Dashboard */}
@@ -323,7 +366,8 @@ export default function StudentDashboard() {
                 </div>
               </>
             )}
-          </div>
+            </div>
+          )}
         </main>
       </div>
 

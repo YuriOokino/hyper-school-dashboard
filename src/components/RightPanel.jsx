@@ -31,10 +31,7 @@ export default function RightPanel() {
             <span className="text-sm text-gray-600">Mood check-in</span>
             <span className="text-sm font-semibold">98</span>
           </div>
-          <div className="text-sm">
-            <p className="text-gray-500 mb-1">Last Challenge</p>
-            <p className="text-lg font-bold text-gray-900">Walk 5K steps</p>
-          </div>
+          
         </div>
       </div>
 
