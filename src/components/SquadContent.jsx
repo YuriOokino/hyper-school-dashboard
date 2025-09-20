@@ -98,7 +98,7 @@ export default function SquadContent() {
 
   const getStatusColor = (status) => {
     if (status.includes("Available now") || status.includes("Online")) return "text-green-600";
-    if (status.includes("24/7")) return "text-blue-600";
+    if (status.includes("24/7")) return { color: '#3FC7FF' };
     return "text-gray-500";
   };
 
@@ -115,18 +115,18 @@ export default function SquadContent() {
   return (
     <div className="space-y-6">
       {/* Squad Members */}
-      <div className="bg-white p-6 rounded-lg">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">YOUR SQUAD</h2>
+      <div className="bg-white p-6 -lg">
+        <h2 className="text-2xl font-bold text-gray-900 mb-6 uppercase">YOUR SQUAD</h2>
         <div className="grid grid-cols-2 gap-4">
           {squadData.map((member, index) => (
-            <div key={index} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+            <div key={index} className="border border-gray-200 p-4" style={{ boxShadow: '0 0 0 1px #000' }}>
               <div className="flex justify-between items-start mb-3">
                 <div>
                   <h3 className="font-bold text-gray-900">{member.name}</h3>
                   <p className="text-sm text-gray-500">{member.grade} • Level {member.level}</p>
                   <p className="text-xs text-gray-400">{member.lastActive}</p>
                 </div>
-                <button className="bg-blue-100 text-blue-700 px-3 py-1 text-sm font-medium rounded-lg hover:bg-blue-200 transition-colors">
+                <button className="px-3 py-1 text-sm font-medium transition-colors" style={{ backgroundColor: '#C4CEFF', color: '#000' }}>
                   Message
                 </button>
               </div>
@@ -156,17 +156,17 @@ export default function SquadContent() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Available Tutors */}
-        <div className="bg-white p-6 rounded-lg">
-          <h2 className="text-xl font-bold text-gray-900 mb-4">AVAILABLE TUTORS</h2>
+        <div className="bg-white p-6 -lg">
+          <h2 className="text-xl font-bold text-gray-900 mb-4 uppercase">AVAILABLE TUTORS</h2>
           <div className="space-y-3">
             {tutors.map((tutor, index) => (
-              <div key={index} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+              <div key={index} className="border border-gray-200 p-4" style={{ boxShadow: '0 0 0 1px #000' }}>
                 <div className="flex justify-between items-start mb-2">
                   <div>
                     <h3 className="font-semibold text-gray-900">{tutor.name}</h3>
                     <p className="text-sm text-gray-600">{tutor.subject}</p>
                   </div>
-                  <button className="bg-green-100 text-green-700 px-3 py-1 text-sm font-medium rounded-lg hover:bg-green-200 transition-colors">
+                  <button className="bg-green-100 text-green-700 px-3 py-1 text-sm font-medium -lg hover:bg-green-200 transition-colors">
                     Connect
                   </button>
                 </div>
@@ -184,8 +184,8 @@ export default function SquadContent() {
         </div>
 
         {/* Activity Feed */}
-        <div className="bg-white p-6 rounded-lg">
-          <h2 className="text-xl font-bold text-gray-900 mb-4">ACTIVITY FEED</h2>
+        <div className="bg-white p-6 -lg">
+          <h2 className="text-xl font-bold text-gray-900 mb-4 uppercase">ACTIVITY FEED</h2>
           <div className="space-y-4">
             {activities.map((activity, index) => (
               <div key={index} className="flex items-start space-x-3">

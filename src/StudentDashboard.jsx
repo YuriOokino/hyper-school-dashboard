@@ -5,6 +5,7 @@ import DashboardContent from './components/DashboardContent';
 import LearningContent from './components/LearningContent';
 import LessonContent from './components/LessonContent';
 import SquadContent from './components/SquadContent';
+import RewardsContent from './components/RewardsContent';
 import RightPanel from './components/RightPanel';
 import ChatButton from './components/ChatButton';
 
@@ -311,7 +312,7 @@ export default function StudentDashboard() {
                 {/* Daily Goals - Only on Dashboard */}
                 {activePage === 'dashboard' && (
                   <div className="mb-6">
-                    <h2 className="text-2xl font-bold text-gray-900 mb-4">DAILY GOALS</h2>
+                    <h2 className="text-2xl font-bold text-gray-900 mb-4 uppercase">DAILY GOALS</h2>
                     <div className="grid grid-cols-4 gap-4">
                       <div className="bg-white p-6 text-center h-32 flex flex-col justify-center">
                         <p className="text-sm text-gray-500">Think</p>
@@ -345,10 +346,7 @@ export default function StudentDashboard() {
                   ) : activePage === 'squad' ? (
                     <SquadContent />
                   ) : activePage === 'rewards' ? (
-                    <div className="p-6">
-                      <h1 className="text-2xl font-bold">Rewards</h1>
-                      <p>This page is under development.</p>
-                    </div>
+                    <RewardsContent />
                   ) : (
                     <div className="p-6">
                       <h1 className="text-2xl font-bold">Coming Soon</h1>

@@ -24,7 +24,7 @@ export default function LessonContent({ onBackToLearning, activeTab: pageActiveT
         <div className={`flex items-start ${videoState === 'playing' ? 'flex-col' : 'flex-row'} ${videoState === 'playing' ? 'space-y-4' : 'space-x-6'}`}>
           {/* Video Section */}
           <div 
-            className={`bg-gray-200 rounded-lg flex items-center justify-center relative cursor-pointer group hover:bg-gray-300 transition-all ${
+            className={`bg-gray-200 -lg flex items-center justify-center relative cursor-pointer group hover:bg-gray-300 transition-all ${
               videoState === 'paused' ? 'w-96 h-72' : 
               videoState === 'playing' ? 'w-full h-96' : 
               'w-96 h-72'
@@ -41,7 +41,7 @@ export default function LessonContent({ onBackToLearning, activeTab: pageActiveT
             
             {/* Play Button Overlay */}
             {videoState === 'paused' && (
-              <div className="absolute inset-0 bg-black bg-opacity-30 rounded-lg flex items-center justify-center group-hover:bg-opacity-40 transition-all">
+              <div className="absolute inset-0 bg-black bg-opacity-30 -lg flex items-center justify-center group-hover:bg-opacity-40 transition-all">
                 <svg className="w-16 h-16 text-white" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M8 5v14l11-7z"/>
                 </svg>
@@ -57,7 +57,7 @@ export default function LessonContent({ onBackToLearning, activeTab: pageActiveT
                     e.stopPropagation();
                     setVideoState('paused');
                   }}
-                  className="bg-black bg-opacity-50 text-white p-2 rounded hover:bg-opacity-70 transition-colors"
+                  className="bg-black bg-opacity-50 text-white p-2  hover:bg-opacity-70 transition-colors"
                   title="Shrink to normal view"
                 >
                   <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
@@ -71,7 +71,7 @@ export default function LessonContent({ onBackToLearning, activeTab: pageActiveT
                     e.stopPropagation();
                     setVideoState('fullscreen');
                   }}
-                  className="bg-black bg-opacity-50 text-white p-2 rounded hover:bg-opacity-70 transition-colors"
+                  className="bg-black bg-opacity-50 text-white p-2  hover:bg-opacity-70 transition-colors"
                   title="Enter fullscreen"
                 >
                   <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
@@ -88,7 +88,7 @@ export default function LessonContent({ onBackToLearning, activeTab: pageActiveT
             <div>
               {/* Points Tag */}
               <div className="mb-3">
-                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold bg-yellow-100 text-yellow-800">
+                <span className="inline-flex items-center px-3 py-1 -full text-sm font-semibold bg-yellow-100 text-yellow-800">
                   <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
                   </svg>
@@ -111,7 +111,7 @@ export default function LessonContent({ onBackToLearning, activeTab: pageActiveT
               
               {/* Action Button - Bottom of right column */}
               <div className="mt-4">
-                <button className="bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors">
+                <button className="text-white px-6 py-3 font-medium transition-colors" style={{ backgroundColor: '#3FC7FF' }}>
                   Continue Lesson
                 </button>
               </div>
@@ -127,12 +127,12 @@ export default function LessonContent({ onBackToLearning, activeTab: pageActiveT
 
                   {/* Lesson Tabs */}
                   <div className="mb-6">
-                  <div className="flex space-x-1 bg-gray-100 p-1 rounded-lg w-fit">
+                  <div className="flex space-x-1 bg-gray-100 p-1 -lg w-fit">
                     <button
                       onClick={() => setLessonActiveTab('chapters')}
-                      className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                      className={`px-4 py-2 -md text-sm font-medium transition-colors ${
                         lessonActiveTab === 'chapters'
-                          ? 'bg-white text-gray-900 shadow-sm'
+                          ? 'bg-white text-gray-900'
                           : 'text-gray-600 hover:text-gray-900'
                       }`}
                     >
@@ -140,9 +140,9 @@ export default function LessonContent({ onBackToLearning, activeTab: pageActiveT
                     </button>
                     <button
                       onClick={() => setLessonActiveTab('content')}
-                      className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                      className={`px-4 py-2 -md text-sm font-medium transition-colors ${
                         lessonActiveTab === 'content'
-                          ? 'bg-white text-gray-900 shadow-sm'
+                          ? 'bg-white text-gray-900'
                           : 'text-gray-600 hover:text-gray-900'
                       }`}
                     >
@@ -150,9 +150,9 @@ export default function LessonContent({ onBackToLearning, activeTab: pageActiveT
                     </button>
                     <button
                       onClick={() => setLessonActiveTab('exercises')}
-                      className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                      className={`px-4 py-2 -md text-sm font-medium transition-colors ${
                         lessonActiveTab === 'exercises'
-                          ? 'bg-white text-gray-900 shadow-sm'
+                          ? 'bg-white text-gray-900'
                           : 'text-gray-600 hover:text-gray-900'
                       }`}
                     >
@@ -160,9 +160,9 @@ export default function LessonContent({ onBackToLearning, activeTab: pageActiveT
                     </button>
                     <button
                       onClick={() => setLessonActiveTab('resources')}
-                      className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                      className={`px-4 py-2 -md text-sm font-medium transition-colors ${
                         lessonActiveTab === 'resources'
-                          ? 'bg-white text-gray-900 shadow-sm'
+                          ? 'bg-white text-gray-900'
                           : 'text-gray-600 hover:text-gray-900'
                       }`}
                     >
@@ -172,15 +172,15 @@ export default function LessonContent({ onBackToLearning, activeTab: pageActiveT
                 </div>
 
           {/* Tab Content */}
-          <div className="bg-white rounded-lg border border-gray-200 p-6">
+          <div className="bg-white -lg border border-gray-200 p-6">
             {lessonActiveTab === 'chapters' && (
               <div>
                 <h2 className="text-2xl font-bold text-gray-900 mb-4">Lesson Chapters</h2>
                 <div className="space-y-4">
-                  <div className="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 cursor-pointer">
+                  <div className="border border-gray-200 -lg p-4 hover:bg-gray-50 cursor-pointer">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-4">
-                        <div className="w-8 h-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-semibold text-sm">
+                        <div className="w-8 h-8 flex items-center justify-center font-semibold text-sm" style={{ backgroundColor: '#C4CEFF', color: '#000' }}>
                           1
                         </div>
                         <div>
@@ -197,10 +197,10 @@ export default function LessonContent({ onBackToLearning, activeTab: pageActiveT
                     </div>
                   </div>
 
-                  <div className="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 cursor-pointer">
+                  <div className="border border-gray-200 -lg p-4 hover:bg-gray-50 cursor-pointer">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-4">
-                        <div className="w-8 h-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-semibold text-sm">
+                        <div className="w-8 h-8 flex items-center justify-center font-semibold text-sm" style={{ backgroundColor: '#C4CEFF', color: '#000' }}>
                           2
                         </div>
                         <div>
@@ -217,10 +217,10 @@ export default function LessonContent({ onBackToLearning, activeTab: pageActiveT
                     </div>
                   </div>
 
-                  <div className="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 cursor-pointer">
+                  <div className="border border-gray-200 -lg p-4 hover:bg-gray-50 cursor-pointer">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-4">
-                        <div className="w-8 h-8 bg-gray-100 text-gray-400 rounded-full flex items-center justify-center font-semibold text-sm">
+                        <div className="w-8 h-8 bg-gray-100 text-gray-400 -full flex items-center justify-center font-semibold text-sm">
                           3
                         </div>
                         <div>
@@ -237,10 +237,10 @@ export default function LessonContent({ onBackToLearning, activeTab: pageActiveT
                     </div>
                   </div>
 
-                  <div className="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 cursor-pointer">
+                  <div className="border border-gray-200 -lg p-4 hover:bg-gray-50 cursor-pointer">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-4">
-                        <div className="w-8 h-8 bg-gray-100 text-gray-400 rounded-full flex items-center justify-center font-semibold text-sm">
+                        <div className="w-8 h-8 bg-gray-100 text-gray-400 -full flex items-center justify-center font-semibold text-sm">
                           4
                         </div>
                         <div>
@@ -276,7 +276,7 @@ export default function LessonContent({ onBackToLearning, activeTab: pageActiveT
                     The goal is to get the variable by itself on one side of the equation.
                   </p>
                   
-                  <div className="bg-gray-50 p-4 rounded-lg mb-4">
+                  <div className="bg-gray-50 p-4 -lg mb-4">
                     <h4 className="font-semibold text-gray-900 mb-2">Example:</h4>
                     <p className="text-gray-700">Solve: 2x + 5 = 13</p>
                     <p className="text-gray-700">Step 1: Subtract 5 from both sides: 2x = 8</p>
@@ -290,7 +290,7 @@ export default function LessonContent({ onBackToLearning, activeTab: pageActiveT
               <div>
                 <h2 className="text-2xl font-bold text-gray-900 mb-4">Practice Exercises</h2>
                 <div className="space-y-6">
-                  <div className="border border-gray-200 rounded-lg p-4">
+                  <div className="border border-gray-200 -lg p-4">
                     <h3 className="text-lg font-semibold text-gray-900 mb-2">Exercise 1</h3>
                     <p className="text-gray-700 mb-3">Solve for x: 3x - 7 = 14</p>
                     <div className="space-y-2">
@@ -309,7 +309,7 @@ export default function LessonContent({ onBackToLearning, activeTab: pageActiveT
                     </div>
                   </div>
                   
-                  <div className="border border-gray-200 rounded-lg p-4">
+                  <div className="border border-gray-200 -lg p-4">
                     <h3 className="text-lg font-semibold text-gray-900 mb-2">Exercise 2</h3>
                     <p className="text-gray-700 mb-3">Solve for y: 2y + 10 = 24</p>
                     <div className="space-y-2">
@@ -335,22 +335,22 @@ export default function LessonContent({ onBackToLearning, activeTab: pageActiveT
               <div>
                 <h2 className="text-2xl font-bold text-gray-900 mb-4">Additional Resources</h2>
                 <div className="space-y-4">
-                  <div className="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 cursor-pointer">
+                  <div className="border border-gray-200 -lg p-4 hover:bg-gray-50 cursor-pointer">
                     <h3 className="text-lg font-semibold text-gray-900 mb-2">Video Tutorial</h3>
                     <p className="text-gray-700 mb-2">Watch a step-by-step video explanation of linear equations</p>
-                    <span className="text-blue-600 text-sm font-medium">Watch Video →</span>
+                    <span className="text-sm font-medium" style={{ color: '#3FC7FF' }}>Watch Video →</span>
                   </div>
                   
-                  <div className="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 cursor-pointer">
+                  <div className="border border-gray-200 -lg p-4 hover:bg-gray-50 cursor-pointer">
                     <h3 className="text-lg font-semibold text-gray-900 mb-2">Practice Worksheet</h3>
                     <p className="text-gray-700 mb-2">Download additional practice problems</p>
-                    <span className="text-blue-600 text-sm font-medium">Download PDF →</span>
+                    <span className="text-sm font-medium" style={{ color: '#3FC7FF' }}>Download PDF →</span>
                   </div>
                   
-                  <div className="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 cursor-pointer">
+                  <div className="border border-gray-200 -lg p-4 hover:bg-gray-50 cursor-pointer">
                     <h3 className="text-lg font-semibold text-gray-900 mb-2">Interactive Calculator</h3>
                     <p className="text-gray-700 mb-2">Use our equation solver to check your work</p>
-                    <span className="text-blue-600 text-sm font-medium">Open Calculator →</span>
+                    <span className="text-sm font-medium" style={{ color: '#3FC7FF' }}>Open Calculator →</span>
                   </div>
                 </div>
               </div>
@@ -362,7 +362,7 @@ export default function LessonContent({ onBackToLearning, activeTab: pageActiveT
           <div className="w-80 bg-gray-50 border-l border-gray-200 p-6">
           <div className="space-y-6">
             {/* Achievement */}
-            <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+            <div className="bg-green-50 border border-green-200 -lg p-4">
               <div className="flex items-center space-x-2 mb-2">
                 <svg className="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
@@ -376,11 +376,11 @@ export default function LessonContent({ onBackToLearning, activeTab: pageActiveT
             <div>
               <h3 className="text-lg font-semibold text-gray-900 mb-3">Related Lessons</h3>
               <div className="space-y-3">
-                <div className="p-3 bg-white rounded-lg border border-gray-200 hover:shadow-sm cursor-pointer">
+                <div className="p-3 bg-white border border-gray-200 cursor-pointer" style={{ boxShadow: '0 0 0 1px #000' }}>
                   <h4 className="font-medium text-gray-900">Quadratic Equations</h4>
                   <p className="text-sm text-gray-600">Next lesson in sequence</p>
                 </div>
-                <div className="p-3 bg-white rounded-lg border border-gray-200 hover:shadow-sm cursor-pointer">
+                <div className="p-3 bg-white border border-gray-200 cursor-pointer" style={{ boxShadow: '0 0 0 1px #000' }}>
                   <h4 className="font-medium text-gray-900">Graphing Linear Functions</h4>
                   <p className="text-sm text-gray-600">Complementary topic</p>
                 </div>
@@ -405,7 +405,7 @@ export default function LessonContent({ onBackToLearning, activeTab: pageActiveT
             </button>
             
             {/* Video Container */}
-            <div className="relative w-full h-0 pb-[56.25%] bg-gray-900 rounded-lg overflow-hidden">
+            <div className="relative w-full h-0 pb-[56.25%] bg-gray-900 -lg overflow-hidden">
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="text-center">
                   <svg className="w-24 h-24 text-white mb-4 mx-auto" fill="currentColor" viewBox="0 0 24 24">

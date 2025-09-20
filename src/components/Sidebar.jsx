@@ -12,7 +12,7 @@ export default function Sidebar() {
         </svg>
         
         {/* Circular Profile Image - 50% overflow bottom */}
-        <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 w-16 h-16 bg-gray-300 rounded-full border-4 border-white flex items-center justify-center">
+        <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 w-16 h-16 bg-gray-300 -full border-4 border-white flex items-center justify-center">
           <svg className="w-8 h-8 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
             <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
           </svg>
@@ -23,8 +23,8 @@ export default function Sidebar() {
       <div className="p-4 text-center mt-8">
         <h2 className="text-xl font-bold">Jennifer Roswell</h2>
         <div className="flex justify-center space-x-2 mt-2">
-          <span className="px-3 py-1 bg-blue-100 text-blue-800 text-sm font-semibold rounded-full">7th grade</span>
-          <span className="px-3 py-1 bg-green-100 text-green-800 text-sm font-semibold rounded-full">Level 4</span>
+          <span className="px-3 py-1 text-sm font-semibold" style={{ backgroundColor: '#C4CEFF', color: '#000' }}>7th grade</span>
+          <span className="px-3 py-1 text-sm font-semibold" style={{ backgroundColor: '#DBFF4D', color: '#000' }}>Level 4</span>
         </div>
       </div>
       
@@ -32,7 +32,7 @@ export default function Sidebar() {
       <div className="px-4 mb-4 mt-6">
         <h3 className="text-base font-bold uppercase mb-2">PROGRESS</h3>
         <div className="w-full bg-gray-100 h-2.5">
-          <div className="bg-green-500 h-2.5" style={{ width: '79%' }}></div>
+          <div className="h-2.5" style={{ width: '79%', backgroundColor: '#FE55A4' }}></div>
         </div>
         <div className="flex justify-between text-sm text-gray-500 mt-2">
           <span>Level 4</span>
@@ -44,34 +44,34 @@ export default function Sidebar() {
       <div className="px-4 mb-4">
         <h3 className="text-base font-bold uppercase mb-2">BADGES</h3>
         <div className="flex space-x-2">
-          <div className="w-8 h-8 bg-gray-500 rounded-full flex items-center justify-center">
+          <div className="w-8 h-8 bg-gray-500 -full flex items-center justify-center">
             <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
             </svg>
           </div>
-          <div className="w-8 h-8 bg-gray-500 rounded-full flex items-center justify-center">
+          <div className="w-8 h-8 bg-gray-500 -full flex items-center justify-center">
             <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
             </svg>
           </div>
-          <div className="w-8 h-8 bg-gray-500 rounded-full flex items-center justify-center">
+          <div className="w-8 h-8 bg-gray-500 -full flex items-center justify-center">
             <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
             </svg>
           </div>
-          <div className="w-8 h-8 border-2 border-gray-300 rounded-full"></div>
-          <div className="w-8 h-8 border-2 border-gray-300 rounded-full"></div>
+          <div className="w-8 h-8 border-2 border-gray-300 -full"></div>
+          <div className="w-8 h-8 border-2 border-gray-300 -full"></div>
         </div>
       </div>
       <div className="text-sm text-gray-500 space-y-3 p-4 mt-auto">
-        <button className="flex items-center gap-2 p-3 hover:bg-gray-50 rounded w-full">
+        <button className="flex items-center gap-2 p-3 hover:bg-gray-50  w-full">
           <span className="text-lg">?</span> 
           <span className="font-medium">Support</span>
         </button>
         
         <div className="relative">
           <button 
-            className="flex items-center gap-2 justify-between w-full hover:bg-gray-50 p-3 rounded"
+            className="flex items-center gap-2 justify-between w-full hover:bg-gray-50 p-3 "
             onClick={() => setIsAccountOpen(!isAccountOpen)}
           >
             <div className="flex items-center gap-2">
@@ -87,7 +87,7 @@ export default function Sidebar() {
           
           {/* Account Submenu */}
           {isAccountOpen && (
-            <div className="absolute left-full bottom-0 ml-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-80 overflow-y-auto">
+            <div className="absolute left-full bottom-0 ml-2 w-48 bg-white border border-gray-200 z-50 max-h-80 overflow-y-auto" style={{ boxShadow: '0 0 0 1px #000' }}>
             <div className="py-2">
               <button className="w-full text-left px-4 py-3 text-base text-gray-700 hover:bg-gray-50 flex items-center gap-3">
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
