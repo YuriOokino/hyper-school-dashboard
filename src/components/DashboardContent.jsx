@@ -88,7 +88,7 @@ export default function DashboardContent({ activeTab, setActiveTab, currentChall
               <div className="flex flex-col items-end space-y-2">
                 {challenge.status === 'completed' ? (
                   <>
-                    <span className="text-sm font-medium" style={{ color: '#DBFF4D' }}>Done!</span>
+                    <span className="text-sm font-medium" style={{ color: '#FF69B4' }}>Done!</span>
                     <button className="bg-black text-white px-4 py-2 text-sm font-medium -lg hover:bg-gray-800 transition-colors">
                       {challenge.action}
                     </button>

@@ -340,203 +340,241 @@ export default function StudentDashboard() {
                 {/* Daily Goals - Only on Dashboard */}
                 {activePage === 'dashboard' && (
                   <div className="mb-6">
-                    <div className="flex justify-between items-center mb-4">
-                      <h2 className="text-2xl font-bold text-gray-900 uppercase">DAILY GOALS</h2>
-                      <div className="flex items-center space-x-2 text-sm text-gray-600">
-                        <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                        <span>2 of 4 completed</span>
-                      </div>
-                    </div>
+                    <h2 className="text-2xl font-bold text-gray-900 mb-4 uppercase font-['Oswald']">DAILY GOALS</h2>
                     <div className="grid grid-cols-4 gap-4">
-                      {/* Think Goal */}
-                      <div 
-                        className={`relative bg-white p-6 rounded-lg border-2 transition-all duration-300 hover:shadow-lg cursor-pointer ${
-                          dailyGoals.think.completed ? 'border-green-500 bg-green-50' : 'border-gray-200 hover:border-blue-300'
-                        }`}
-                        onClick={() => handleGoalAction('think')}
-                      >
-                        <div className="flex items-center justify-between mb-3">
-                          <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                            dailyGoals.think.completed ? 'bg-green-500' : 'bg-blue-100'
-                          }`}>
-                            <svg className={`w-5 h-5 ${dailyGoals.think.completed ? 'text-white' : 'text-blue-600'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                      <div className="bg-white p-6 border border-gray-200">
+                        {/* Half-circle progress indicator */}
+                        <div className="mb-4">
+                          <div className="relative w-full h-32 flex items-center justify-center">
+                            <svg className="w-full h-28" viewBox="0 0 200 120" preserveAspectRatio="xMidYMid meet">
+                              {/* Background semicircle */}
+                              <path
+                                d="M 20 100 A 80 80 0 0 1 180 100"
+                                stroke="#E0E0E0"
+                                strokeWidth="16"
+                                fill="none"
+                                strokeLinecap="round"
+                              />
+                              {/* Progress semicircle */}
+                              <path
+                                d="M 20 100 A 80 80 0 0 1 180 100"
+                                stroke="#5C5CFF"
+                                strokeWidth="16"
+                                fill="none"
+                                strokeLinecap="round"
+                                strokeDasharray="251.3"
+                                strokeDashoffset="62.8"
+                              />
                             </svg>
+                            <div className="absolute inset-0 flex items-end justify-center pb-2">
+                              <h3 className="text-2xl font-bold text-gray-900 uppercase font-['Oswald'] text-center">THINK</h3>
+                            </div>
                           </div>
-                          {dailyGoals.think.completed && (
-                            <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
-                              <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                        </div>
+                        
+                        {/* Checklist */}
+                        <div className="space-y-2 mb-4">
+                          <div className="flex items-center space-x-2">
+                            <div className="w-4 h-4 border border-gray-300 rounded-full flex items-center justify-center" style={{ backgroundColor: '#C4CEFF' }}>
+                              <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
                                 <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                               </svg>
                             </div>
-                          )}
-                        </div>
-                        <h3 className="font-bold text-gray-900 text-lg mb-1">Think</h3>
-                        <p className="text-sm text-gray-600 mb-3">Complete learning lessons</p>
-                        <div className="space-y-2">
-                          <div className="flex justify-between text-sm">
-                            <span className="text-gray-600">Progress</span>
-                            <span className="font-semibold">{dailyGoals.think.current}/{dailyGoals.think.target}</span>
+                            <span className="text-sm text-gray-600">Complete Math lesson</span>
                           </div>
-                          <div className="w-full bg-gray-200 rounded-full h-2">
-                            <div 
-                              className={`h-2 rounded-full transition-all duration-500 ${
-                                dailyGoals.think.completed ? 'bg-green-500' : 'bg-blue-500'
-                              }`}
-                              style={{ width: `${Math.min((dailyGoals.think.current / dailyGoals.think.target) * 100, 100)}%` }}
-                            ></div>
+                          <div className="flex items-center space-x-2">
+                            <div className="w-4 h-4 border border-gray-300 rounded-full"></div>
+                            <span className="text-sm text-gray-600">Review Science notes</span>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <div className="w-4 h-4 border border-gray-300 rounded-full"></div>
+                            <span className="text-sm text-gray-600">Practice English grammar</span>
                           </div>
                         </div>
-                        <button className={`w-full mt-4 py-2 px-4 rounded-lg text-sm font-medium transition-colors ${
-                          dailyGoals.think.completed 
-                            ? 'bg-green-100 text-green-700' 
-                            : 'bg-blue-500 text-white hover:bg-blue-600'
-                        }`}>
-                          {dailyGoals.think.completed ? 'Completed!' : 'Start Learning'}
+
+                        <button 
+                          className="w-full py-2 px-4 text-sm font-medium transition-colors"
+                          style={{ backgroundColor: '#000', color: '#fff' }}
+                          onClick={() => handleGoalAction('think')}
+                        >
+                          REVIEW SCIENCE NOTES
                         </button>
                       </div>
 
-                      {/* Move Goal */}
-                      <div 
-                        className={`relative bg-white p-6 rounded-lg border-2 transition-all duration-300 hover:shadow-lg cursor-pointer ${
-                          dailyGoals.move.completed ? 'border-green-500 bg-green-50' : 'border-gray-200 hover:border-orange-300'
-                        }`}
-                        onClick={() => handleGoalAction('move')}
-                      >
-                        <div className="flex items-center justify-between mb-3">
-                          <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                            dailyGoals.move.completed ? 'bg-green-500' : 'bg-orange-100'
-                          }`}>
-                            <svg className={`w-5 h-5 ${dailyGoals.move.completed ? 'text-white' : 'text-orange-600'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                      <div className="bg-white p-6 border border-gray-200">
+                        {/* Half-circle progress indicator */}
+                        <div className="mb-4">
+                          <div className="relative w-full h-32 flex items-center justify-center">
+                            <svg className="w-full h-28" viewBox="0 0 200 120" preserveAspectRatio="xMidYMid meet">
+                              {/* Background semicircle */}
+                              <path
+                                d="M 20 100 A 80 80 0 0 1 180 100"
+                                stroke="#E0E0E0"
+                                strokeWidth="16"
+                                fill="none"
+                                strokeLinecap="round"
+                              />
+                              {/* Progress semicircle */}
+                              <path
+                                d="M 20 100 A 80 80 0 0 1 180 100"
+                                stroke="#5C5CFF"
+                                strokeWidth="16"
+                                fill="none"
+                                strokeLinecap="round"
+                                strokeDasharray="251.3"
+                                strokeDashoffset="82.9"
+                              />
                             </svg>
+                            <div className="absolute inset-0 flex items-end justify-center pb-2">
+                              <h3 className="text-2xl font-bold text-gray-900 uppercase font-['Oswald'] text-center">MOVE</h3>
+                            </div>
                           </div>
-                          {dailyGoals.move.completed && (
-                            <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
-                              <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                        </div>
+                        
+                        {/* Checklist */}
+                        <div className="space-y-2 mb-4">
+                          <div className="flex items-center space-x-2">
+                            <div className="w-4 h-4 border border-gray-300 rounded-full flex items-center justify-center" style={{ backgroundColor: '#C4CEFF' }}>
+                              <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
                                 <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                               </svg>
                             </div>
-                          )}
-                        </div>
-                        <h3 className="font-bold text-gray-900 text-lg mb-1">Move</h3>
-                        <p className="text-sm text-gray-600 mb-3">Stay active and healthy</p>
-                        <div className="space-y-2">
-                          <div className="flex justify-between text-sm">
-                            <span className="text-gray-600">Steps</span>
-                            <span className="font-semibold">{dailyGoals.move.current.toLocaleString()}/{dailyGoals.move.target.toLocaleString()}</span>
+                            <span className="text-sm text-gray-600">Morning walk</span>
                           </div>
-                          <div className="w-full bg-gray-200 rounded-full h-2">
-                            <div 
-                              className={`h-2 rounded-full transition-all duration-500 ${
-                                dailyGoals.move.completed ? 'bg-green-500' : 'bg-orange-500'
-                              }`}
-                              style={{ width: `${Math.min((dailyGoals.move.current / dailyGoals.move.target) * 100, 100)}%` }}
-                            ></div>
+                          <div className="flex items-center space-x-2">
+                            <div className="w-4 h-4 border border-gray-300 rounded-full flex items-center justify-center" style={{ backgroundColor: '#C4CEFF' }}>
+                              <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                              </svg>
+                            </div>
+                            <span className="text-sm text-gray-600">Stretch break</span>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <div className="w-4 h-4 border border-gray-300 rounded-full"></div>
+                            <span className="text-sm text-gray-600">Evening exercise</span>
                           </div>
                         </div>
-                        <button className={`w-full mt-4 py-2 px-4 rounded-lg text-sm font-medium transition-colors ${
-                          dailyGoals.move.completed 
-                            ? 'bg-green-100 text-green-700' 
-                            : 'bg-orange-500 text-white hover:bg-orange-600'
-                        }`}>
-                          {dailyGoals.move.completed ? 'Goal Achieved!' : 'Track Activity'}
+
+                        <button 
+                          className="w-full py-2 px-4 text-sm font-medium transition-colors"
+                          style={{ backgroundColor: '#000', color: '#fff' }}
+                          onClick={() => handleGoalAction('move')}
+                        >
+                          EVENING EXERCISE
                         </button>
                       </div>
 
-                      {/* Connect Goal */}
-                      <div 
-                        className={`relative bg-white p-6 rounded-lg border-2 transition-all duration-300 hover:shadow-lg cursor-pointer ${
-                          dailyGoals.connect.completed ? 'border-green-500 bg-green-50' : 'border-gray-200 hover:border-purple-300'
-                        }`}
-                        onClick={() => handleGoalAction('connect')}
-                      >
-                        <div className="flex items-center justify-between mb-3">
-                          <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                            dailyGoals.connect.completed ? 'bg-green-500' : 'bg-purple-100'
-                          }`}>
-                            <svg className={`w-5 h-5 ${dailyGoals.connect.completed ? 'text-white' : 'text-purple-600'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                      <div className="bg-white p-6 border border-gray-200">
+                        {/* Half-circle progress indicator */}
+                        <div className="mb-4">
+                          <div className="relative w-full h-32 flex items-center justify-center">
+                            <svg className="w-full h-28" viewBox="0 0 200 120" preserveAspectRatio="xMidYMid meet">
+                              {/* Background semicircle */}
+                              <path
+                                d="M 20 100 A 80 80 0 0 1 180 100"
+                                stroke="#E0E0E0"
+                                strokeWidth="16"
+                                fill="none"
+                                strokeLinecap="round"
+                              />
+                              {/* Progress semicircle */}
+                              <path
+                                d="M 20 100 A 80 80 0 0 1 180 100"
+                                stroke="#5C5CFF"
+                                strokeWidth="16"
+                                fill="none"
+                                strokeLinecap="round"
+                                strokeDasharray="251.3"
+                                strokeDashoffset="62.8"
+                              />
                             </svg>
+                            <div className="absolute inset-0 flex items-end justify-center pb-2">
+                              <h3 className="text-2xl font-bold text-gray-900 uppercase font-['Oswald'] text-center">CONNECT</h3>
+                            </div>
                           </div>
-                          {dailyGoals.connect.completed && (
-                            <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
-                              <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                        </div>
+                        
+                        {/* Checklist */}
+                        <div className="space-y-2 mb-4">
+                          <div className="flex items-center space-x-2">
+                            <div className="w-4 h-4 border border-gray-300 rounded-full flex items-center justify-center" style={{ backgroundColor: '#C4CEFF' }}>
+                              <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
                                 <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                               </svg>
                             </div>
-                          )}
-                        </div>
-                        <h3 className="font-bold text-gray-900 text-lg mb-1">Connect</h3>
-                        <p className="text-sm text-gray-600 mb-3">Track your mood & social</p>
-                        <div className="space-y-2">
-                          <div className="flex justify-between text-sm">
-                            <span className="text-gray-600">Mood Score</span>
-                            <span className="font-semibold">{dailyGoals.connect.current}/100</span>
+                            <span className="text-sm text-gray-600">Log daily mood</span>
                           </div>
-                          <div className="w-full bg-gray-200 rounded-full h-2">
-                            <div 
-                              className={`h-2 rounded-full transition-all duration-500 ${
-                                dailyGoals.connect.completed ? 'bg-green-500' : 'bg-purple-500'
-                              }`}
-                              style={{ width: `${Math.min((dailyGoals.connect.current / dailyGoals.connect.target) * 100, 100)}%` }}
-                            ></div>
+                          <div className="flex items-center space-x-2">
+                            <div className="w-4 h-4 border border-gray-300 rounded-full"></div>
+                            <span className="text-sm text-gray-600">Connect with friends</span>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <div className="w-4 h-4 border border-gray-300 rounded-full"></div>
+                            <span className="text-sm text-gray-600">Practice gratitude</span>
                           </div>
                         </div>
-                        <button className={`w-full mt-4 py-2 px-4 rounded-lg text-sm font-medium transition-colors ${
-                          dailyGoals.connect.completed 
-                            ? 'bg-green-100 text-green-700' 
-                            : 'bg-purple-500 text-white hover:bg-purple-600'
-                        }`}>
-                          {dailyGoals.connect.completed ? 'Great Mood!' : 'Log Mood'}
+
+                        <button 
+                          className="w-full py-2 px-4 text-sm font-medium transition-colors"
+                          style={{ backgroundColor: '#000', color: '#fff' }}
+                          onClick={() => handleGoalAction('connect')}
+                        >
+                          CONNECT WITH FRIENDS
                         </button>
                       </div>
 
-                      {/* Thrive Goal */}
-                      <div 
-                        className={`relative bg-white p-6 rounded-lg border-2 transition-all duration-300 hover:shadow-lg cursor-pointer ${
-                          dailyGoals.thrive.completed ? 'border-green-500 bg-green-50' : 'border-gray-200 hover:border-yellow-300'
-                        }`}
-                        onClick={() => handleGoalAction('thrive')}
-                      >
-                        <div className="flex items-center justify-between mb-3">
-                          <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                            dailyGoals.thrive.completed ? 'bg-green-500' : 'bg-yellow-100'
-                          }`}>
-                            <svg className={`w-5 h-5 ${dailyGoals.thrive.completed ? 'text-white' : 'text-yellow-600'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+                      <div className="bg-white p-6 border border-gray-200">
+                        {/* Half-circle progress indicator */}
+                        <div className="mb-4">
+                          <div className="relative w-full h-32 flex items-center justify-center">
+                            <svg className="w-full h-28" viewBox="0 0 200 120" preserveAspectRatio="xMidYMid meet">
+                              {/* Background semicircle */}
+                              <path
+                                d="M 20 100 A 80 80 0 0 1 180 100"
+                                stroke="#E0E0E0"
+                                strokeWidth="16"
+                                fill="none"
+                                strokeLinecap="round"
+                              />
+                              {/* Progress semicircle */}
+                              <path
+                                d="M 20 100 A 80 80 0 0 1 180 100"
+                                stroke="#5C5CFF"
+                                strokeWidth="16"
+                                fill="none"
+                                strokeLinecap="round"
+                                strokeDasharray="251.3"
+                                strokeDashoffset="251.3"
+                              />
                             </svg>
-                          </div>
-                          {dailyGoals.thrive.completed && (
-                            <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
-                              <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                              </svg>
+                            <div className="absolute inset-0 flex items-end justify-center pb-2">
+                              <h3 className="text-2xl font-bold text-gray-900 uppercase font-['Oswald'] text-center">THRIVE</h3>
                             </div>
-                          )}
-                        </div>
-                        <h3 className="font-bold text-gray-900 text-lg mb-1">Thrive</h3>
-                        <p className="text-sm text-gray-600 mb-3">Develop life skills</p>
-                        <div className="space-y-2">
-                          <div className="flex justify-between text-sm">
-                            <span className="text-gray-600">Skills</span>
-                            <span className="font-semibold">{dailyGoals.thrive.current}/{dailyGoals.thrive.target}</span>
-                          </div>
-                          <div className="w-full bg-gray-200 rounded-full h-2">
-                            <div 
-                              className={`h-2 rounded-full transition-all duration-500 ${
-                                dailyGoals.thrive.completed ? 'bg-green-500' : 'bg-yellow-500'
-                              }`}
-                              style={{ width: `${Math.min((dailyGoals.thrive.current / dailyGoals.thrive.target) * 100, 100)}%` }}
-                            ></div>
                           </div>
                         </div>
-                        <button className={`w-full mt-4 py-2 px-4 rounded-lg text-sm font-medium transition-colors ${
-                          dailyGoals.thrive.completed 
-                            ? 'bg-green-100 text-green-700' 
-                            : 'bg-yellow-500 text-white hover:bg-yellow-600'
-                        }`}>
-                          {dailyGoals.thrive.completed ? 'Skills Mastered!' : 'Learn Skills'}
+                        
+                        {/* Checklist */}
+                        <div className="space-y-2 mb-4">
+                          <div className="flex items-center space-x-2">
+                            <div className="w-4 h-4 border border-gray-300 rounded-full"></div>
+                            <span className="text-sm text-gray-600">Learn new skill</span>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <div className="w-4 h-4 border border-gray-300 rounded-full"></div>
+                            <span className="text-sm text-gray-600">Practice time management</span>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <div className="w-4 h-4 border border-gray-300 rounded-full"></div>
+                            <span className="text-sm text-gray-600">Set daily goals</span>
+                          </div>
+                        </div>
+
+                        <button 
+                          className="w-full py-2 px-4 text-sm font-medium transition-colors"
+                          style={{ backgroundColor: '#000', color: '#fff' }}
+                          onClick={() => handleGoalAction('thrive')}
+                        >
+                          LEARN NEW SKILL
                         </button>
                       </div>
                     </div>
