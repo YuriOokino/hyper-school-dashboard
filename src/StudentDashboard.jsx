@@ -7,7 +7,6 @@ import LessonContent from './components/LessonContent';
 import SquadContent from './components/SquadContent';
 import RewardsContent from './components/RewardsContent';
 import RightPanel from './components/RightPanel';
-import ChatButton from './components/ChatButton';
 
 export default function StudentDashboard() {
   const [activeTab, setActiveTab] = useState('knowledge');
@@ -616,7 +615,6 @@ export default function StudentDashboard() {
         </main>
       </div>
 
-      <ChatButton />
     </div>
   );
 }

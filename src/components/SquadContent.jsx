@@ -5,12 +5,16 @@ export default function SquadContent() {
   const [chatMessages, setChatMessages] = useState({});
   const [newMessage, setNewMessage] = useState('');
   const [activeLeaderboardTab, setActiveLeaderboardTab] = useState('students');
-  const [chatWidth, setChatWidth] = useState(50);
-  const [isResizing, setIsResizing] = useState(false);
   const [showSquadModal, setShowSquadModal] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [showComments, setShowComments] = useState(null);
   const [newComment, setNewComment] = useState('');
+  const [recentChatsState, setRecentChatsState] = useState([]);
+  const [collapsedSections, setCollapsedSections] = useState({
+    topChats: false,
+    tutors: false,
+    chatHistory: false
+  });
   
   // Current user data
   const currentUser = {
@@ -79,17 +83,53 @@ export default function SquadContent() {
 
   // Sample chat messages
   const sampleChatMessages = {
-    0: [
-      { id: 1, sender: "AI Tutor", message: "Hi Jennifer! I'm here to help with any subject.", time: "9:00 AM", isCurrentUser: false },
-      { id: 2, sender: "Jennifer", message: "Hi! I need help with calculus", time: "9:01 AM", isCurrentUser: true }
+    0: [ // AI Tutor
+      { id: 1, sender: "AI Tutor", message: "Hi Jennifer! How did your calculus exam go yesterday?", time: "9:15 AM", isCurrentUser: false, date: "Monday, January 13" },
+      { id: 2, sender: "Jennifer", message: "It went well, thanks for the help with derivatives!", time: "9:16 AM", isCurrentUser: true, date: "Monday, January 13" },
+      { id: 3, sender: "AI Tutor", message: "Excellent! Ready for today's physics lesson?", time: "9:17 AM", isCurrentUser: false, date: "Monday, January 13" },
+      { id: 4, sender: "Jennifer", message: "Actually, can we review integration by parts first?", time: "9:20 AM", isCurrentUser: true, date: "Monday, January 13" },
+      { id: 5, sender: "AI Tutor", message: "Of course! Integration by parts: ∫u dv = uv - ∫v du. What's your specific question?", time: "9:21 AM", isCurrentUser: false, date: "Monday, January 13" },
+      { id: 6, sender: "Jennifer", message: "I get confused choosing which function to use for u and dv", time: "9:22 AM", isCurrentUser: true, date: "Monday, January 13" },
+      { id: 7, sender: "AI Tutor", message: "Great question! Use LIATE: Logarithmic, Inverse trig, Algebraic, Trigonometric, Exponential. Pick u from left to right.", time: "9:23 AM", isCurrentUser: false, date: "Monday, January 13" },
+      { id: 8, sender: "Jennifer", message: "Yes, I'm struggling with momentum concepts", time: "10:30 AM", isCurrentUser: true, date: "Today", isNew: true },
+      { id: 9, sender: "AI Tutor", message: "Perfect timing! Let's break down momentum = mass × velocity. What specific part is confusing?", time: "10:31 AM", isCurrentUser: false, date: "Today" },
+      { id: 10, sender: "Jennifer", message: "The conservation of momentum in collisions", time: "10:32 AM", isCurrentUser: true, date: "Today" },
+      { id: 11, sender: "AI Tutor", message: "In elastic collisions, both momentum and kinetic energy are conserved. In inelastic, only momentum is conserved.", time: "10:33 AM", isCurrentUser: false, date: "Today" },
+      { id: 12, sender: "Jennifer", message: "Can you give me a practice problem?", time: "10:35 AM", isCurrentUser: true, date: "Today" }
     ],
-    1: [
-      { id: 1, sender: "Maya", message: "Working on algebra assignment", time: "10:30 AM", isCurrentUser: false },
-      { id: 2, sender: "Jennifer", message: "Same here!", time: "10:32 AM", isCurrentUser: true }
+    1: [ // Study Group Alpha
+      { id: 1, sender: "Sarah", message: "Did everyone finish the chemistry lab report?", time: "3:20 PM", isCurrentUser: false, date: "Friday, January 10" },
+      { id: 2, sender: "Leo", message: "Still working on the conclusion section", time: "3:22 PM", isCurrentUser: false, date: "Friday, January 10" },
+      { id: 3, sender: "Jennifer", message: "I can share my notes if it helps", time: "3:25 PM", isCurrentUser: true, date: "Friday, January 10" },
+      { id: 4, sender: "Maya", message: "That would be amazing, thank you!", time: "3:26 PM", isCurrentUser: false, date: "Friday, January 10" },
+      { id: 5, sender: "Sarah", message: "Jennifer's notes are always so well organized", time: "3:28 PM", isCurrentUser: false, date: "Friday, January 10" },
+      { id: 6, sender: "Leo", message: "Agreed! They saved me in organic chemistry", time: "3:30 PM", isCurrentUser: false, date: "Friday, January 10" },
+      { id: 7, sender: "Maya", message: "Hey everyone! Ready for the study session tomorrow?", time: "7:45 PM", isCurrentUser: false, date: "Sunday, January 12" },
+      { id: 8, sender: "Jennifer", message: "Yes! I'll bring the whiteboard markers", time: "7:47 PM", isCurrentUser: true, date: "Sunday, January 12" },
+      { id: 9, sender: "Sarah", message: "I'll bring snacks and coffee", time: "7:48 PM", isCurrentUser: false, date: "Sunday, January 12" },
+      { id: 10, sender: "Leo", message: "Perfect! See you all at 2 PM in the library", time: "7:50 PM", isCurrentUser: false, date: "Sunday, January 12" },
+      { id: 11, sender: "Leo", message: "Anyone free for math help?", time: "2:15 PM", isCurrentUser: false, date: "Today", isNew: true },
+      { id: 12, sender: "Jennifer", message: "I can help! What topic?", time: "2:16 PM", isCurrentUser: true, date: "Today" },
+      { id: 13, sender: "Leo", message: "Quadratic equations are confusing me", time: "2:17 PM", isCurrentUser: false, date: "Today" },
+      { id: 14, sender: "Maya", message: "I'm also struggling with those! Mind if I join?", time: "2:18 PM", isCurrentUser: false, date: "Today" },
+      { id: 15, sender: "Jennifer", message: "Of course! The more the merrier 😊", time: "2:19 PM", isCurrentUser: true, date: "Today" }
     ],
-    2: [
-      { id: 1, sender: "Leo", message: "How did you find the science quiz?", time: "Yesterday", isCurrentUser: false },
-      { id: 2, sender: "Jennifer", message: "It was challenging but fair!", time: "Yesterday", isCurrentUser: true }
+    2: [ // Leo
+      { id: 1, sender: "Leo", message: "Hey! Did you see the new assignment posted?", time: "4:30 PM", isCurrentUser: false, date: "Thursday, January 9" },
+      { id: 2, sender: "Jennifer", message: "Yes, looks challenging but interesting", time: "4:35 PM", isCurrentUser: true, date: "Thursday, January 9" },
+      { id: 3, sender: "Leo", message: "Want to work on it together this weekend?", time: "4:36 PM", isCurrentUser: false, date: "Thursday, January 9" },
+      { id: 4, sender: "Jennifer", message: "Sounds great! Saturday afternoon work for you?", time: "4:38 PM", isCurrentUser: true, date: "Thursday, January 9" },
+      { id: 5, sender: "Leo", message: "Perfect! My place or the library?", time: "4:40 PM", isCurrentUser: false, date: "Thursday, January 9" },
+      { id: 6, sender: "Jennifer", message: "Library is good - quieter for studying", time: "4:42 PM", isCurrentUser: true, date: "Thursday, January 9" },
+      { id: 7, sender: "Leo", message: "How did you find the science quiz?", time: "11:20 AM", isCurrentUser: false, date: "Monday, January 13" },
+      { id: 8, sender: "Jennifer", message: "It was challenging but fair!", time: "11:25 AM", isCurrentUser: true, date: "Monday, January 13" },
+      { id: 9, sender: "Leo", message: "I totally blanked on the molecular structure question", time: "11:27 AM", isCurrentUser: false, date: "Monday, January 13" },
+      { id: 10, sender: "Jennifer", message: "That one was tricky! The benzene rings threw me off too", time: "11:30 AM", isCurrentUser: true, date: "Monday, January 13" },
+      { id: 11, sender: "Leo", message: "At least we survived organic chemistry this semester 😅", time: "11:32 AM", isCurrentUser: false, date: "Monday, January 13" },
+      { id: 12, sender: "Leo", message: "Great job on the quiz results! 🎉", time: "2:30 PM", isCurrentUser: false, date: "Today", isNew: true },
+      { id: 13, sender: "Jennifer", message: "Thanks! Your study tips really helped", time: "2:32 PM", isCurrentUser: true, date: "Today" },
+      { id: 14, sender: "Leo", message: "We should celebrate! Coffee after class?", time: "2:35 PM", isCurrentUser: false, date: "Today" },
+      { id: 15, sender: "Jennifer", message: "Absolutely! I know a great café near campus", time: "2:37 PM", isCurrentUser: true, date: "Today" }
     ]
   };
 
@@ -136,22 +176,29 @@ export default function SquadContent() {
   // Available tutors
   const availableTutors = [
     {
-      subjects: ["Mathematics", "Calculus", "Algebra"],
+      subject: "Mathematics",
       availability: "Available now",
-      rating: "4.9",
-      responseTime: "< 2 min"
+      rating: "4.9"
     },
     {
-      subjects: ["Physics", "Chemistry"],
+      subject: "Physics",
       availability: "Available now", 
-      rating: "4.8",
-      responseTime: "< 5 min"
+      rating: "4.8"
     },
     {
-      subjects: ["English", "Literature"],
+      subject: "English",
       availability: "Available in 15 min",
-      rating: "4.7", 
-      responseTime: "< 10 min"
+      rating: "4.7"
+    },
+    {
+      subject: "History",
+      availability: "Available now",
+      rating: "4.9"
+    },
+    {
+      subject: "Computer Science",
+      availability: "Busy until 5 PM",
+      rating: "4.8"
     }
   ];
 
@@ -217,13 +264,61 @@ export default function SquadContent() {
     }
   };
 
+  const handleConnectToTutor = (tutor) => {
+    // Create a new chat with the tutor
+    const newChat = {
+      id: Date.now(), // Simple ID generation
+      name: `${tutor.subject} Tutor`,
+      type: 'tutor',
+      avatar: tutor.subject.charAt(0),
+      lastMessage: "Hi! I'm ready to help you with " + tutor.subject,
+      time: "now",
+      unread: 1,
+      status: tutor.availability.includes('now') ? 'online' : 'idle'
+    };
+
+    // Add to the beginning of the chat list
+    setRecentChatsState(prevChats => [newChat, ...prevChats]);
+    
+    // Initialize chat messages for this new chat
+    setChatMessages(prevMessages => ({
+      ...prevMessages,
+      [newChat.id]: [
+        {
+          id: 1,
+          sender: `${tutor.subject} Tutor`,
+          message: `Hi Jennifer! I'm your ${tutor.subject} tutor. How can I help you today?`,
+          time: "now",
+          isCurrentUser: false
+        }
+      ]
+    }));
+
+    // Auto-select the new chat
+    setSelectedChat(newChat);
+    
+    console.log(`Connected to ${tutor.subject} tutor`);
+  };
+
   const filteredMembers = squadMembers.filter(member =>
     member.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  // Initialize chat state with recentChats data
+  useEffect(() => {
+    setRecentChatsState(recentChats);
+  }, []);
+
   const handleChatWithMember = (member) => {
     console.log(`Starting chat with ${member.name}`);
     setShowSquadModal(false);
+  };
+
+  const toggleSection = (section) => {
+    setCollapsedSections(prev => ({
+      ...prev,
+      [section]: !prev[section]
+    }));
   };
 
   const selectChat = (chat) => {
@@ -278,71 +373,30 @@ export default function SquadContent() {
     }
   };
 
-  const handleMouseDown = (e) => {
-    setIsResizing(true);
-    e.preventDefault();
-  };
-
-  const handleMouseMove = (e) => {
-    if (!isResizing) return;
-    
-    const container = e.currentTarget.parentElement;
-    const containerRect = container.getBoundingClientRect();
-    const newWidth = ((e.clientX - containerRect.left) / containerRect.width) * 100;
-    
-    if (newWidth >= 30 && newWidth <= 70) {
-      setChatWidth(newWidth);
-    }
-  };
-
-  const handleMouseUp = () => {
-    setIsResizing(false);
-  };
-
-  useEffect(() => {
-    if (isResizing) {
-      const handleGlobalMouseMove = (e) => {
-        const container = document.querySelector('[data-resize-container]');
-        if (!container) return;
-        
-        const containerRect = container.getBoundingClientRect();
-        const newWidth = ((e.clientX - containerRect.left) / containerRect.width) * 100;
-        
-        if (newWidth >= 30 && newWidth <= 70) {
-          setChatWidth(newWidth);
-        }
-      };
-
-      const handleGlobalMouseUp = () => {
-        setIsResizing(false);
-      };
-
-      document.addEventListener('mousemove', handleGlobalMouseMove);
-      document.addEventListener('mouseup', handleGlobalMouseUp);
-
-      return () => {
-        document.removeEventListener('mousemove', handleGlobalMouseMove);
-        document.removeEventListener('mouseup', handleGlobalMouseUp);
-      };
-    }
-  }, [isResizing]);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 pb-4">
       {/* Header with Squad Info */}
-      <div className="bg-white p-6 border border-gray-200" style={{ boxShadow: '0 0 0 1px #000' }}>
+      <div className="p-3">
         <div className="flex items-start justify-between mb-4">
                 <div>
             <h1 className="text-3xl font-bold text-gray-900 uppercase mb-2" style={{ fontFamily: 'Oswald' }}>LIGHTNING BOLTS</h1>
-            <p className="text-lg text-gray-600 mb-1">Squad Lead: Ms. Rodriguez</p>
+            <div className="flex items-center space-x-3 mb-1">
+              <p className="text-lg text-gray-600">Squad Lead: Ms. Rodriguez</p>
+              <button className="px-3 py-1 text-sm font-medium text-white bg-black hover:bg-gray-800 transition-colors">
+                Message
+              </button>
+            </div>
             <div className="flex items-center space-x-3">
               <span className="text-lg text-gray-600">95 Students</span>
               <button 
                 onClick={() => setShowSquadModal(true)}
-                className="px-3 py-1 text-sm font-medium text-black hover:bg-gray-200 transition-colors"
-                style={{ backgroundColor: '#C4CEFF' }}
+                className="text-sm font-medium text-black hover:text-gray-600 transition-colors flex items-center space-x-1"
               >
-                View All
+                <span>View All</span>
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd"/>
+                </svg>
                 </button>
             </div>
           </div>
@@ -351,160 +405,411 @@ export default function SquadContent() {
             <div className="text-sm text-gray-600">Squad Rank</div>
           </div>
         </div>
+        
               </div>
               
 
-      {/* Main Content - Resizable Layout */}
-      <div 
-        className="flex gap-6 h-[700px]" 
-        data-resize-container
-      >
-        {/* Chat Interface - Resizable */}
-        <div className="bg-white border border-gray-200 flex relative" style={{ 
-          boxShadow: '0 0 0 1px #000',
-            width: `${chatWidth}%`
+      {/* Main Content - Chat Interface */}
+      <div className="mb-4">
+        <div className="border border-gray-200 flex flex-col h-[600px]" style={{ 
+          boxShadow: '0 0 0 1px #000'
         }}>
-          {/* Chat Sidebar */}
-          <div className="w-80 border-r border-gray-200 flex flex-col">
-            <div className="p-4 border-b border-gray-200">
-              <h2 className="text-lg font-bold text-gray-900 uppercase">MESSAGES</h2>
-              <p className="text-sm text-gray-600">Select a conversation</p>
-            </div>
-            <div className="flex-1 overflow-y-auto">
-              {recentChats.map((chat) => (
-                <div 
-                  key={chat.id} 
-                  onClick={() => selectChat(chat)}
-                  className={`flex items-center p-4 hover:bg-gray-50 cursor-pointer border-l-4 ${
-                    selectedChat?.id === chat.id ? 'border-black bg-gray-50' : 'border-transparent'
-                  }`}
-                >
-                  <div className="relative mr-3">
-                    {chat.type === 'ai' ? (
-                      <div className="w-12 h-12 flex items-center justify-center" style={{ backgroundColor: '#3FC7FF' }}>
-                        <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clipRule="evenodd"/>
-                        </svg>
-                      </div>
-                    ) : (
-                      <div className="w-12 h-12 flex items-center justify-center text-sm font-bold" style={{ backgroundColor: '#C4CEFF' }}>
-                        {chat.avatar}
-                      </div>
-                    )}
-                    {chat.type === 'individual' && (
-                      <div className="absolute -bottom-1 -right-1">
-                        {getStatusIndicator(chat.status)}
-                      </div>
-                    )}
-                    {chat.type === 'ai' && (
-                      <div className="absolute -bottom-1 -right-1">
-                        <div className="w-3 h-3 bg-green-500 border-2 border-white rounded-full"></div>
-                      </div>
-                    )}
-                    {chat.unread > 0 && (
-                      <div className="absolute -top-1 -right-1 w-6 h-6 flex items-center justify-center text-xs font-bold text-white" style={{ backgroundColor: '#FF69B4' }}>
-                        {chat.unread}
-                      </div>
-                    )}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center justify-between">
-                      <span className="font-semibold text-gray-900 truncate">{chat.name}</span>
-                      <span className="text-xs text-gray-500 ml-2">{chat.time}</span>
-                    </div>
-                    <div className="text-sm text-gray-600 truncate">{chat.lastMessage}</div>
-                    {chat.type === 'group' && (
-                      <div className="text-xs text-gray-500">{chat.members} members</div>
-                    )}
-                    {chat.type === 'ai' && (
-                      <div className="text-xs text-green-600 font-medium">AI Assistant • Always available</div>
-                    )}
-                  </div>
-                </div>
-              ))}
+          {/* Search Bar and New Button - Top of Chat */}
+          <div className="p-4 bg-gray-800">
+            <div className="flex items-center justify-between">
+              <div className="relative" style={{ width: '250px' }}>
+                <svg className="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd"/>
+                </svg>
+                <input
+                  type="text"
+                  placeholder="Search contact"
+                  className="w-full pl-10 pr-4 py-2 bg-white border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+              <button className="px-6 py-3 text-sm font-medium text-white border border-green-400 hover:bg-green-400 transition-colors" style={{ backgroundColor: '#DBFF4D', color: '#000' }}>
+                New ⊕
+              </button>
             </div>
           </div>
 
-          {/* Chat Main Area */}
-          <div className="flex-1 flex flex-col">
+          <div className="bg-white flex flex-1 min-h-0">
+          {/* Chat Sidebar - Enhanced Design */}
+          <div className="w-80 border-r border-gray-200 flex flex-col bg-white overflow-hidden">
+
+            <div className="flex-1 overflow-y-auto min-h-0">
+              {/* Top Chats Section */}
+              <div className="p-3">
+                <div className="flex items-center justify-between mb-2 cursor-pointer" onClick={() => toggleSection('topChats')}>
+                  <h3 className="text-sm font-medium text-gray-700">Top chats</h3>
+                  <svg className={`w-4 h-4 text-gray-400 transition-transform ${collapsedSections.topChats ? '-rotate-90' : ''}`} fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd"/>
+                  </svg>
+                </div>
+                
+                {!collapsedSections.topChats && (
+                  <div className="space-y-1">
+                    {recentChatsState.filter(chat => chat.type !== 'ai' && chat.type !== 'tutor').map((chat) => (
+                  <div 
+                    key={chat.id} 
+                    onClick={() => selectChat(chat)}
+                    className={`flex items-center p-2 hover:bg-gray-50 cursor-pointer mb-1 ${
+                      selectedChat?.id === chat.id ? 'bg-blue-100' : ''
+                    }`}
+                  >
+                    <div className="relative mr-3">
+                      <div className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold text-white" style={{ backgroundColor: '#FF69B4' }}>
+                        {chat.avatar}
+                      </div>
+                      {chat.type === 'individual' && (
+                        <div className="absolute -bottom-1 -right-1">
+                          <div className={`w-3 h-3 rounded-full border-2 border-white ${
+                            chat.status === 'online' ? 'bg-green-500' : 
+                            chat.status === 'idle' ? 'bg-yellow-500' : 'bg-gray-400'
+                          }`}></div>
+                        </div>
+                      )}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between">
+                        <span className="font-medium text-gray-900 truncate">{chat.name}</span>
+                        {chat.unread > 0 && (
+                          <span className="ml-2 px-1 text-xs font-bold text-white bg-pink-500">New!</span>
+                        )}
+                      </div>
+                      <div className="text-xs text-gray-600 capitalize">
+                        {chat.type === 'individual' ? chat.status : `${chat.members} Online`}
+                      </div>
+                    </div>
+                  </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Tutors Section */}
+              <div className="p-3 border-t border-gray-100">
+                <div className="flex items-center justify-between mb-2 cursor-pointer" onClick={() => toggleSection('tutors')}>
+                  <h3 className="text-sm font-medium text-gray-700">Tutors</h3>
+                  <svg className={`w-4 h-4 text-gray-400 transition-transform ${collapsedSections.tutors ? '-rotate-90' : ''}`} fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd"/>
+                  </svg>
+                </div>
+                
+                {!collapsedSections.tutors && (
+                  <div className="space-y-1">
+                    {/* AI Tutor */}
+                <div 
+                  onClick={() => selectChat(recentChatsState.find(chat => chat.type === 'ai'))}
+                  className={`flex items-center p-2 hover:bg-gray-50 cursor-pointer mb-1 ${
+                    selectedChat?.type === 'ai' ? 'bg-blue-100' : ''
+                  }`}
+                >
+                  <div className="relative mr-3">
+                    <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ backgroundColor: '#3FC7FF' }}>
+                      <span className="text-white font-bold text-sm">AI</span>
+                    </div>
+                    <div className="absolute -bottom-1 -right-1">
+                      <div className="w-3 h-3 bg-green-500 border-2 border-white rounded-full"></div>
+                    </div>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between">
+                      <span className="font-medium text-gray-900">AI Tutor</span>
+                      <button className="px-2 py-1 text-xs bg-gray-100 text-gray-700 hover:bg-gray-200">
+                        Chat
+                      </button>
+                    </div>
+                    <div className="text-xs text-green-600">Always active</div>
+                  </div>
+                </div>
+
+                {/* Subject Tutors */}
+                {availableTutors.slice(0, 4).map((tutor, index) => (
+                  <div 
+                    key={index}
+                    onClick={() => handleConnectToTutor(tutor)}
+                    className="flex items-center p-2 hover:bg-gray-50 cursor-pointer mb-1"
+                  >
+                    <div className="relative mr-3">
+                      <div className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm" style={{ backgroundColor: '#666' }}>
+                        {tutor.subject.charAt(0)}
+                      </div>
+                      <div className="absolute -bottom-1 -right-1">
+                        <div className={`w-3 h-3 rounded-full border-2 border-white ${
+                          tutor.availability.includes('now') ? 'bg-green-500' : 'bg-gray-400'
+                        }`}></div>
+                      </div>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between">
+                        <span className="font-medium text-gray-900 truncate">{tutor.subject} Tutor</span>
+                        <button className="px-2 py-1 text-xs bg-gray-100 text-gray-700 hover:bg-gray-200">
+                          Chat
+                        </button>
+                      </div>
+                      <div className="text-xs text-gray-600">{tutor.availability.includes('now') ? 'Online' : 'Back at 2:30PM'}</div>
+                    </div>
+                  </div>
+                ))}
+                  </div>
+                )}
+              </div>
+
+              {/* All Chats */}
+              <div className="p-3 border-t border-gray-100">
+                <div className="flex items-center justify-between mb-2 cursor-pointer" onClick={() => toggleSection('chatHistory')}>
+                  <h3 className="text-sm font-medium text-gray-700">All chats</h3>
+                  <svg className={`w-4 h-4 text-gray-400 transition-transform ${collapsedSections.chatHistory ? '-rotate-90' : ''}`} fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd"/>
+                  </svg>
+                </div>
+                
+                {!collapsedSections.chatHistory && (
+                  <div className="space-y-1">
+                    <p className="text-xs text-gray-500 px-2">No additional chat history</p>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* User Status */}
+            <div className="p-3 border-t border-gray-200 bg-gray-900">
+              <div className="flex items-center space-x-3">
+                <div className="relative">
+                  <div className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold" style={{ backgroundColor: '#DBFF4D', color: '#000' }}>
+                    J
+                  </div>
+                  <div className="absolute -bottom-1 -right-1">
+                    <div className="w-3 h-3 bg-green-500 border-2 border-white rounded-full"></div>
+                  </div>
+                </div>
+                <div className="flex-1">
+                  <div className="font-medium text-white">Jennifer</div>
+                  <div className="text-xs text-green-400">Online ●</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+            {/* Chat Main Area */}
+            <div className="flex-1 flex flex-col min-h-0 overflow-hidden">
             {selectedChat ? (
               <>
-                {/* Chat Header */}
-                <div className="p-4 border-b border-gray-200 bg-white">
+                {/* Chat Header - Slack Style */}
+                <div className="px-4 py-3 border-b border-gray-200 bg-white">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-3">
-                      <div className="relative">
-                        {selectedChat.type === 'ai' ? (
-                          <div className="w-10 h-10 flex items-center justify-center" style={{ backgroundColor: '#3FC7FF' }}>
-                            <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
-                              <path fillRule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clipRule="evenodd"/>
-                            </svg>
+                      <h3 className="text-lg font-bold text-gray-900">
+                        {selectedChat.type === 'group' && '# '}
+                        {selectedChat.name}
+                      </h3>
+                      
+                      {selectedChat.type === 'individual' && selectedChat.status && (
+                        <div className="flex items-center space-x-1">
+                          <div className={`w-2 h-2 rounded-full ${
+                            selectedChat.status === 'online' ? 'bg-green-500' : 
+                            selectedChat.status === 'idle' ? 'bg-yellow-500' : 'bg-gray-400'
+                          }`}></div>
+                          <span className="text-sm text-gray-600 capitalize">{selectedChat.status}</span>
+                        </div>
+                      )}
+                      
+                      {selectedChat.type === 'group' && (
+                        <div className="flex items-center space-x-2">
+                          {/* Member avatars */}
+                          <div className="flex -space-x-2">
+                            <div className="w-6 h-6 rounded-full border-2 border-white flex items-center justify-center text-xs font-semibold text-white" style={{ backgroundColor: '#C4CEFF' }}>
+                              L
+                            </div>
+                            <div className="w-6 h-6 rounded-full border-2 border-white flex items-center justify-center text-xs font-semibold text-white" style={{ backgroundColor: '#FF69B4' }}>
+                              A
+                            </div>
+                            <div className="w-6 h-6 rounded-full border-2 border-white flex items-center justify-center text-xs font-semibold text-white" style={{ backgroundColor: '#3FC7FF' }}>
+                              S
+                            </div>
+                            <div className="w-6 h-6 rounded-full border-2 border-white flex items-center justify-center text-xs font-semibold text-white" style={{ backgroundColor: '#DBFF4D', color: '#000' }}>
+                              J
+                            </div>
+                            <div className="w-6 h-6 rounded-full border-2 border-white bg-gray-300 flex items-center justify-center text-xs font-semibold text-gray-600">
+                              +{selectedChat.members - 4}
+                            </div>
                           </div>
-                        ) : (
-                          <div className="w-10 h-10 flex items-center justify-center font-semibold" style={{ backgroundColor: '#C4CEFF' }}>
-                            {selectedChat.avatar}
-                          </div>
-                        )}
-                        {selectedChat.type === 'individual' && (
-                          <div className="absolute -bottom-1 -right-1">
-                            {getStatusIndicator(selectedChat.status)}
-                          </div>
-                        )}
-                        {selectedChat.type === 'ai' && (
-                          <div className="absolute -bottom-1 -right-1">
-                            <div className="w-3 h-3 bg-green-500 border-2 border-white rounded-full"></div>
-                          </div>
-                        )}
-                      </div>
-                      <div>
-                        <h3 className="font-bold text-gray-900">{selectedChat.name}</h3>
-                        <p className="text-sm text-gray-600">
-                          {selectedChat.type === 'ai' ? 'Always available • AI Assistant' : 
-                           selectedChat.type === 'group' ? `${selectedChat.members} members` : selectedChat.status}
-                        </p>
-                      </div>
+                          <span className="text-sm text-gray-600">{selectedChat.members} members</span>
+                        </div>
+                      )}
+                      
+                      {selectedChat.type === 'ai' && (
+                        <span className="px-2 py-1 bg-green-100 text-green-800 text-xs font-medium">AI Assistant</span>
+                      )}
+                      
+                      {selectedChat.type === 'tutor' && (
+                        <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs font-medium">Subject Tutor</span>
+                      )}
+                    </div>
+                    
+                    <div className="flex items-center space-x-1">
+                      <button className="p-2 hover:bg-gray-100 text-gray-600 hover:text-gray-800 transition-colors">
+                        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                          <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
+                        </svg>
+                      </button>
+                      <button className="p-2 hover:bg-gray-100 text-gray-600 hover:text-gray-800 transition-colors">
+                        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                          <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"/>
+                        </svg>
+                      </button>
                     </div>
                   </div>
                 </div>
 
-                {/* Messages Area */}
-                <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
-                  {getCurrentMessages().map((message) => (
-                    <div key={message.id} className={`flex ${message.isCurrentUser ? 'justify-end' : 'justify-start'}`}>
-                      <div className={`max-w-xs lg:max-w-md px-4 py-2 ${
-                        message.isCurrentUser 
-                          ? 'bg-black text-white' 
-                          : 'bg-white border border-gray-200'
-                      }`}>
-                        {!message.isCurrentUser && (
-                          <div className="text-xs font-semibold text-gray-600 mb-1">{message.sender}</div>
-                        )}
-                        <div className="text-sm">{message.message}</div>
-                        <div className={`text-xs mt-1 ${message.isCurrentUser ? 'text-gray-300' : 'text-gray-500'}`}>
-                          {message.time}
+                {/* Messages Area - Slack Style */}
+                <div className="flex-1 overflow-y-auto bg-gray-50 min-h-0">
+                  <div className="p-4 space-y-1">
+                    {getCurrentMessages().map((message, index) => {
+                      const previousMessage = getCurrentMessages()[index - 1];
+                      const showAvatar = !previousMessage || previousMessage.sender !== message.sender || previousMessage.isCurrentUser !== message.isCurrentUser;
+                      const showDateSeparator = !previousMessage || previousMessage.date !== message.date;
+                      const showNewSeparator = message.isNew && (!previousMessage || !previousMessage.isNew);
+                      
+                      
+                      return (
+                        <div key={message.id}>
+                          {/* Date Separator */}
+                          {showDateSeparator && (
+                            <div className="flex items-center my-4 -mx-4 px-4">
+                              <div className="flex-1 h-px bg-gray-300"></div>
+                              <div className="px-4 text-xs font-medium text-gray-600 bg-gray-50">
+                                {message.date}
+                              </div>
+                              <div className="flex-1 h-px bg-gray-300"></div>
+                            </div>
+                          )}
+                          
+                          {/* NEW Separator */}
+                          {showNewSeparator && (
+                            <div className="flex items-center my-3 -mx-4 px-4">
+                              <div className="flex-1 h-px bg-red-300"></div>
+                              <div className="px-3 py-1 text-xs font-bold text-red-600 bg-red-50 border border-red-200">
+                                NEW
+                              </div>
+                              <div className="flex-1 h-px bg-red-300"></div>
+                            </div>
+                          )}
+                          
+                          <div className="group hover:bg-gray-50 -mx-4 px-4 py-1">
+                            <div className="flex items-start space-x-3">
+                              {showAvatar ? (
+                                <div className="flex-shrink-0 mt-1">
+                                  <div className="w-9 h-9 flex items-center justify-center text-sm font-semibold text-white" 
+                                       style={{ 
+                                         backgroundColor: message.isCurrentUser ? '#DBFF4D' : 
+                                                        message.sender === 'AI Tutor' ? '#3FC7FF' :
+                                                        message.sender.includes('Tutor') ? '#FF69B4' : '#C4CEFF'
+                                       }}>
+                                    {message.isCurrentUser ? 'J' : message.sender.charAt(0)}
+                                  </div>
+                                </div>
+                              ) : (
+                                <div className="w-9 flex-shrink-0 flex justify-center">
+                                  <div className="text-xs text-gray-500 opacity-0 group-hover:opacity-100 mt-1">
+                                    {message.time}
+                                  </div>
+                                </div>
+                              )}
+                              
+                              <div className="flex-1 min-w-0">
+                                {showAvatar && (
+                                  <div className="flex items-baseline space-x-2 mb-1">
+                                    <span className="text-sm font-bold text-gray-900">
+                                      {message.isCurrentUser ? 'Jennifer' : message.sender}
+                                    </span>
+                                    <span className="text-xs text-gray-500">
+                                      {message.time}
+                                    </span>
+                                  </div>
+                                )}
+                                
+                                <div className="text-sm text-gray-900 leading-relaxed">
+                                  {message.message}
+                                </div>
+                                
+                                {/* Message actions (appear on hover) */}
+                                <div className="opacity-0 group-hover:opacity-100 transition-opacity mt-1">
+                <div className="flex items-center space-x-1">
+                                    <button className="p-1 hover:bg-gray-200 text-gray-500 hover:text-gray-700 text-xs">
+                                      😊
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Message Input - Slack Style */}
+                <div className="p-4 bg-white">
+                  <div className="relative">
+                    <div className="border border-gray-300 focus-within:border-black focus-within:shadow-sm bg-white">
+                      <div className="flex items-end p-3">
+                        <div className="flex-1">
+                          <input
+                            type="text"
+                            value={newMessage}
+                            onChange={(e) => setNewMessage(e.target.value)}
+                            placeholder={`Message ${selectedChat.name}`}
+                            className="w-full text-sm text-gray-900 placeholder-gray-500 border-0 focus:outline-none resize-none bg-transparent"
+                            onKeyPress={(e) => e.key === 'Enter' && !e.shiftKey && (e.preventDefault(), handleSendChatMessage())}
+                          />
+                        </div>
+                        
+                        {/* Input toolbar */}
+                        <div className="flex items-center space-x-2 ml-3">
+                          <button className="p-1 text-gray-500 hover:text-gray-700 hover:bg-gray-100">
+                            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                              <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clipRule="evenodd"/>
+                            </svg>
+                          </button>
+                          <button className="p-1 text-gray-500 hover:text-gray-700 hover:bg-gray-100">
+                            😊
+                          </button>
+                          <button
+                            onClick={handleSendChatMessage}
+                            className="px-3 py-1 bg-black text-white hover:bg-gray-800 transition-colors text-xs font-medium"
+                          >
+                            Send
+                          </button>
                         </div>
                       </div>
                     </div>
-                  ))}
-                </div>
-
-                {/* Message Input */}
-                <div className="p-4 border-t border-gray-200 bg-white">
-                  <div className="flex space-x-2">
-                    <input
-                      type="text"
-                      value={newMessage}
-                      onChange={(e) => setNewMessage(e.target.value)}
-                      placeholder={`Message ${selectedChat.name}...`}
-                      className="flex-1 px-4 py-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-black text-sm"
-                      onKeyPress={(e) => e.key === 'Enter' && handleSendChatMessage()}
-                    />
-                    <button
-                      onClick={handleSendChatMessage}
-                      className="px-4 py-2 bg-black text-white hover:bg-gray-800 transition-colors text-sm font-medium"
-                    >
-                      Send
-                    </button>
+                    
+                    {/* Format toolbar (like Slack) */}
+                    <div className="flex items-center justify-between mt-2 text-xs text-gray-500">
+                      <div className="flex items-center space-x-3">
+                        <button className="hover:text-gray-700">
+                          <strong>B</strong>
+                        </button>
+                        <button className="hover:text-gray-700">
+                          <em>I</em>
+                        </button>
+                        <button className="hover:text-gray-700">
+                          <s>S</s>
+                        </button>
+                        <button className="hover:text-gray-700">
+                          + Add file
+                        </button>
+                        <button className="hover:text-gray-700">
+                          🔗 Link
+                        </button>
+                      </div>
+                      <div className="text-xs text-gray-400">
+                        <span className="font-medium">Enter</span> to send, <span className="font-medium">Shift + Enter</span> for new line
+                      </div>
+                    </div>
                   </div>
                 </div>
               </>
@@ -519,120 +824,12 @@ export default function SquadContent() {
                 </div>
               </div>
             )}
-          </div>
-          
-          {/* Resize Handle */}
-          <div
-            className="absolute top-0 right-0 w-4 h-full flex items-center justify-center cursor-col-resize hover:bg-gray-100 transition-colors group"
-            onMouseDown={handleMouseDown}
-          >
-            <div className="flex space-x-1 opacity-60 group-hover:opacity-80 transition-opacity">
-              <div className="w-1 h-6 bg-gray-500 rounded-full"></div>
-              <div className="w-1 h-6 bg-gray-500 rounded-full"></div>
             </div>
-          </div>
-        </div>
-
-        {/* Leaderboard Container - Same Height */}
-        <div className="bg-white border border-gray-200 flex-1 flex flex-col" style={{ boxShadow: '0 0 0 1px #000' }}>
-          {/* Leaderboard Header with Title and Tabs */}
-          <div className="p-6 border-b border-gray-200 flex-shrink-0">
-            <h2 className="text-xl font-bold text-gray-900 mb-4 uppercase">LEADERBOARD</h2>
-            <div className="flex space-x-6">
-              <button
-                onClick={() => setActiveLeaderboardTab('students')}
-                className={`pb-2 font-medium transition-colors ${
-                  activeLeaderboardTab === 'students'
-                    ? 'text-black border-b-2 border-black'
-                    : 'text-gray-500 hover:text-gray-700'
-                }`}
-              >
-                Students
-              </button>
-              <button
-                onClick={() => setActiveLeaderboardTab('squads')}
-                className={`pb-2 font-medium transition-colors ${
-                  activeLeaderboardTab === 'squads'
-                    ? 'text-black border-b-2 border-black'
-                    : 'text-gray-500 hover:text-gray-700'
-                }`}
-              >
-                Squads
-              </button>
-            </div>
-          </div>
-
-          {/* Leaderboard Content */}
-          <div className="p-6 flex-1 overflow-y-auto">
-            {activeLeaderboardTab === 'students' ? (
-              <div className="space-y-3">
-                {individualLeaderboard.slice(0, 10).map((user, index) => (
-                  <div 
-                    key={index} 
-                    className={`flex items-center justify-between p-3 ${
-                      user.isCurrentUser ? '' : 'bg-gray-50'
-                    }`}
-                    style={user.isCurrentUser ? { backgroundColor: '#DBFF4D' } : {}}
-                  >
-                    <div className="flex items-center space-x-3">
-                      <div className="text-lg font-bold text-gray-700">#{index + 1}</div>
-                      <div className="relative">
-                        <div className="w-8 h-8 bg-gray-300 flex items-center justify-center text-sm font-semibold">
-                          {user.name.charAt(0)}
-                        </div>
-                        <div className="absolute -bottom-1 -right-1">
-                          {getStatusIndicator(user.status)}
-                        </div>
-                      </div>
-                      <div className="flex-1">
-                        <div className="font-semibold text-gray-900">{user.name}</div>
-                        <div className="text-sm text-gray-600">
-                          {user.points.toLocaleString()} pts • Lv.{user.level} • {user.streak} day streak • {user.badges} badges
-                        </div>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-sm font-medium text-gray-900">{user.mastery}%</div>
-                      <div className="text-xs text-gray-500">Mastery</div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="space-y-3">
-                {squadLeaderboard.slice(0, 10).map((squad, index) => (
-                  <div 
-                    key={index} 
-                    className={`flex items-center justify-between p-3 ${
-                      squad.isCurrentSquad ? '' : 'bg-gray-50'
-                    }`}
-                    style={squad.isCurrentSquad ? { backgroundColor: '#DBFF4D' } : {}}
-                  >
-                    <div className="flex items-center space-x-3">
-                      <div className="text-lg font-bold text-gray-700">#{squad.rank}</div>
-                      <div className="w-8 h-8 flex items-center justify-center text-xs font-bold" style={{ backgroundColor: '#FF69B4', color: 'white' }}>
-                        {squad.name.split(' ').map((word) => word.charAt(0)).join('').substring(0, 2)}
-                      </div>
-                      <div className="flex-1">
-                        <div className="font-semibold text-gray-900">{squad.name}</div>
-                        <div className="text-sm text-gray-600">
-                          {squad.points.toLocaleString()} pts • {squad.members} members • Avg Lv.{squad.avgLevel} • {squad.activeMembers} active
-                        </div>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-sm font-medium text-gray-900">{squad.mastery}%</div>
-                      <div className="text-xs text-gray-500">Mastery</div>
-              </div>
-            </div>
-          ))}
-              </div>
-            )}
-          </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6 mb-6">
+        {/* Squad Achievements */}
         <div className="bg-white border border-gray-200" style={{ boxShadow: '0 0 0 1px #000' }}>
           <div className="p-6 border-b border-gray-200">
             <h2 className="text-xl font-bold text-gray-900 uppercase">SQUAD ACHIEVEMENTS</h2>
@@ -744,53 +941,107 @@ export default function SquadContent() {
                   )}
                 </div>
               ))}
-              </div>
+            </div>
           </div>
         </div>
 
-        <div className="bg-white border border-gray-200" style={{ boxShadow: '0 0 0 1px #000' }}>
+        {/* Leaderboard */}
+        <div className="bg-white border border-gray-200 flex flex-col" style={{ boxShadow: '0 0 0 1px #000' }}>
           <div className="p-6 border-b border-gray-200">
-            <h2 className="text-xl font-bold text-gray-900 uppercase">AVAILABLE TUTORS</h2>
-            <p className="text-sm text-gray-600 mt-1">Expert help by subject</p>
+            <h2 className="text-xl font-bold text-gray-900 mb-4 uppercase">LEADERBOARD</h2>
+            <div className="flex space-x-6">
+              <button
+                onClick={() => setActiveLeaderboardTab('students')}
+                className={`pb-2 font-medium transition-colors ${
+                  activeLeaderboardTab === 'students'
+                    ? 'text-black border-b-2 border-black'
+                    : 'text-gray-500 hover:text-gray-700'
+                }`}
+              >
+                Students
+              </button>
+              <button
+                onClick={() => setActiveLeaderboardTab('squads')}
+                className={`pb-2 font-medium transition-colors ${
+                  activeLeaderboardTab === 'squads'
+                    ? 'text-black border-b-2 border-black'
+                    : 'text-gray-500 hover:text-gray-700'
+                }`}
+              >
+                Squads
+              </button>
+            </div>
           </div>
-          <div className="p-6">
-            <div className="grid grid-cols-1 gap-4">
-              {availableTutors.map((tutor, index) => (
-                <div key={index} className="flex items-center justify-between p-4 border border-gray-200 hover:shadow-md transition-shadow">
-                  <div className="flex items-center space-x-4">
-                    <div className="w-12 h-12 flex items-center justify-center" style={{ backgroundColor: '#FF69B4' }}>
-                      <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z" clipRule="evenodd"/>
-                      </svg>
+
+          <div className="p-6 flex-1 overflow-y-auto">
+            {activeLeaderboardTab === 'students' ? (
+              <div className="space-y-3">
+                {individualLeaderboard.slice(0, 10).map((user, index) => (
+                  <div 
+                    key={index} 
+                    className={`flex items-center justify-between p-3 ${
+                      user.isCurrentUser ? '' : 'bg-gray-50'
+                    }`}
+                    style={user.isCurrentUser ? { backgroundColor: '#DBFF4D' } : {}}
+                  >
+                    <div className="flex items-center space-x-3">
+                      <div className="text-lg font-bold text-gray-700">#{index + 1}</div>
+                      <div className="relative">
+                        <div className="w-8 h-8 bg-gray-300 flex items-center justify-center text-sm font-semibold">
+                          {user.name.charAt(0)}
+                        </div>
+                        <div className="absolute -bottom-1 -right-1">
+                          <div className={`w-3 h-3 border border-white rounded-full ${
+                            user.status === 'online' ? 'bg-green-500' : 
+                            user.status === 'idle' ? 'bg-pink-400' : 'bg-gray-400'
+                          }`}></div>
+                        </div>
+                      </div>
+                      <div className="flex-1">
+                        <div className="font-semibold text-gray-900">{user.name}</div>
+                        <div className="text-sm text-gray-600">
+                          {user.points.toLocaleString()} pts • Lv.{user.level} • {user.streak} day streak • {user.badges} badges
+                        </div>
+                      </div>
                     </div>
-                <div className="flex-1">
-                      <div className="flex flex-wrap gap-1 mb-2">
-                        {tutor.subjects.slice(0, 2).map((subject, idx) => (
-                          <span key={idx} className="px-2 py-1 text-black text-xs font-medium" style={{ backgroundColor: '#C4CEFF' }}>
-                            {subject}
-                          </span>
-                        ))}
-                        {tutor.subjects.length > 2 && (
-                          <span className="px-2 py-1 bg-gray-100 text-gray-700 text-xs font-medium">
-                            +{tutor.subjects.length - 2} more
-                          </span>
-                        )}
-                      </div>
-                      <div className="flex items-center space-x-3 text-sm">
-                        <span className={tutor.availability.includes('now') ? 'text-green-600 font-medium' : 'text-orange-600 font-medium'}>
-                          {tutor.availability}
-                        </span>
-                        <span className="text-gray-500">⭐ {tutor.rating}</span>
-                        <span className="text-gray-500">{tutor.responseTime}</span>
-                      </div>
+                    <div className="text-right">
+                      <div className="text-sm font-medium text-gray-900">{user.mastery}%</div>
+                      <div className="text-xs text-gray-500">Mastery</div>
                     </div>
                   </div>
-                  <button className="px-4 py-2 bg-black text-white hover:bg-gray-800 transition-colors text-sm font-medium">
-                    Connect
-                  </button>
-                </div>
-              ))}
+                ))}
               </div>
+            ) : (
+              <div className="space-y-3">
+                {squadLeaderboard.slice(0, 10).map((squad, index) => (
+                  <div 
+                    key={index} 
+                    className={`flex items-center justify-between p-3 ${
+                      squad.isCurrentSquad ? '' : 'bg-gray-50'
+                    }`}
+                    style={squad.isCurrentSquad ? { backgroundColor: '#DBFF4D' } : {}}
+                  >
+                    <div className="flex items-center space-x-3">
+                      <div className="text-lg font-bold text-gray-700">#{squad.rank}</div>
+                      <div className="w-8 h-8 flex items-center justify-center text-xs font-bold" style={{ backgroundColor: '#FF69B4', color: 'white' }}>
+                        {squad.name.split(' ').map((word) => word.charAt(0)).join('').substring(0, 2)}
+                      </div>
+                      <div className="flex-1">
+                        <div className="font-semibold text-gray-900">{squad.name}</div>
+                        <div className="text-sm text-gray-600">
+                          {squad.points.toLocaleString()} pts • {squad.members} members • Avg Lv.{squad.avgLevel} • {squad.activeMembers} active
+                        </div>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-sm font-medium text-gray-900">{squad.mastery}%</div>
+                      <div className="text-xs text-gray-500">Mastery</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
           </div>
         </div>
       </div>
@@ -825,10 +1076,7 @@ export default function SquadContent() {
                 {filteredMembers.map((member, index) => (
                   <div 
                     key={index} 
-                    className={`flex items-center space-x-3 p-2 text-sm ${
-                      member.isCurrentUser ? '' : 'hover:bg-gray-50'
-                    }`}
-                    style={member.isCurrentUser ? { backgroundColor: '#DBFF4D' } : {}}
+                    className="flex items-center space-x-3 p-2 text-sm hover:bg-gray-50"
                   >
                     <div className="relative">
                       <div className="w-6 h-6 bg-gray-300 flex items-center justify-center text-xs font-semibold">
@@ -843,13 +1091,15 @@ export default function SquadContent() {
                     </div>
                     <div className="flex-1 font-medium text-gray-900">{member.name}</div>
                     <div className="text-xs text-gray-500">Lv.{member.level}</div>
-                    <button
-                      onClick={() => handleChatWithMember(member)}
-                      className="px-2 py-1 text-xs font-medium text-black hover:bg-gray-200 transition-colors"
-                      style={{ backgroundColor: '#C4CEFF' }}
-                    >
-                      Chat
-                    </button>
+                    {!member.isCurrentUser && (
+                      <button
+                        onClick={() => handleChatWithMember(member)}
+                        className="px-2 py-1 text-xs font-medium text-black hover:bg-gray-200 transition-colors"
+                        style={{ backgroundColor: '#C4CEFF' }}
+                      >
+                        Chat
+                      </button>
+                    )}
                   </div>
                 ))}
               </div>
