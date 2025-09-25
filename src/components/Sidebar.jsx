@@ -154,7 +154,7 @@ export default function Sidebar({ setActivePage, onCollapseChange }) {
         <div className="relative group">
           <div className={`${isCollapsed ? 'w-10 h-10' : 'w-32 h-32'} rounded-full border-[1.5px] border-white overflow-hidden cursor-pointer`}>
             <img 
-              src="/src/assets/Images/account-user.png" 
+              src="/assets/Images/account-user.png" 
               alt="User profile" 
               className="w-full h-full object-cover"
             />
@@ -283,7 +283,7 @@ export default function Sidebar({ setActivePage, onCollapseChange }) {
                     <div className="w-6 h-6 rounded-full flex items-center justify-center text-xs text-white">
                       {chat.name === "AI Tutor" ? (
                         <img 
-                          src="/src/assets/icons/AI chat icon.png" 
+                          src="/assets/icons/AI chat icon.png" 
                           alt="AI Chat" 
                           className="w-4 h-4"
                         />
@@ -372,7 +372,7 @@ export default function Sidebar({ setActivePage, onCollapseChange }) {
             onClick={handleAITutorClick}
           >
             <img 
-              src="/src/assets/icons/AI chat icon.png" 
+              src="/assets/icons/AI chat icon.png" 
               alt="AI Chat" 
               className="w-5 h-5"
             />
@@ -388,7 +388,7 @@ export default function Sidebar({ setActivePage, onCollapseChange }) {
               onClick={handleAITutorClick}
             >
               <img 
-                src="/src/assets/icons/AI chat icon.png" 
+                src="/assets/icons/AI chat icon.png" 
                 alt="AI Chat" 
                 className="w-5 h-5"
               />
@@ -532,7 +532,7 @@ export default function Sidebar({ setActivePage, onCollapseChange }) {
                 title="Open in Squad tab"
               >
                 <img 
-                  src="/src/assets/icons/open_in_new.png" 
+                  src="/assets/icons/open_in_new.png" 
                   alt="Open in new tab" 
                   className="w-5 h-5"
                 />
