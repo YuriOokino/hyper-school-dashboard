@@ -21,7 +21,7 @@ export default function SquadContent() {
     name: "Jennifer",
     rank: 23,
     points: 1650,
-      level: 4,
+    level: 4,
     status: "online"
   };
 
