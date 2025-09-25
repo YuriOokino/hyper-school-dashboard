@@ -11,78 +11,68 @@ export default function TopNavigation({ activePage, setActivePage, activeTab, se
                 setActivePage('dashboard');
                 if (setActiveTab) setActiveTab('knowledge');
               }}
-              className={`flex items-center space-x-2 pb-4 ${
+              className={`flex items-center space-x-2 px-4 py-2 h-12 transition-colors ${
                 activePage === 'dashboard' 
-                  ? 'text-white border-b-2' 
-                  : 'text-gray-400 hover:text-gray-200'
+                  ? 'text-white' 
+                  : 'text-white hover:text-gray-200'
               }`}
               style={{
-                borderBottomColor: activePage === 'dashboard' ? '#FE55A4' : undefined
+                backgroundColor: activePage === 'dashboard' ? '#FE55A4' : 'transparent'
               }}
             >
-              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
-              </svg>
-              <span className="font-medium">Overview</span>
+              <img src="/assets/icons/home.svg" alt="Overview" className="w-5 h-5" />
+              <span className="font-oswald font-medium uppercase">Overview</span>
             </button>
             <button 
               onClick={() => {
                 setActivePage('learning');
                 if (setActiveTab) setActiveTab('classes');
               }}
-              className={`flex items-center space-x-2 pb-4 ${
+              className={`flex items-center space-x-2 px-4 py-2 h-12 transition-colors ${
                 activePage === 'learning' 
-                  ? 'text-white border-b-2' 
-                  : 'text-gray-400 hover:text-gray-200'
+                  ? 'text-white' 
+                  : 'text-white hover:text-gray-200'
               }`}
               style={{
-                borderBottomColor: activePage === 'learning' ? '#FE55A4' : undefined
+                backgroundColor: activePage === 'learning' ? '#FE55A4' : 'transparent'
               }}
             >
-              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
-              </svg>
-              <span className="font-medium">Learning</span>
+              <img src="/assets/icons/lightbulb.svg" alt="Learning" className="w-5 h-5" />
+              <span className="font-oswald font-medium uppercase">Learning</span>
             </button>
             <button 
               onClick={() => setActivePage('rewards')}
-              className={`flex items-center space-x-2 pb-4 ${
+              className={`flex items-center space-x-2 px-4 py-2 h-12 transition-colors ${
                 activePage === 'rewards' 
-                  ? 'text-white border-b-2' 
-                  : 'text-gray-400 hover:text-gray-200'
+                  ? 'text-white' 
+                  : 'text-white hover:text-gray-200'
               }`}
               style={{
-                borderBottomColor: activePage === 'rewards' ? '#FE55A4' : undefined
+                backgroundColor: activePage === 'rewards' ? '#FE55A4' : 'transparent'
               }}
             >
-              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              <span className="font-medium">Rewards</span>
+              <img src="/assets/icons/shopping_bag.svg" alt="Rewards" className="w-5 h-5" />
+              <span className="font-oswald font-medium uppercase">Rewards</span>
             </button>
             <button 
               onClick={() => setActivePage('squad')}
-              className={`flex items-center space-x-2 pb-4 ${
+              className={`flex items-center space-x-2 px-4 py-2 h-12 transition-colors ${
                 activePage === 'squad' 
-                  ? 'text-white border-b-2' 
-                  : 'text-gray-400 hover:text-gray-200'
+                  ? 'text-white' 
+                  : 'text-white hover:text-gray-200'
               }`}
               style={{
-                borderBottomColor: activePage === 'squad' ? '#FE55A4' : undefined
+                backgroundColor: activePage === 'squad' ? '#FE55A4' : 'transparent'
               }}
             >
-              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z" />
-              </svg>
-              <span className="font-medium">Squad</span>
+              <img src="/assets/icons/perm_contact_calendar.svg" alt="Squad" className="w-5 h-5" />
+              <span className="font-oswald font-medium uppercase">Squad</span>
             </button>
           </div>
           <div className="col-span-4 flex items-center justify-end space-x-4">
             <div className="flex items-center space-x-2">
-              <svg className="w-5 h-5" fill="#FE55A4" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
-              </svg>
-              <span className="font-semibold text-white">2,500</span>
+              <img src="/assets/icons/Hyper credits.png" alt="Hyper Credits" className="w-5 h-5" />
+              <span className="font-semibold text-white">240</span>
             </div>
             <button className="text-gray-400 hover:text-gray-200">
               <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">

@@ -182,7 +182,7 @@ export default function LearningContent({ masteryData, getColorClasses, showMast
           const strokeDashoffset = circumference - (subject.percentage / 100) * circumference;
           
           return (
-            <div key={index} className="text-center p-3 border border-gray-200 rounded-lg hover:shadow-md transition-shadow relative">
+            <div key={index} className="text-center p-3  rounded-lg hover:shadow-md transition-shadow relative">
               {/* Subject badge in top right */}
               <div className={`absolute top-2 right-2 px-2 py-1 ${colors.light} ${colors.text} text-xs font-medium rounded-full`}>
                 {subject.level}
@@ -296,7 +296,7 @@ export default function LearningContent({ masteryData, getColorClasses, showMast
           <div className="flex space-x-4 transition-transform duration-300 ease-in-out" 
                style={{ transform: `translateX(-${carouselIndex * (256 + 16)}px)` }}>
             {continueLessonsData.map((lesson) => (
-            <div key={lesson.id} className="flex-shrink-0 w-64 bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition-shadow cursor-pointer" onClick={onLessonClick}>
+            <div key={lesson.id} className="flex-shrink-0 w-64 bg-white  rounded-lg overflow-hidden hover:shadow-md transition-shadow cursor-pointer" onClick={onLessonClick}>
               {/* Image placeholder */}
               <div className="relative h-32 bg-gray-200">
                 <div className="absolute inset-0 bg-gradient-to-br from-gray-100 to-gray-300 flex items-center justify-center">
@@ -665,7 +665,7 @@ export default function LearningContent({ masteryData, getColorClasses, showMast
               const strokeDashoffset = circumference - (subject.percentage / 100) * circumference;
               
               return (
-                <div key={index} className="text-center p-6 pt-16 border border-gray-200 rounded-lg hover:shadow-md transition-shadow relative">
+                <div key={index} className="text-center p-6 pt-16  rounded-lg hover:shadow-md transition-shadow relative">
                   {/* Subject badge in top right */}
                   <div className={`absolute top-2 right-2 px-2 py-1 ${colors.light} ${colors.text} text-xs font-medium rounded-full`}>
                     {subject.level}

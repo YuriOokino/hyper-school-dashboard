@@ -217,17 +217,37 @@ export default function Sidebar({ setActivePage, onCollapseChange }) {
         <div className="px-4 mb-4">
           <h3 className="text-sm font-bold text-white mb-3">ACHIEVEMENTS</h3>
           <div className="flex space-x-2">
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
-              <span className="text-white text-xs">🏆</span>
+            <div className="relative group">
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center cursor-pointer">
+                <span className="text-white text-xs">🏆</span>
+              </div>
+              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-black text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-50">
+                Quiz Master
+              </div>
             </div>
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center">
-              <span className="text-white text-xs">💡</span>
+            <div className="relative group">
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center cursor-pointer">
+                <span className="text-white text-xs">💡</span>
+              </div>
+              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-black text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-50">
+                Problem Solver
+              </div>
             </div>
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center">
-              <span className="text-white text-xs">⭐</span>
+            <div className="relative group">
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center cursor-pointer">
+                <span className="text-white text-xs">⭐</span>
+              </div>
+              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-black text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-50">
+                Star Student
+              </div>
             </div>
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center">
-              <span className="text-white text-xs">🎯</span>
+            <div className="relative group">
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center cursor-pointer">
+                <span className="text-white text-xs">🎯</span>
+              </div>
+              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-black text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-50">
+                Goal Achiever
+              </div>
             </div>
           </div>
         </div>

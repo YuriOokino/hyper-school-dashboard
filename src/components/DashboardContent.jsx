@@ -2,8 +2,8 @@ export default function DashboardContent({ activeTab, setActiveTab, currentChall
   return (
     <>
       {/* Today's Challenges */}
-      <div className="bg-white p-6">
-        <div className="mb-6">
+      <div className="bg-white p-6 flex flex-col" style={{ height: '600px' }}>
+        <div className="mb-6 flex-shrink-0">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-2xl font-bold text-gray-900 uppercase">CHALLENGES</h2>
             <div className="relative">
@@ -16,6 +16,16 @@ export default function DashboardContent({ activeTab, setActiveTab, currentChall
             </div>
           </div>
           <div className="flex space-x-6">
+            <button 
+              onClick={() => setActiveTab('all')}
+              className={`pb-2 font-medium ${
+                activeTab === 'all' 
+                  ? 'text-black border-b-2' 
+                  : 'text-gray-500 hover:text-gray-700'
+              }`}
+            >
+              All
+            </button>
             <button 
               onClick={() => setActiveTab('knowledge')}
               className={`pb-2 font-medium ${
@@ -58,9 +68,9 @@ export default function DashboardContent({ activeTab, setActiveTab, currentChall
             </button>
           </div>
         </div>
-        <div className="space-y-4">
+        <div className="flex-1 overflow-y-auto space-y-4">
           {currentChallenges.map((challenge) => (
-            <div key={challenge.id} className="flex items-center p-4 border border-gray-200 -lg space-x-6">
+            <div key={challenge.id} className="flex items-center p-4 -lg space-x-6">
               {/* Points on far left - black square with thunderbolt */}
               <div className="w-12 h-12 bg-black  flex items-center justify-center">
                 <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">

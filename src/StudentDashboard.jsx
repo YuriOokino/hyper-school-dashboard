@@ -282,7 +282,7 @@ export default function StudentDashboard() {
   };
 
   return (
-    <div className="h-screen bg-gray-50 flex overflow-hidden">
+    <div className="h-screen flex overflow-hidden" style={{ backgroundColor: '#E8EBFB' }}>
       <div className={`${isSidebarCollapsed ? 'w-16' : 'w-64'} flex-shrink-0 h-screen transition-all duration-300`}>
         <Sidebar setActivePage={setActivePage} onCollapseChange={setIsSidebarCollapsed} />
       </div>
@@ -341,8 +341,8 @@ export default function StudentDashboard() {
                 {activePage === 'dashboard' && (
                   <div className="mb-6">
                     <h2 className="text-2xl font-bold text-gray-900 mb-4 uppercase font-['Oswald']">DAILY GOALS</h2>
-                    <div className="grid grid-cols-4 gap-4">
-                      <div className="bg-white p-6 border border-gray-200">
+                    <div className="grid grid-cols-5 gap-4">
+                      <div className="bg-white p-6 ">
                         {/* Half-circle progress indicator */}
                         <div className="mb-4">
                           <div className="relative w-full h-32 flex items-center justify-center">
@@ -372,26 +372,6 @@ export default function StudentDashboard() {
                           </div>
                         </div>
                         
-                        {/* Checklist */}
-                        <div className="space-y-2 mb-4">
-                          <div className="flex items-center space-x-2">
-                            <div className="w-4 h-4 border border-gray-300 rounded-full flex items-center justify-center" style={{ backgroundColor: '#C4CEFF' }}>
-                              <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                              </svg>
-                            </div>
-                            <span className="text-sm text-gray-600">Complete Math lesson</span>
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <div className="w-4 h-4 border border-gray-300 rounded-full"></div>
-                            <span className="text-sm text-gray-600">Review Science notes</span>
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <div className="w-4 h-4 border border-gray-300 rounded-full"></div>
-                            <span className="text-sm text-gray-600">Practice English grammar</span>
-                          </div>
-                        </div>
-
                         <button 
                           className="w-full py-2 px-4 text-sm font-medium transition-colors"
                           style={{ backgroundColor: '#000', color: '#fff' }}
@@ -401,7 +381,7 @@ export default function StudentDashboard() {
                         </button>
                       </div>
 
-                      <div className="bg-white p-6 border border-gray-200">
+                      <div className="bg-white p-6 ">
                         {/* Half-circle progress indicator */}
                         <div className="mb-4">
                           <div className="relative w-full h-32 flex items-center justify-center">
@@ -431,30 +411,6 @@ export default function StudentDashboard() {
                           </div>
                         </div>
                         
-                        {/* Checklist */}
-                        <div className="space-y-2 mb-4">
-                          <div className="flex items-center space-x-2">
-                            <div className="w-4 h-4 border border-gray-300 rounded-full flex items-center justify-center" style={{ backgroundColor: '#C4CEFF' }}>
-                              <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                              </svg>
-                            </div>
-                            <span className="text-sm text-gray-600">Morning walk</span>
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <div className="w-4 h-4 border border-gray-300 rounded-full flex items-center justify-center" style={{ backgroundColor: '#C4CEFF' }}>
-                              <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                              </svg>
-                            </div>
-                            <span className="text-sm text-gray-600">Stretch break</span>
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <div className="w-4 h-4 border border-gray-300 rounded-full"></div>
-                            <span className="text-sm text-gray-600">Evening exercise</span>
-                          </div>
-                        </div>
-
                         <button 
                           className="w-full py-2 px-4 text-sm font-medium transition-colors"
                           style={{ backgroundColor: '#000', color: '#fff' }}
@@ -464,7 +420,7 @@ export default function StudentDashboard() {
                         </button>
                       </div>
 
-                      <div className="bg-white p-6 border border-gray-200">
+                      <div className="bg-white p-6 ">
                         {/* Half-circle progress indicator */}
                         <div className="mb-4">
                           <div className="relative w-full h-32 flex items-center justify-center">
@@ -494,26 +450,6 @@ export default function StudentDashboard() {
                           </div>
                         </div>
                         
-                        {/* Checklist */}
-                        <div className="space-y-2 mb-4">
-                          <div className="flex items-center space-x-2">
-                            <div className="w-4 h-4 border border-gray-300 rounded-full flex items-center justify-center" style={{ backgroundColor: '#C4CEFF' }}>
-                              <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                              </svg>
-                            </div>
-                            <span className="text-sm text-gray-600">Log daily mood</span>
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <div className="w-4 h-4 border border-gray-300 rounded-full"></div>
-                            <span className="text-sm text-gray-600">Connect with friends</span>
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <div className="w-4 h-4 border border-gray-300 rounded-full"></div>
-                            <span className="text-sm text-gray-600">Practice gratitude</span>
-                          </div>
-                        </div>
-
                         <button 
                           className="w-full py-2 px-4 text-sm font-medium transition-colors"
                           style={{ backgroundColor: '#000', color: '#fff' }}
@@ -523,7 +459,7 @@ export default function StudentDashboard() {
                         </button>
                       </div>
 
-                      <div className="bg-white p-6 border border-gray-200">
+                      <div className="bg-white p-6 ">
                         {/* Half-circle progress indicator */}
                         <div className="mb-4">
                           <div className="relative w-full h-32 flex items-center justify-center">
@@ -553,22 +489,6 @@ export default function StudentDashboard() {
                           </div>
                         </div>
                         
-                        {/* Checklist */}
-                        <div className="space-y-2 mb-4">
-                          <div className="flex items-center space-x-2">
-                            <div className="w-4 h-4 border border-gray-300 rounded-full"></div>
-                            <span className="text-sm text-gray-600">Learn new skill</span>
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <div className="w-4 h-4 border border-gray-300 rounded-full"></div>
-                            <span className="text-sm text-gray-600">Practice time management</span>
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <div className="w-4 h-4 border border-gray-300 rounded-full"></div>
-                            <span className="text-sm text-gray-600">Set daily goals</span>
-                          </div>
-                        </div>
-
                         <button 
                           className="w-full py-2 px-4 text-sm font-medium transition-colors"
                           style={{ backgroundColor: '#000', color: '#fff' }}
@@ -576,6 +496,32 @@ export default function StudentDashboard() {
                         >
                           LEARN NEW SKILL
                         </button>
+                      </div>
+
+                      {/* Today's Summary Card */}
+                      <div className="bg-white p-6 ">
+                        <div className="mb-4">
+                          <h3 className="text-2xl font-bold text-gray-900 uppercase font-['Oswald'] text-center mb-4">TODAY'S SUMMARY</h3>
+                        </div>
+                        
+                        <div className="space-y-3">
+                          <div className="flex justify-between items-center">
+                            <span className="text-sm text-gray-600">Lessons completed</span>
+                            <span className="text-sm font-semibold">2</span>
+                          </div>
+                          <div className="flex justify-between items-center">
+                            <span className="text-sm text-gray-600">Points earned</span>
+                            <span className="text-sm font-semibold">150</span>
+                          </div>
+                          <div className="flex justify-between items-center">
+                            <span className="text-sm text-gray-600">Study time</span>
+                            <span className="text-sm font-semibold">2h 30m</span>
+                          </div>
+                          <div className="flex justify-between items-center">
+                            <span className="text-sm text-gray-600">Mood check-in</span>
+                            <span className="text-sm font-semibold">98</span>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -604,7 +550,7 @@ export default function StudentDashboard() {
 
                   {/* Right Panel - Only on Dashboard */}
                   {activePage === 'dashboard' && (
-                    <div className="w-80">
+                    <div className="w-96">
                       <RightPanel />
                     </div>
                   )}

@@ -21,7 +21,7 @@ export default function SquadContent() {
     name: "Jennifer",
     rank: 23,
     points: 1650,
-    level: 4,
+      level: 4,
     status: "online"
   };
 
@@ -133,8 +133,8 @@ export default function SquadContent() {
     ]
   };
 
-  // Live feed achievements
-  const liveFeeds = [
+  // Squad achievements data
+  const squadAchievements = [
     {
       user: "Leo",
       achievement: "🏆 Quiz Master",
@@ -386,7 +386,7 @@ export default function SquadContent() {
               <button className="px-3 py-1 text-sm font-medium text-white bg-black hover:bg-gray-800 transition-colors">
                 Message
               </button>
-            </div>
+                </div>
             <div className="flex items-center space-x-3">
               <span className="text-lg text-gray-600">95 Students</span>
               <button 
@@ -411,7 +411,7 @@ export default function SquadContent() {
 
       {/* Main Content - Chat Interface */}
       <div className="mb-4">
-        <div className="border border-gray-200 flex flex-col h-[600px]" style={{ 
+        <div className=" flex flex-col h-[600px]" style={{ 
           boxShadow: '0 0 0 1px #000'
         }}>
           {/* Search Bar and New Button - Top of Chat */}
@@ -481,7 +481,7 @@ export default function SquadContent() {
                         {chat.type === 'individual' ? chat.status : `${chat.members} Online`}
                       </div>
                     </div>
-                  </div>
+                </div>
                     ))}
                   </div>
                 )}
@@ -574,7 +574,7 @@ export default function SquadContent() {
             </div>
 
             {/* User Status */}
-            <div className="p-3 border-t border-gray-200 bg-gray-900">
+            <div className="p-3  bg-gray-900">
               <div className="flex items-center space-x-3">
                 <div className="relative">
                   <div className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold" style={{ backgroundColor: '#DBFF4D', color: '#000' }}>
@@ -597,7 +597,7 @@ export default function SquadContent() {
             {selectedChat ? (
               <>
                 {/* Chat Header - Slack Style */}
-                <div className="px-4 py-3 border-b border-gray-200 bg-white">
+                <div className="px-4 py-3  bg-white">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-3">
                       <h3 className="text-lg font-bold text-gray-900">
@@ -660,8 +660,8 @@ export default function SquadContent() {
                         </svg>
                       </button>
                     </div>
-                  </div>
-                </div>
+        </div>
+      </div>
 
                 {/* Messages Area - Slack Style */}
                 <div className="flex-1 overflow-y-auto bg-gray-50 min-h-0">
@@ -830,15 +830,15 @@ export default function SquadContent() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6 mb-6">
         {/* Squad Achievements */}
-        <div className="bg-white border border-gray-200 flex flex-col" style={{ boxShadow: '0 0 0 1px #000', maxHeight: '400px' }}>
-          <div className="p-6 border-b border-gray-200 flex-shrink-0">
+        <div className="bg-white  flex flex-col" style={{ boxShadow: '0 0 0 1px #000', maxHeight: '400px' }}>
+          <div className="p-6  flex-shrink-0">
             <h2 className="text-xl font-bold text-gray-900 uppercase">SQUAD ACHIEVEMENTS</h2>
             <p className="text-sm text-gray-600 mt-1">Recent achievements from your squad</p>
           </div>
           <div className="flex-1 overflow-y-auto p-6" style={{ scrollBehavior: 'smooth' }}>
             <div className="space-y-4">
-              {liveFeeds.map((feed, index) => (
-                <div key={index} className="bg-gray-50 border border-gray-200 p-3 hover:shadow-sm transition-all duration-200 hover:bg-gray-100">
+              {squadAchievements.map((feed, index) => (
+                <div key={index} className="bg-gray-50  p-3 hover:shadow-sm transition-all duration-200 hover:bg-gray-100">
                   <div className="flex items-start space-x-3 mb-2">
                     <div className="w-8 h-8 flex items-center justify-center" style={{ backgroundColor: '#FF69B4' }}>
                       <span className="text-xs font-semibold text-white">{feed.user.charAt(0)}</span>
@@ -853,7 +853,7 @@ export default function SquadContent() {
                     </div>
                   </div>
                   
-                  <div className="flex items-center justify-between mt-2 pt-2 border-t border-gray-200">
+                  <div className="flex items-center justify-between mt-2 pt-2 ">
                     <div className="flex space-x-3 text-xs">
                       <button 
                         onClick={() => handleReaction(index, 'like')}
@@ -876,77 +876,17 @@ export default function SquadContent() {
                         <span>🎉</span>
                         <span>{feed.reactions.congrats}</span>
                       </button>
-                    </div>
-                    <button 
-                      onClick={() => handleComment(index)}
-                      className="flex items-center space-x-1 text-xs text-gray-500 hover:text-gray-700 transition-colors"
-                    >
-                      <span>💬</span>
-                      <span>{feed.comments}</span>
-                    </button>
                   </div>
-                  
-                  {/* Comments Section */}
-                  {showComments === index && (
-                    <div className="mt-4 pt-4 border-t border-gray-200">
-                      <div className="space-y-3">
-                        {/* Sample comments */}
-                        <div className="flex items-start space-x-2">
-                          <div className="w-6 h-6 flex items-center justify-center text-xs font-semibold" style={{ backgroundColor: '#FF69B4' }}>
-                            A
-                          </div>
-                          <div className="flex-1">
-                            <div className="text-sm font-medium text-gray-900">Alex</div>
-                            <div className="text-sm text-gray-700">Amazing work! Keep it up! 🔥</div>
-                            <div className="text-xs text-gray-500 mt-1">5 min ago</div>
-                          </div>
-                        </div>
-                        
-                        <div className="flex items-start space-x-2">
-                          <div className="w-6 h-6 flex items-center justify-center text-xs font-semibold" style={{ backgroundColor: '#3FC7FF' }}>
-                            S
-                          </div>
-                          <div className="flex-1">
-                            <div className="text-sm font-medium text-gray-900">Sarah</div>
-                            <div className="text-sm text-gray-700">Congrats! How did you manage to get perfect score?</div>
-                            <div className="text-xs text-gray-500 mt-1">3 min ago</div>
-                          </div>
-                        </div>
-                        
-                        {/* Add comment input */}
-                        <div className="flex space-x-2 mt-3">
-                          <div className="w-6 h-6 flex items-center justify-center text-xs font-semibold" style={{ backgroundColor: '#DBFF4D' }}>
-                            J
-                          </div>
-                          <div className="flex-1 relative">
-                            <input
-                              type="text"
-                              value={newComment}
-                              onChange={(e) => setNewComment(e.target.value)}
-                              placeholder="Add a comment..."
-                              className="w-full px-3 py-2 pr-16 text-sm border border-gray-300 focus:outline-none focus:ring-2 focus:ring-black"
-                              onKeyPress={(e) => e.key === 'Enter' && handleAddComment(index)}
-                            />
-                            <button
-                              onClick={() => handleAddComment(index)}
-                              className="absolute right-2 top-1/2 transform -translate-y-1/2 px-3 py-1 bg-black text-white text-xs font-medium hover:bg-gray-800 transition-colors"
-                            >
-                              Send
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  )}
                 </div>
-              ))}
+              </div>
+            ))}
             </div>
           </div>
         </div>
 
         {/* Leaderboard */}
-        <div className="bg-white border border-gray-200 flex flex-col" style={{ boxShadow: '0 0 0 1px #000', maxHeight: '400px' }}>
-          <div className="p-6 border-b border-gray-200 flex-shrink-0">
+        <div className="bg-white  flex flex-col" style={{ boxShadow: '0 0 0 1px #000', maxHeight: '400px' }}>
+          <div className="p-6  flex-shrink-0">
             <h2 className="text-xl font-bold text-gray-900 mb-4 uppercase">LEADERBOARD</h2>
             <div className="flex space-x-6">
               <button
@@ -969,8 +909,8 @@ export default function SquadContent() {
               >
                 Squads
               </button>
-            </div>
           </div>
+        </div>
 
           <div className="flex-1 overflow-y-auto p-6" style={{ scrollBehavior: 'smooth' }}>
             {activeLeaderboardTab === 'students' ? (
@@ -985,18 +925,10 @@ export default function SquadContent() {
                   >
                     <div className="flex items-center space-x-3">
                       <div className="text-lg font-bold text-gray-700">#{index + 1}</div>
-                      <div className="relative">
-                        <div className="w-8 h-8 bg-gray-300 flex items-center justify-center text-sm font-semibold">
-                          {user.name.charAt(0)}
-                        </div>
-                        <div className="absolute -bottom-1 -right-1">
-                          <div className={`w-3 h-3 border border-white rounded-full ${
-                            user.status === 'online' ? 'bg-green-500' : 
-                            user.status === 'idle' ? 'bg-pink-400' : 'bg-gray-400'
-                          }`}></div>
-                        </div>
+                      <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center text-sm font-semibold">
+                        {user.name.charAt(0)}
                       </div>
-                      <div className="flex-1">
+                <div className="flex-1">
                         <div className="font-semibold text-gray-900">{user.name}</div>
                         <div className="text-sm text-gray-600">
                           {user.points.toLocaleString()} pts • Lv.{user.level} • {user.streak} day streak • {user.badges} badges
@@ -1006,9 +938,9 @@ export default function SquadContent() {
                     <div className="text-right">
                       <div className="text-sm font-medium text-gray-900">{user.mastery}%</div>
                       <div className="text-xs text-gray-500">Mastery</div>
-                    </div>
-                  </div>
-                ))}
+                </div>
+              </div>
+            ))}
               </div>
             ) : (
               <div className="space-y-3">
@@ -1022,7 +954,7 @@ export default function SquadContent() {
                   >
                     <div className="flex items-center space-x-3">
                       <div className="text-lg font-bold text-gray-700">#{squad.rank}</div>
-                      <div className="w-8 h-8 flex items-center justify-center text-xs font-bold" style={{ backgroundColor: '#FF69B4', color: 'white' }}>
+                      <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold" style={{ backgroundColor: '#FF69B4', color: 'white' }}>
                         {squad.name.split(' ').map((word) => word.charAt(0)).join('').substring(0, 2)}
                       </div>
                       <div className="flex-1">
@@ -1048,8 +980,8 @@ export default function SquadContent() {
       {/* Squad Members Modal */}
       {showSquadModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" onClick={() => setShowSquadModal(false)}>
-          <div className="bg-white w-full max-w-sm max-h-[60vh] mx-4 border border-gray-200 flex flex-col" style={{ boxShadow: '0 0 0 1px #000' }} onClick={(e) => e.stopPropagation()}>
-            <div className="p-4 border-b border-gray-200 flex-shrink-0">
+          <div className="bg-white w-full max-w-sm max-h-[60vh] mx-4  flex flex-col" style={{ boxShadow: '0 0 0 1px #000' }} onClick={(e) => e.stopPropagation()}>
+            <div className="p-4  flex-shrink-0">
               <div className="flex items-center justify-between mb-3">
                 <h2 className="text-lg font-bold text-gray-900 uppercase">SQUAD MEMBERS</h2>
                 <button 
