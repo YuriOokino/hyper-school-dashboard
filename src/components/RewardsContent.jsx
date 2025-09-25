@@ -313,7 +313,7 @@ export default function RewardsContent() {
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {filteredRewards.map((reward) => (
-            <div key={reward.id} className="bg-white overflow-hidden h-64" style={{ boxShadow: '0 0 0 1px #000' }}>
+            <div key={reward.id} className="bg-white overflow-hidden h-64" style={{}}>
               <div className="p-4 h-full flex flex-col">
                 <div className="flex justify-between items-start mb-3">
                   <div className="text-3xl">{reward.image}</div>

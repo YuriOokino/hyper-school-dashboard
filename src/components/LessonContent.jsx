@@ -7,7 +7,7 @@ export default function LessonContent({ onBackToLearning, activeTab: pageActiveT
   return (
     <div className="bg-gray-50">
       {/* Back Navigation */}
-      <div className="bg-white border-b border-gray-200 px-6 py-3">
+      <div className="bg-white  px-6 py-3">
         <button 
           onClick={onBackToLearning}
           className="flex items-center space-x-2 text-gray-600 hover:text-gray-800"
@@ -20,7 +20,7 @@ export default function LessonContent({ onBackToLearning, activeTab: pageActiveT
       </div>
 
       {/* Top Row: Video, Title/Description, Action Button */}
-      <div className="bg-white border-b border-gray-200 p-6">
+      <div className="bg-white  p-6">
         <div className={`flex items-start ${videoState === 'playing' ? 'flex-col' : 'flex-row'} ${videoState === 'playing' ? 'space-y-4' : 'space-x-6'}`}>
           {/* Video Section */}
           <div 
@@ -172,12 +172,12 @@ export default function LessonContent({ onBackToLearning, activeTab: pageActiveT
                 </div>
 
           {/* Tab Content */}
-          <div className="bg-white -lg border border-gray-200 p-6">
+          <div className="bg-white -lg  p-6">
             {lessonActiveTab === 'chapters' && (
               <div>
                 <h2 className="text-2xl font-bold text-gray-900 mb-4">Lesson Chapters</h2>
                 <div className="space-y-4">
-                  <div className="border border-gray-200 -lg p-4 hover:bg-gray-50 cursor-pointer">
+                  <div className=" -lg p-4 hover:bg-gray-50 cursor-pointer">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-4">
                         <div className="w-8 h-8 flex items-center justify-center font-semibold text-sm" style={{ backgroundColor: '#C4CEFF', color: '#000' }}>
@@ -197,7 +197,7 @@ export default function LessonContent({ onBackToLearning, activeTab: pageActiveT
                     </div>
                   </div>
 
-                  <div className="border border-gray-200 -lg p-4 hover:bg-gray-50 cursor-pointer">
+                  <div className=" -lg p-4 hover:bg-gray-50 cursor-pointer">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-4">
                         <div className="w-8 h-8 flex items-center justify-center font-semibold text-sm" style={{ backgroundColor: '#C4CEFF', color: '#000' }}>
@@ -217,7 +217,7 @@ export default function LessonContent({ onBackToLearning, activeTab: pageActiveT
                     </div>
                   </div>
 
-                  <div className="border border-gray-200 -lg p-4 hover:bg-gray-50 cursor-pointer">
+                  <div className=" -lg p-4 hover:bg-gray-50 cursor-pointer">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-4">
                         <div className="w-8 h-8 bg-gray-100 text-gray-400 -full flex items-center justify-center font-semibold text-sm">
@@ -237,7 +237,7 @@ export default function LessonContent({ onBackToLearning, activeTab: pageActiveT
                     </div>
                   </div>
 
-                  <div className="border border-gray-200 -lg p-4 hover:bg-gray-50 cursor-pointer">
+                  <div className=" -lg p-4 hover:bg-gray-50 cursor-pointer">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-4">
                         <div className="w-8 h-8 bg-gray-100 text-gray-400 -full flex items-center justify-center font-semibold text-sm">
@@ -290,7 +290,7 @@ export default function LessonContent({ onBackToLearning, activeTab: pageActiveT
               <div>
                 <h2 className="text-2xl font-bold text-gray-900 mb-4">Practice Exercises</h2>
                 <div className="space-y-6">
-                  <div className="border border-gray-200 -lg p-4">
+                  <div className=" -lg p-4">
                     <h3 className="text-lg font-semibold text-gray-900 mb-2">Exercise 1</h3>
                     <p className="text-gray-700 mb-3">Solve for x: 3x - 7 = 14</p>
                     <div className="space-y-2">
@@ -309,7 +309,7 @@ export default function LessonContent({ onBackToLearning, activeTab: pageActiveT
                     </div>
                   </div>
                   
-                  <div className="border border-gray-200 -lg p-4">
+                  <div className=" -lg p-4">
                     <h3 className="text-lg font-semibold text-gray-900 mb-2">Exercise 2</h3>
                     <p className="text-gray-700 mb-3">Solve for y: 2y + 10 = 24</p>
                     <div className="space-y-2">
@@ -335,19 +335,19 @@ export default function LessonContent({ onBackToLearning, activeTab: pageActiveT
               <div>
                 <h2 className="text-2xl font-bold text-gray-900 mb-4">Additional Resources</h2>
                 <div className="space-y-4">
-                  <div className="border border-gray-200 -lg p-4 hover:bg-gray-50 cursor-pointer">
+                  <div className=" -lg p-4 hover:bg-gray-50 cursor-pointer">
                     <h3 className="text-lg font-semibold text-gray-900 mb-2">Video Tutorial</h3>
                     <p className="text-gray-700 mb-2">Watch a step-by-step video explanation of linear equations</p>
                     <span className="text-sm font-medium" style={{ color: '#3FC7FF' }}>Watch Video →</span>
                   </div>
                   
-                  <div className="border border-gray-200 -lg p-4 hover:bg-gray-50 cursor-pointer">
+                  <div className=" -lg p-4 hover:bg-gray-50 cursor-pointer">
                     <h3 className="text-lg font-semibold text-gray-900 mb-2">Practice Worksheet</h3>
                     <p className="text-gray-700 mb-2">Download additional practice problems</p>
                     <span className="text-sm font-medium" style={{ color: '#3FC7FF' }}>Download PDF →</span>
                   </div>
                   
-                  <div className="border border-gray-200 -lg p-4 hover:bg-gray-50 cursor-pointer">
+                  <div className=" -lg p-4 hover:bg-gray-50 cursor-pointer">
                     <h3 className="text-lg font-semibold text-gray-900 mb-2">Interactive Calculator</h3>
                     <p className="text-gray-700 mb-2">Use our equation solver to check your work</p>
                     <span className="text-sm font-medium" style={{ color: '#3FC7FF' }}>Open Calculator →</span>
@@ -359,7 +359,7 @@ export default function LessonContent({ onBackToLearning, activeTab: pageActiveT
         </div>
 
           {/* Sidebar */}
-          <div className="w-80 bg-gray-50 border-l border-gray-200 p-6">
+          <div className="w-80 bg-gray-50  p-6">
           <div className="space-y-6">
             {/* Achievement */}
             <div className="bg-green-50 border border-green-200 -lg p-4">
@@ -376,11 +376,11 @@ export default function LessonContent({ onBackToLearning, activeTab: pageActiveT
             <div>
               <h3 className="text-lg font-semibold text-gray-900 mb-3">Related Lessons</h3>
               <div className="space-y-3">
-                <div className="p-3 bg-white border border-gray-200 cursor-pointer" style={{ boxShadow: '0 0 0 1px #000' }}>
+                <div className="p-3 bg-white  cursor-pointer" style={{}}>
                   <h4 className="font-medium text-gray-900">Quadratic Equations</h4>
                   <p className="text-sm text-gray-600">Next lesson in sequence</p>
                 </div>
-                <div className="p-3 bg-white border border-gray-200 cursor-pointer" style={{ boxShadow: '0 0 0 1px #000' }}>
+                <div className="p-3 bg-white  cursor-pointer" style={{}}>
                   <h4 className="font-medium text-gray-900">Graphing Linear Functions</h4>
                   <p className="text-sm text-gray-600">Complementary topic</p>
                 </div>

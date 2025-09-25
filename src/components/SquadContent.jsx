@@ -411,9 +411,7 @@ export default function SquadContent() {
 
       {/* Main Content - Chat Interface */}
       <div className="mb-4">
-        <div className=" flex flex-col h-[600px]" style={{ 
-          boxShadow: '0 0 0 1px #000'
-        }}>
+        <div className=" flex flex-col h-[600px]" style={{}}>
           {/* Search Bar and New Button - Top of Chat */}
           <div className="p-4 bg-gray-800">
             <div className="flex items-center justify-between">
@@ -435,7 +433,7 @@ export default function SquadContent() {
 
           <div className="bg-white flex flex-1 min-h-0">
           {/* Chat Sidebar - Enhanced Design */}
-          <div className="w-80 border-r border-gray-200 flex flex-col bg-white overflow-hidden">
+          <div className="w-80  flex flex-col bg-white overflow-hidden">
 
             <div className="flex-1 overflow-y-auto min-h-0">
               {/* Top Chats Section */}
@@ -488,7 +486,7 @@ export default function SquadContent() {
               </div>
 
               {/* Tutors Section */}
-              <div className="p-3 border-t border-gray-100">
+              <div className="p-3 ">
                 <div className="flex items-center justify-between mb-2 cursor-pointer" onClick={() => toggleSection('tutors')}>
                   <h3 className="text-sm font-medium text-gray-700">Tutors</h3>
                   <svg className={`w-4 h-4 text-gray-400 transition-transform ${collapsedSections.tutors ? '-rotate-90' : ''}`} fill="currentColor" viewBox="0 0 20 20">
@@ -557,7 +555,7 @@ export default function SquadContent() {
               </div>
 
               {/* All Chats */}
-              <div className="p-3 border-t border-gray-100">
+              <div className="p-3 ">
                 <div className="flex items-center justify-between mb-2 cursor-pointer" onClick={() => toggleSection('chatHistory')}>
                   <h3 className="text-sm font-medium text-gray-700">All chats</h3>
                   <svg className={`w-4 h-4 text-gray-400 transition-transform ${collapsedSections.chatHistory ? '-rotate-90' : ''}`} fill="currentColor" viewBox="0 0 20 20">
@@ -804,7 +802,7 @@ export default function SquadContent() {
                         </button>
                         <button className="hover:text-gray-700">
                           🔗 Link
-                        </button>
+                  </button>
                       </div>
                       <div className="text-xs text-gray-400">
                         <span className="font-medium">Enter</span> to send, <span className="font-medium">Shift + Enter</span> for new line
@@ -830,7 +828,7 @@ export default function SquadContent() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6 mb-6">
         {/* Squad Achievements */}
-        <div className="bg-white  flex flex-col" style={{ boxShadow: '0 0 0 1px #000', maxHeight: '400px' }}>
+        <div className="bg-white  flex flex-col" style={{ maxHeight: '400px' }}>
           <div className="p-6  flex-shrink-0">
             <h2 className="text-xl font-bold text-gray-900 uppercase">SQUAD ACHIEVEMENTS</h2>
             <p className="text-sm text-gray-600 mt-1">Recent achievements from your squad</p>
@@ -885,7 +883,7 @@ export default function SquadContent() {
         </div>
 
         {/* Leaderboard */}
-        <div className="bg-white  flex flex-col" style={{ boxShadow: '0 0 0 1px #000', maxHeight: '400px' }}>
+        <div className="bg-white  flex flex-col" style={{ maxHeight: '400px' }}>
           <div className="p-6  flex-shrink-0">
             <h2 className="text-xl font-bold text-gray-900 mb-4 uppercase">LEADERBOARD</h2>
             <div className="flex space-x-6">
@@ -980,7 +978,7 @@ export default function SquadContent() {
       {/* Squad Members Modal */}
       {showSquadModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" onClick={() => setShowSquadModal(false)}>
-          <div className="bg-white w-full max-w-sm max-h-[60vh] mx-4  flex flex-col" style={{ boxShadow: '0 0 0 1px #000' }} onClick={(e) => e.stopPropagation()}>
+          <div className="bg-white w-full max-w-sm max-h-[60vh] mx-4  flex flex-col" style={{}} onClick={(e) => e.stopPropagation()}>
             <div className="p-4  flex-shrink-0">
               <div className="flex items-center justify-between mb-3">
                 <h2 className="text-lg font-bold text-gray-900 uppercase">SQUAD MEMBERS</h2>

@@ -47,7 +47,7 @@ export default function RightPanel() {
   return (
     <div className="space-y-4">
       {/* My Achievements - Moved from Squad tab */}
-      <div className="bg-white flex flex-col" style={{ boxShadow: '0 0 0 1px #000', height: '600px' }}>
+      <div className="bg-white flex flex-col" style={{ height: '600px' }}>
         <div className="p-6 flex-shrink-0">
           <h2 className="text-xl font-bold text-gray-900 uppercase">MY ACHIEVEMENTS</h2>
           <p className="text-sm text-gray-600 mt-1">Your recent accomplishments and progress</p>

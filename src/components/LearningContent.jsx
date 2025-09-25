@@ -421,7 +421,7 @@ export default function LearningContent({ masteryData, getColorClasses, showMast
       <div className="overflow-x-auto">
         <table className="w-full">
           <thead>
-            <tr className="border-b border-gray-200">
+            <tr className="">
               <th className="text-left py-3 px-4 font-semibold text-base">Subject</th>
               <th className="text-left py-3 px-4 font-semibold text-base">Lesson</th>
               <th className="text-left py-3 px-4 font-semibold text-base">Hyper Credits</th>
@@ -433,7 +433,7 @@ export default function LearningContent({ masteryData, getColorClasses, showMast
           </thead>
           <tbody>
             {currentLessons.map((lesson, index) => (
-              <tr key={index} className="border-b border-gray-100 hover:bg-gray-50 cursor-pointer" onClick={onLessonClick}>
+              <tr key={index} className=" hover:bg-gray-50 cursor-pointer" onClick={onLessonClick}>
                 <td className="py-3 px-4 text-base font-medium text-gray-900">{lesson.subject}</td>
                 <td className="py-3 px-4 text-base text-gray-600">{lesson.lesson}</td>
                 <td className="py-3 px-4 text-base text-gray-600">{lesson.credits}</td>
@@ -548,7 +548,7 @@ export default function LearningContent({ masteryData, getColorClasses, showMast
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-gray-200">
+                <tr className="">
                   <th className="text-left py-3 px-4 font-semibold text-base">Subject</th>
                   <th className="text-left py-3 px-4 font-semibold text-base">Lesson</th>
                   <th className="text-left py-3 px-4 font-semibold text-base">Hyper Credits</th>
@@ -560,7 +560,7 @@ export default function LearningContent({ masteryData, getColorClasses, showMast
               </thead>
               <tbody>
                 {currentLessons.map((lesson, index) => (
-                  <tr key={index} className="border-b border-gray-100 hover:bg-gray-50 cursor-pointer" onClick={onLessonClick}>
+                  <tr key={index} className=" hover:bg-gray-50 cursor-pointer" onClick={onLessonClick}>
                     <td className="py-3 px-4 text-base font-medium text-gray-900">{lesson.subject}</td>
                     <td className="py-3 px-4 text-base text-gray-600">{lesson.lesson}</td>
                     <td className="py-3 px-4 text-base text-gray-600">{lesson.credits}</td>

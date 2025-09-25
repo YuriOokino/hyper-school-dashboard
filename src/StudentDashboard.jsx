@@ -341,161 +341,65 @@ export default function StudentDashboard() {
                 {activePage === 'dashboard' && (
                   <div className="mb-6">
                     <h2 className="text-2xl font-bold text-gray-900 mb-4 uppercase font-['Oswald']">DAILY GOALS</h2>
-                    <div className="grid grid-cols-5 gap-4">
-                      <div className="bg-white p-6 ">
-                        {/* Half-circle progress indicator */}
-                        <div className="mb-4">
-                          <div className="relative w-full h-32 flex items-center justify-center">
-                            <svg className="w-full h-28" viewBox="0 0 200 120" preserveAspectRatio="xMidYMid meet">
-                              {/* Background semicircle */}
-                              <path
-                                d="M 20 100 A 80 80 0 0 1 180 100"
-                                stroke="#E0E0E0"
-                                strokeWidth="16"
-                                fill="none"
-                                strokeLinecap="round"
-                              />
-                              {/* Progress semicircle */}
-                              <path
-                                d="M 20 100 A 80 80 0 0 1 180 100"
-                                stroke="#5C5CFF"
-                                strokeWidth="16"
-                                fill="none"
-                                strokeLinecap="round"
-                                strokeDasharray="251.3"
-                                strokeDashoffset="62.8"
-                              />
-                            </svg>
-                            <div className="absolute inset-0 flex items-end justify-center pb-2">
-                              <h3 className="text-2xl font-bold text-gray-900 uppercase font-['Oswald'] text-center">THINK</h3>
-                            </div>
-                          </div>
+                    <div className="grid grid-cols-5 gap-4 h-64">
+                      <div 
+                        className="bg-white p-6 relative overflow-hidden h-full"
+                        style={{
+                          backgroundImage: 'url(/assets/progress-ui/think.svg)',
+                          backgroundSize: '100% auto',
+                          backgroundPosition: 'bottom center',
+                          backgroundRepeat: 'no-repeat'
+                        }}
+                      >
+                        <div className="relative z-10">
+                          <h3 className="text-2xl font-bold text-black uppercase font-['Oswald'] mb-4">THINK</h3>
+                          <div className="text-6xl font-bold text-black">57%</div>
                         </div>
-                        
-                        <button 
-                          className="w-full py-2 px-4 text-sm font-medium transition-colors"
-                          style={{ backgroundColor: '#000', color: '#fff' }}
-                          onClick={() => handleGoalAction('think')}
-                        >
-                          REVIEW SCIENCE NOTES
-                        </button>
                       </div>
 
-                      <div className="bg-white p-6 ">
-                        {/* Half-circle progress indicator */}
-                        <div className="mb-4">
-                          <div className="relative w-full h-32 flex items-center justify-center">
-                            <svg className="w-full h-28" viewBox="0 0 200 120" preserveAspectRatio="xMidYMid meet">
-                              {/* Background semicircle */}
-                              <path
-                                d="M 20 100 A 80 80 0 0 1 180 100"
-                                stroke="#E0E0E0"
-                                strokeWidth="16"
-                                fill="none"
-                                strokeLinecap="round"
-                              />
-                              {/* Progress semicircle */}
-                              <path
-                                d="M 20 100 A 80 80 0 0 1 180 100"
-                                stroke="#5C5CFF"
-                                strokeWidth="16"
-                                fill="none"
-                                strokeLinecap="round"
-                                strokeDasharray="251.3"
-                                strokeDashoffset="82.9"
-                              />
-                            </svg>
-                            <div className="absolute inset-0 flex items-end justify-center pb-2">
-                              <h3 className="text-2xl font-bold text-gray-900 uppercase font-['Oswald'] text-center">MOVE</h3>
-                            </div>
-                          </div>
+                      <div 
+                        className="bg-white p-6 relative overflow-hidden h-full"
+                        style={{
+                          backgroundImage: 'url(/assets/progress-ui/move.svg)',
+                          backgroundSize: '100% auto',
+                          backgroundPosition: 'bottom center',
+                          backgroundRepeat: 'no-repeat'
+                        }}
+                      >
+                        <div className="relative z-10">
+                          <h3 className="text-2xl font-bold text-black uppercase font-['Oswald'] mb-4">MOVE</h3>
+                          <div className="text-6xl font-bold text-black">25%</div>
                         </div>
-                        
-                        <button 
-                          className="w-full py-2 px-4 text-sm font-medium transition-colors"
-                          style={{ backgroundColor: '#000', color: '#fff' }}
-                          onClick={() => handleGoalAction('move')}
-                        >
-                          EVENING EXERCISE
-                        </button>
                       </div>
 
-                      <div className="bg-white p-6 ">
-                        {/* Half-circle progress indicator */}
-                        <div className="mb-4">
-                          <div className="relative w-full h-32 flex items-center justify-center">
-                            <svg className="w-full h-28" viewBox="0 0 200 120" preserveAspectRatio="xMidYMid meet">
-                              {/* Background semicircle */}
-                              <path
-                                d="M 20 100 A 80 80 0 0 1 180 100"
-                                stroke="#E0E0E0"
-                                strokeWidth="16"
-                                fill="none"
-                                strokeLinecap="round"
-                              />
-                              {/* Progress semicircle */}
-                              <path
-                                d="M 20 100 A 80 80 0 0 1 180 100"
-                                stroke="#5C5CFF"
-                                strokeWidth="16"
-                                fill="none"
-                                strokeLinecap="round"
-                                strokeDasharray="251.3"
-                                strokeDashoffset="62.8"
-                              />
-                            </svg>
-                            <div className="absolute inset-0 flex items-end justify-center pb-2">
-                              <h3 className="text-2xl font-bold text-gray-900 uppercase font-['Oswald'] text-center">CONNECT</h3>
-                            </div>
-                          </div>
+                      <div 
+                        className="bg-white p-6 relative overflow-hidden h-full"
+                        style={{
+                          backgroundImage: 'url(/assets/progress-ui/connect.svg)',
+                          backgroundSize: '100% auto',
+                          backgroundPosition: 'bottom center',
+                          backgroundRepeat: 'no-repeat'
+                        }}
+                      >
+                        <div className="relative z-10">
+                          <h3 className="text-2xl font-bold text-black uppercase font-['Oswald'] mb-4">CONNECT</h3>
+                          <div className="text-6xl font-bold text-black">49%</div>
                         </div>
-                        
-                        <button 
-                          className="w-full py-2 px-4 text-sm font-medium transition-colors"
-                          style={{ backgroundColor: '#000', color: '#fff' }}
-                          onClick={() => handleGoalAction('connect')}
-                        >
-                          CONNECT WITH FRIENDS
-                        </button>
                       </div>
 
-                      <div className="bg-white p-6 ">
-                        {/* Half-circle progress indicator */}
-                        <div className="mb-4">
-                          <div className="relative w-full h-32 flex items-center justify-center">
-                            <svg className="w-full h-28" viewBox="0 0 200 120" preserveAspectRatio="xMidYMid meet">
-                              {/* Background semicircle */}
-                              <path
-                                d="M 20 100 A 80 80 0 0 1 180 100"
-                                stroke="#E0E0E0"
-                                strokeWidth="16"
-                                fill="none"
-                                strokeLinecap="round"
-                              />
-                              {/* Progress semicircle */}
-                              <path
-                                d="M 20 100 A 80 80 0 0 1 180 100"
-                                stroke="#5C5CFF"
-                                strokeWidth="16"
-                                fill="none"
-                                strokeLinecap="round"
-                                strokeDasharray="251.3"
-                                strokeDashoffset="251.3"
-                              />
-                            </svg>
-                            <div className="absolute inset-0 flex items-end justify-center pb-2">
-                              <h3 className="text-2xl font-bold text-gray-900 uppercase font-['Oswald'] text-center">THRIVE</h3>
-                            </div>
-                          </div>
+                      <div 
+                        className="bg-white p-6 relative overflow-hidden h-full"
+                        style={{
+                          backgroundImage: 'url(/assets/progress-ui/thrive.svg)',
+                          backgroundSize: '100% auto',
+                          backgroundPosition: 'bottom center',
+                          backgroundRepeat: 'no-repeat'
+                        }}
+                      >
+                        <div className="relative z-10">
+                          <h3 className="text-2xl font-bold text-black uppercase font-['Oswald'] mb-4">THRIVE</h3>
+                          <div className="text-6xl font-bold text-black">80%</div>
                         </div>
-                        
-                        <button 
-                          className="w-full py-2 px-4 text-sm font-medium transition-colors"
-                          style={{ backgroundColor: '#000', color: '#fff' }}
-                          onClick={() => handleGoalAction('thrive')}
-                        >
-                          LEARN NEW SKILL
-                        </button>
                       </div>
 
                       {/* Today's Summary Card */}
