@@ -835,56 +835,55 @@ export default function SquadContent() {
             <h2 className="text-xl font-bold text-gray-900 uppercase">SQUAD ACHIEVEMENTS</h2>
             <p className="text-sm text-gray-600 mt-1">Recent achievements from your squad</p>
           </div>
-          <div className="flex-1 overflow-y-auto p-6">
+          <div className="flex-1 overflow-y-auto p-6" style={{ scrollBehavior: 'smooth' }}>
             <div className="space-y-4">
               {liveFeeds.map((feed, index) => (
-                <div key={index} className="border border-gray-200 p-4 hover:shadow-md transition-shadow">
-                  <div className="flex items-start space-x-3 mb-3">
-                    <div className="w-10 h-10 flex items-center justify-center" style={{ backgroundColor: '#FF69B4' }}>
-                      <span className="text-sm font-semibold text-white">{feed.user.charAt(0)}</span>
+                <div key={index} className="bg-gray-50 border border-gray-200 p-3 hover:shadow-sm transition-all duration-200 hover:bg-gray-100">
+                  <div className="flex items-start space-x-3 mb-2">
+                    <div className="w-8 h-8 flex items-center justify-center" style={{ backgroundColor: '#FF69B4' }}>
+                      <span className="text-xs font-semibold text-white">{feed.user.charAt(0)}</span>
                     </div>
-                    <div className="flex-1">
-                      <div className="font-semibold text-gray-900">{feed.user}</div>
-                      <div className="text-sm font-medium text-gray-800">{feed.achievement}</div>
-                      <div className="text-sm text-gray-600">{feed.description}</div>
-                      <div className="text-xs text-gray-500 mt-1">{feed.time}</div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center space-x-2 mb-1">
+                        <span className="font-semibold text-gray-900 text-sm">{feed.user}</span>
+                        <span className="text-xs text-gray-500">{feed.time}</span>
+                      </div>
+                      <div className="text-sm font-medium text-gray-800 mb-1">{feed.achievement}</div>
+                      <div className="text-xs text-gray-600">{feed.description}</div>
                     </div>
                   </div>
                   
-                  <div className="flex items-center justify-between">
-                    <div className="flex space-x-4 text-sm">
+                  <div className="flex items-center justify-between mt-2 pt-2 border-t border-gray-200">
+                    <div className="flex space-x-3 text-xs">
                       <button 
                         onClick={() => handleReaction(index, 'like')}
-                        className="flex items-center space-x-1 text-gray-600 hover:text-black transition-colors"
+                        className="flex items-center space-x-1 text-gray-500 hover:text-blue-600 transition-colors"
                       >
                         <span>👍</span>
                         <span>{feed.reactions.likes}</span>
                       </button>
                       <button 
                         onClick={() => handleReaction(index, 'fire')}
-                        className="flex items-center space-x-1 text-gray-600 hover:text-black transition-colors"
+                        className="flex items-center space-x-1 text-gray-500 hover:text-orange-600 transition-colors"
                       >
                         <span>🔥</span>
                         <span>{feed.reactions.fire}</span>
                       </button>
                       <button 
                         onClick={() => handleReaction(index, 'congrats')}
-                        className="flex items-center space-x-1 text-gray-600 hover:text-black transition-colors"
+                        className="flex items-center space-x-1 text-gray-500 hover:text-green-600 transition-colors"
                       >
                         <span>🎉</span>
                         <span>{feed.reactions.congrats}</span>
                       </button>
-                      <button 
-                        onClick={() => handleComment(index)}
-                        className="flex items-center space-x-1 text-gray-600 hover:text-black transition-colors"
-                      >
-                        <span>💬</span>
-                        <span>{feed.comments}</span>
-                        <span className="text-xs ml-1">
-                          {showComments === index ? 'Hide comments' : 'View comments'}
-                        </span>
-                      </button>
                     </div>
+                    <button 
+                      onClick={() => handleComment(index)}
+                      className="flex items-center space-x-1 text-xs text-gray-500 hover:text-gray-700 transition-colors"
+                    >
+                      <span>💬</span>
+                      <span>{feed.comments}</span>
+                    </button>
                   </div>
                   
                   {/* Comments Section */}
@@ -946,8 +945,8 @@ export default function SquadContent() {
         </div>
 
         {/* Leaderboard */}
-        <div className="bg-white border border-gray-200 flex flex-col" style={{ boxShadow: '0 0 0 1px #000' }}>
-          <div className="p-6 border-b border-gray-200">
+        <div className="bg-white border border-gray-200 flex flex-col" style={{ boxShadow: '0 0 0 1px #000', maxHeight: '400px' }}>
+          <div className="p-6 border-b border-gray-200 flex-shrink-0">
             <h2 className="text-xl font-bold text-gray-900 mb-4 uppercase">LEADERBOARD</h2>
             <div className="flex space-x-6">
               <button
@@ -973,7 +972,7 @@ export default function SquadContent() {
             </div>
           </div>
 
-          <div className="p-6 flex-1 overflow-y-auto">
+          <div className="flex-1 overflow-y-auto p-6" style={{ scrollBehavior: 'smooth' }}>
             {activeLeaderboardTab === 'students' ? (
               <div className="space-y-3">
                 {individualLeaderboard.slice(0, 10).map((user, index) => (

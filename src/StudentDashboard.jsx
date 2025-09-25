@@ -12,6 +12,7 @@ export default function StudentDashboard() {
   const [activeTab, setActiveTab] = useState('knowledge');
   const [activePage, setActivePage] = useState('dashboard');
   const [showLesson, setShowLesson] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [dailyGoals, setDailyGoals] = useState({
     think: { current: 1, target: 5, completed: false },
     move: { current: 6000, target: 5000, completed: true },
@@ -282,8 +283,8 @@ export default function StudentDashboard() {
 
   return (
     <div className="h-screen bg-gray-50 flex overflow-hidden">
-      <div className="w-64 flex-shrink-0 h-screen">
-        <Sidebar setActivePage={setActivePage} />
+      <div className={`${isSidebarCollapsed ? 'w-16' : 'w-64'} flex-shrink-0 h-screen transition-all duration-300`}>
+        <Sidebar setActivePage={setActivePage} onCollapseChange={setIsSidebarCollapsed} />
       </div>
       
       <div className="flex-1 flex flex-col min-w-0 h-screen">

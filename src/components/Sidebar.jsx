@@ -1,11 +1,19 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
-export default function Sidebar({ setActivePage }) {
+export default function Sidebar({ setActivePage, onCollapseChange }) {
   const [isAccountOpen, setIsAccountOpen] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [selectedChat, setSelectedChat] = useState(null);
   const [dynamicChats, setDynamicChats] = useState([]);
   const [isChatsExpanded, setIsChatsExpanded] = useState(true);
+  const [isCollapsed, setIsCollapsed] = useState(false);
+
+  // Notify parent about collapse state changes
+  useEffect(() => {
+    if (onCollapseChange) {
+      onCollapseChange(isCollapsed);
+    }
+  }, [isCollapsed, onCollapseChange]);
 
   // Chat data from Squad tab
   const chats = [
@@ -128,11 +136,23 @@ export default function Sidebar({ setActivePage }) {
 
   return (
     <div className="relative">
-      <aside className="bg-black flex flex-col w-full overflow-y-auto" style={{ minHeight: '100vh', maxHeight: '100vh' }}>
+      <aside className={`bg-black flex flex-col overflow-y-auto transition-all duration-300 ${isCollapsed ? 'w-16' : 'w-64'}`} style={{ minHeight: '100vh', maxHeight: '100vh' }}>
+      {/* Toggle Button */}
+      <div className="flex justify-end p-2">
+        <button 
+          onClick={() => setIsCollapsed(!isCollapsed)}
+          className="p-2 hover:bg-gray-800 transition-colors"
+        >
+          <svg className={`w-4 h-4 text-white transition-transform duration-300 ${isCollapsed ? 'rotate-180' : ''}`} fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd"/>
+          </svg>
+        </button>
+      </div>
+      
       {/* Circular Profile Image */}
-      <div className="flex justify-center pt-8 pb-4">
+      <div className={`flex ${isCollapsed ? 'justify-center' : 'justify-center'} pt-4 pb-4`}>
         <div className="relative group">
-          <div className="w-32 h-32 rounded-full border-[1.5px] border-white overflow-hidden cursor-pointer">
+          <div className={`${isCollapsed ? 'w-10 h-10' : 'w-32 h-32'} rounded-full border-[1.5px] border-white overflow-hidden cursor-pointer`}>
             <img 
               src="/src/assets/Images/account-user.png" 
               alt="User profile" 
@@ -153,162 +173,228 @@ export default function Sidebar({ setActivePage }) {
       </div>
       
       {/* Profile Info */}
-      <div className="p-4 text-center">
-        <div className="flex items-center justify-center space-x-3 cursor-pointer" onClick={() => {
-          console.log('Clicked! Current state:', isAccountOpen);
-          setIsAccountOpen(!isAccountOpen);
-        }}>
-          <h2 className="text-xl font-bold text-white">Jennifer Roswell</h2>
-          <svg className={`w-4 h-4 text-gray-400 transition-transform ${isAccountOpen ? '-rotate-90' : ''}`} fill="currentColor" viewBox="0 0 20 20">
-            <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd"/>
-          </svg>
-        </div>
-        <div className="text-sm text-gray-400 mt-1">Level 6</div>
-      </div>
-      
-      {/* Progress Section */}
-      <div className="px-4 mb-4 mt-6">
-        <div className="flex justify-between items-center mb-2">
-          <span className="text-sm font-bold text-white">PROGRESS</span>
-          <span className="text-sm font-bold text-white">79%</span>
-        </div>
-        <div className="w-full bg-gray-700 h-2 rounded-full overflow-hidden">
-          <div className="h-full" style={{ width: '79%', backgroundColor: '#DBFF4D' }}></div>
-        </div>
-        <div className="flex justify-between text-xs text-gray-400 mt-1">
-          <span>Level 6</span>
-          <span>Level 7</span>
-        </div>
-      </div>
-      
-      {/* Achievements Section */}
-      <div className="px-4 mb-4">
-        <h3 className="text-sm font-bold text-white mb-3">ACHIEVEMENTS</h3>
-        <div className="flex space-x-2">
-          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
-            <span className="text-white text-xs">🏆</span>
-          </div>
-          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center">
-            <span className="text-white text-xs">💡</span>
-          </div>
-          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center">
-            <span className="text-white text-xs">⭐</span>
-          </div>
-          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center">
-            <span className="text-white text-xs">🎯</span>
-          </div>
-        </div>
-      </div>
-      
-      {/* CHATS Section */}
-      <div className="px-4 mb-4 flex-1">
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center space-x-2 cursor-pointer" onClick={() => setIsChatsExpanded(!isChatsExpanded)}>
-            <h3 className="text-sm font-bold text-white">CHATS</h3>
-            <svg 
-              className={`w-4 h-4 text-gray-400 transition-transform duration-200 ${isChatsExpanded ? 'rotate-180' : ''}`} 
-              fill="currentColor" 
-              viewBox="0 0 20 20"
-            >
+      {!isCollapsed && (
+        <div className="p-4 text-center">
+          <div className="flex items-center justify-center space-x-3 cursor-pointer" onClick={() => {
+            console.log('Clicked! Current state:', isAccountOpen);
+            setIsAccountOpen(!isAccountOpen);
+          }}>
+            <h2 className="text-xl font-bold text-white">Jennifer Roswell</h2>
+            <svg className={`w-4 h-4 text-gray-400 transition-transform ${isAccountOpen ? '-rotate-90' : ''}`} fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd"/>
             </svg>
           </div>
-          <div className="flex items-center space-x-2">
-            <button className="p-1 hover:bg-gray-800 rounded">
-              <svg className="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd"/>
-              </svg>
-            </button>
-            <button className="p-1 hover:bg-gray-800 rounded">
-              <svg className="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"/>
-              </svg>
-            </button>
+          <div className="text-sm text-gray-400 mt-1">Level 6</div>
+        </div>
+      )}
+      
+      {/* Collapsed Level Display */}
+      {isCollapsed && (
+        <div className="flex justify-center mb-4">
+          <div className="bg-purple-600 text-white px-2 py-1 text-xs font-bold">LV 6</div>
+        </div>
+      )}
+      
+      {/* Progress Section */}
+      {!isCollapsed && (
+        <div className="px-4 mb-4 mt-6">
+          <div className="flex justify-between items-center mb-2">
+            <span className="text-sm font-bold text-white">PROGRESS</span>
+            <span className="text-sm font-bold text-white">79%</span>
+          </div>
+          <div className="w-full bg-gray-700 h-2 overflow-hidden">
+            <div className="h-full" style={{ width: '79%', backgroundColor: '#DBFF4D' }}></div>
+          </div>
+          <div className="flex justify-between text-xs text-gray-400 mt-1">
+            <span>Level 6</span>
+            <span>Level 7</span>
           </div>
         </div>
+      )}
+      
+      {/* Achievements Section */}
+      {!isCollapsed && (
+        <div className="px-4 mb-4">
+          <h3 className="text-sm font-bold text-white mb-3">ACHIEVEMENTS</h3>
+          <div className="flex space-x-2">
+            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
+              <span className="text-white text-xs">🏆</span>
+            </div>
+            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center">
+              <span className="text-white text-xs">💡</span>
+            </div>
+            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center">
+              <span className="text-white text-xs">⭐</span>
+            </div>
+            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center">
+              <span className="text-white text-xs">🎯</span>
+            </div>
+          </div>
+        </div>
+      )}
+      
+      {/* Collapsed Achievements */}
+      {isCollapsed && (
+        <div className="flex justify-center mb-4">
+          <div className="bg-purple-600 text-white p-2 rounded-full">
+            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+            </svg>
+          </div>
+        </div>
+      )}
+      
+      {/* CHATS Section */}
+      <div className={`${isCollapsed ? 'px-2' : 'px-4'} mb-4 flex-1`}>
+        {!isCollapsed && (
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center space-x-2 cursor-pointer" onClick={() => setIsChatsExpanded(!isChatsExpanded)}>
+              <h3 className="text-sm font-bold text-white">CHATS</h3>
+              <svg 
+                className={`w-4 h-4 text-gray-400 transition-transform duration-200 ${isChatsExpanded ? 'rotate-180' : ''}`} 
+                fill="currentColor" 
+                viewBox="0 0 20 20"
+              >
+                <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd"/>
+              </svg>
+            </div>
+            <div className="flex items-center space-x-2">
+              <button className="p-1 hover:bg-gray-800">
+                <svg className="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd"/>
+                </svg>
+              </button>
+              <button className="p-1 hover:bg-gray-800">
+                <svg className="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        )}
         
         {isChatsExpanded && (
           <div className="space-y-1">
-            {/* Dynamic Chats (AI Tutor, etc.) */}
-            {dynamicChats.map((chat) => (
-              <div key={chat.id} className="flex items-center space-x-3 p-2 hover:bg-gray-800 rounded cursor-pointer" onClick={() => handleChatClick(chat)}>
-                <div className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center text-xs text-white">
-                  {chat.name === "AI Tutor" ? "AI" : chat.name.charAt(0)}
-                </div>
-                <div className="flex-1">
-                  <div className="text-sm text-white">{chat.name}</div>
-                </div>
-                {chat.isNew && (
+            {!isCollapsed ? (
+              <>
+                {/* Dynamic Chats (AI Tutor, etc.) */}
+                {dynamicChats.map((chat) => (
+                  <div key={chat.id} className="flex items-center space-x-3 p-2 hover:bg-gray-800 cursor-pointer" onClick={() => handleChatClick(chat)}>
+                    <div className="w-6 h-6 rounded-full flex items-center justify-center text-xs text-white">
+                      {chat.name === "AI Tutor" ? (
+                        <img 
+                          src="/src/assets/icons/AI chat icon.png" 
+                          alt="AI Chat" 
+                          className="w-4 h-4"
+                        />
+                      ) : (
+                        <div className="w-6 h-6 rounded-full bg-gray-600 flex items-center justify-center text-xs text-white">
+                          {chat.name.charAt(0)}
+                        </div>
+                      )}
+                    </div>
+                    <div className="flex-1">
+                      <div className="text-sm text-white">{chat.name}</div>
+                    </div>
+                    {chat.isNew && (
+                      <span className="px-2 py-1 bg-pink-500 text-white text-xs rounded-full">New!</span>
+                    )}
+                  </div>
+                ))}
+                
+                {/* Static Chats */}
+                <div className="flex items-center space-x-3 p-2 hover:bg-gray-800 cursor-pointer" onClick={() => handleChatClick(chats[0])}>
+                  <div className="w-6 h-6 rounded-full bg-gray-600 flex items-center justify-center text-xs text-white">
+                    L
+                  </div>
+                  <div className="flex-1">
+                    <div className="text-sm text-white">Leo</div>
+                  </div>
                   <span className="px-2 py-1 bg-pink-500 text-white text-xs rounded-full">New!</span>
-                )}
+                </div>
+                
+                <div className="flex items-center space-x-3 p-2 hover:bg-gray-800 cursor-pointer" onClick={() => handleChatClick(chats[1])}>
+                  <div className="w-6 h-6 rounded-full bg-gray-600 flex items-center justify-center text-xs text-white">
+                    H
+                  </div>
+                  <div className="flex-1">
+                    <div className="text-sm text-white">Hannah</div>
+                  </div>
+                </div>
+                
+                <div className="flex items-center space-x-3 p-2 hover:bg-gray-800 cursor-pointer" onClick={() => handleChatClick(chats[2])}>
+                  <div className="w-6 h-6 rounded-full bg-gray-600 flex items-center justify-center text-xs text-white">
+                    M
+                  </div>
+                  <div className="flex-1">
+                    <div className="text-sm text-white">Math study group</div>
+                  </div>
+                </div>
+                
+                <div className="flex items-center space-x-3 p-2 hover:bg-gray-800 cursor-pointer" onClick={() => handleChatClick(chats[3])}>
+                  <div className="w-6 h-6 rounded-full bg-gray-600 flex items-center justify-center text-xs text-white">
+                    E
+                  </div>
+                  <div className="flex-1">
+                    <div className="text-sm text-white">English tutor</div>
+                  </div>
+                </div>
+                
+                <div 
+                  className="flex items-center justify-between p-2 hover:bg-gray-800 cursor-pointer"
+                  onClick={() => setActivePage('squad')}
+                >
+                  <span className="text-sm text-gray-400">View all chats</span>
+                  <svg className="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd"/>
+                  </svg>
+                </div>
+              </>
+            ) : (
+              /* Collapsed Chat Icon */
+              <div className="flex justify-center">
+                <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-xs text-white cursor-pointer hover:bg-blue-700" onClick={() => handleChatClick(dynamicChats[0] || {id: 'ai', name: 'AI Tutor'})}>
+                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clipRule="evenodd"/>
+                  </svg>
+                </div>
               </div>
-            ))}
-            
-            {/* Static Chats */}
-            <div className="flex items-center space-x-3 p-2 hover:bg-gray-800 rounded cursor-pointer" onClick={() => handleChatClick(chats[0])}>
-              <div className="w-6 h-6 bg-gray-600 rounded-full flex items-center justify-center text-xs text-white">
-                L
-              </div>
-              <div className="flex-1">
-                <div className="text-sm text-white">Leo</div>
-              </div>
-              <span className="px-2 py-1 bg-pink-500 text-white text-xs rounded-full">New!</span>
-            </div>
-            
-            <div className="flex items-center space-x-3 p-2 hover:bg-gray-800 rounded cursor-pointer" onClick={() => handleChatClick(chats[1])}>
-              <div className="w-6 h-6 bg-gray-600 rounded-full flex items-center justify-center text-xs text-white">
-                H
-              </div>
-              <div className="flex-1">
-                <div className="text-sm text-white">Hannah</div>
-              </div>
-            </div>
-            
-            <div className="flex items-center space-x-3 p-2 hover:bg-gray-800 rounded cursor-pointer" onClick={() => handleChatClick(chats[2])}>
-              <div className="w-6 h-6 bg-gray-600 rounded-full flex items-center justify-center text-xs text-white">
-                M
-              </div>
-              <div className="flex-1">
-                <div className="text-sm text-white">Math study group</div>
-              </div>
-            </div>
-            
-            <div className="flex items-center space-x-3 p-2 hover:bg-gray-800 rounded cursor-pointer" onClick={() => handleChatClick(chats[3])}>
-              <div className="w-6 h-6 bg-gray-600 rounded-full flex items-center justify-center text-xs text-white">
-                E
-              </div>
-              <div className="flex-1">
-                <div className="text-sm text-white">English tutor</div>
-              </div>
-            </div>
-            
-            <div 
-              className="flex items-center justify-between p-2 hover:bg-gray-800 rounded cursor-pointer"
-              onClick={() => setActivePage('squad')}
-            >
-              <span className="text-sm text-gray-400">View all chats</span>
-              <svg className="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd"/>
-              </svg>
-            </div>
+            )}
           </div>
         )}
       </div>
       
-      <div className="p-4">
+      <div className={`${isCollapsed ? 'p-2' : 'p-4'}`}>
         {/* Chat with AI Tutor Button */}
-        <button 
-          className="w-full flex items-center justify-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-lg transition-colors"
-          onClick={handleAITutorClick}
-        >
-          <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-            <path fillRule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clipRule="evenodd"/>
-          </svg>
-          <span className="font-medium">Chat with AI Tutor</span>
-          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-            <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd"/>
-          </svg>
-        </button>
+        {!isCollapsed ? (
+          <button 
+            className="w-full flex items-center justify-center space-x-2 hover:bg-gray-800 text-white py-3 px-4 transition-colors"
+            onClick={handleAITutorClick}
+          >
+            <img 
+              src="/src/assets/icons/AI chat icon.png" 
+              alt="AI Chat" 
+              className="w-5 h-5"
+            />
+            <span className="font-medium">Chat with AI Tutor</span>
+            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd"/>
+            </svg>
+          </button>
+        ) : (
+          <div className="flex justify-center">
+            <button 
+              className="w-10 h-10 hover:bg-gray-800 text-white flex items-center justify-center transition-colors"
+              onClick={handleAITutorClick}
+            >
+              <img 
+                src="/src/assets/icons/AI chat icon.png" 
+                alt="AI Chat" 
+                className="w-5 h-5"
+              />
+            </button>
+          </div>
+        )}
       </div>
       
       </aside>
