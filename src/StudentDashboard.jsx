@@ -3,6 +3,8 @@ import TopNavigation from './components/TopNavigation';
 import Sidebar from './components/Sidebar';
 import DashboardContent from './components/DashboardContent';
 import LearningContent from './components/LearningContent';
+import ChallengesContent from './components/ChallengesContent';
+import ChallengesQuickAccess from './components/ChallengesQuickAccess';
 import LessonContent from './components/LessonContent';
 import SquadContent from './components/SquadContent';
 import RewardsContent from './components/RewardsContent';
@@ -293,7 +295,7 @@ export default function StudentDashboard() {
             activePage={activePage} 
             setActivePage={(page) => {
               setActivePage(page);
-              if (page !== 'learning') {
+              if (page !== 'challenges') {
                 setShowLesson(false);
               }
             }} 
@@ -313,28 +315,12 @@ export default function StudentDashboard() {
             />
           ) : (
             <div className="p-6">
-              {activePage === 'learning' ? (
-                <>
-                  {/* Full Width Mastery Section */}
-                  <div className="mb-6">
-                    <LearningContent 
-                      masteryData={masteryData} 
-                      getColorClasses={getColorClasses} 
-                      showMasteryOnly={true}
-                      onLessonClick={() => setShowLesson(true)}
-                    />
-                  </div>
-                  
-                  {/* Full Width Content */}
-                  <div className="space-y-4">
-                    <LearningContent 
-                      masteryData={masteryData} 
-                      getColorClasses={getColorClasses} 
-                      showMasteryOnly={false}
-                      onLessonClick={() => setShowLesson(true)}
-                    />
-                  </div>
-                </>
+              {activePage === 'challenges' ? (
+                <ChallengesContent 
+                  masteryData={masteryData} 
+                  getColorClasses={getColorClasses} 
+                  onLessonClick={() => setShowLesson(true)}
+                />
               ) : (
               <>
                 {/* Daily Goals - Only on Dashboard */}
@@ -435,10 +421,9 @@ export default function StudentDashboard() {
                   {/* Middle Panel */}
                   <div className="flex-1 space-y-4">
                   {activePage === 'dashboard' ? (
-                    <DashboardContent 
-                      activeTab={activeTab} 
-                      setActiveTab={setActiveTab} 
-                      currentChallenges={currentChallenges} 
+                    <ChallengesQuickAccess 
+                      setActivePage={setActivePage}
+                      setActiveTab={setActiveTab}
                     />
                   ) : activePage === 'squad' ? (
                     <SquadContent />

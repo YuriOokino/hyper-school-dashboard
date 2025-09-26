@@ -25,20 +25,20 @@ export default function TopNavigation({ activePage, setActivePage, activeTab, se
             </button>
             <button 
               onClick={() => {
-                setActivePage('learning');
+                setActivePage('challenges');
                 if (setActiveTab) setActiveTab('classes');
               }}
               className={`flex items-center space-x-2 px-4 py-2 h-12 transition-colors ${
-                activePage === 'learning' 
+                activePage === 'challenges' 
                   ? 'text-white' 
                   : 'text-white hover:text-gray-200'
               }`}
               style={{
-                backgroundColor: activePage === 'learning' ? '#FE55A4' : 'transparent'
+                backgroundColor: activePage === 'challenges' ? '#FE55A4' : 'transparent'
               }}
             >
-              <img src="/assets/icons/lightbulb.svg" alt="Learning" className="w-5 h-5" />
-              <span className="font-oswald font-medium uppercase">Learning</span>
+              <img src="/assets/icons/lightbulb.svg" alt="Challenges" className="w-5 h-5" />
+              <span className="font-oswald font-medium uppercase">Challenges</span>
             </button>
             <button 
               onClick={() => setActivePage('rewards')}

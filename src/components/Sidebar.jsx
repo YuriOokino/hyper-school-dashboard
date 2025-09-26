@@ -134,6 +134,17 @@ export default function Sidebar({ setActivePage, onCollapseChange }) {
     setIsAccountOpen(false); // Close account panel if open
   };
 
+  const handleDeleteChat = (chatId, event) => {
+    event.stopPropagation(); // Prevent chat click when clicking delete
+    setDynamicChats(prev => prev.filter(chat => chat.id !== chatId));
+    
+    // If the deleted chat was selected, close the chat panel
+    if (selectedChat && selectedChat.id === chatId) {
+      setIsChatOpen(false);
+      setSelectedChat(null);
+    }
+  };
+
   return (
     <div className="relative">
       <aside className={`bg-black flex flex-col overflow-y-auto transition-all duration-300 ${isCollapsed ? 'w-16' : 'w-64'}`} style={{ minHeight: '100vh', maxHeight: '100vh' }}>
@@ -299,7 +310,7 @@ export default function Sidebar({ setActivePage, onCollapseChange }) {
               <>
                 {/* Dynamic Chats (AI Tutor, etc.) */}
                 {dynamicChats.map((chat) => (
-                  <div key={chat.id} className="flex items-center space-x-3 p-2 hover:bg-gray-800 cursor-pointer" onClick={() => handleChatClick(chat)}>
+                  <div key={chat.id} className="group flex items-center space-x-3 p-2 hover:bg-gray-800 cursor-pointer relative" onClick={() => handleChatClick(chat)}>
                     <div className="w-6 h-6 rounded-full flex items-center justify-center text-xs text-white">
                       {chat.name === "AI Tutor" ? (
                         <img 
@@ -316,47 +327,120 @@ export default function Sidebar({ setActivePage, onCollapseChange }) {
                     <div className="flex-1">
                       <div className="text-sm text-white">{chat.name}</div>
                     </div>
-                    {chat.isNew && (
-                      <span className="px-2 py-1 bg-pink-500 text-white text-xs rounded-full">New!</span>
-                    )}
+                    <div className="flex items-center space-x-2">
+                      {chat.isNew && (
+                        <span className="px-2 py-1 bg-pink-500 text-white text-xs rounded-full">New!</span>
+                      )}
+                      {/* Close icon - appears on hover */}
+                      <button
+                        onClick={(e) => handleDeleteChat(chat.id, e)}
+                        className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 p-1 hover:bg-gray-700 rounded-full"
+                        title="Delete chat"
+                      >
+                        <svg className="w-4 h-4 text-gray-400 hover:text-white" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd"/>
+                        </svg>
+                      </button>
+                    </div>
                   </div>
                 ))}
                 
                 {/* Static Chats */}
-                <div className="flex items-center space-x-3 p-2 hover:bg-gray-800 cursor-pointer" onClick={() => handleChatClick(chats[0])}>
+                <div className="group flex items-center space-x-3 p-2 hover:bg-gray-800 cursor-pointer relative" onClick={() => handleChatClick(chats[0])}>
                   <div className="w-6 h-6 rounded-full bg-gray-600 flex items-center justify-center text-xs text-white">
                     L
                   </div>
                   <div className="flex-1">
                     <div className="text-sm text-white">Leo</div>
                   </div>
-                  <span className="px-2 py-1 bg-pink-500 text-white text-xs rounded-full">New!</span>
+                  <div className="flex items-center space-x-2">
+                    <span className="px-2 py-1 bg-pink-500 text-white text-xs rounded-full">New!</span>
+                    {/* Close icon - appears on hover */}
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        // For static chats, we could add them to a "deleted" list or just show a message
+                        console.log('Static chat cannot be deleted');
+                      }}
+                      className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 p-1 hover:bg-gray-700 rounded-full"
+                      title="Static chat - cannot be deleted"
+                    >
+                      <svg className="w-4 h-4 text-gray-400 hover:text-white" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd"/>
+                      </svg>
+                    </button>
+                  </div>
                 </div>
                 
-                <div className="flex items-center space-x-3 p-2 hover:bg-gray-800 cursor-pointer" onClick={() => handleChatClick(chats[1])}>
+                <div className="group flex items-center space-x-3 p-2 hover:bg-gray-800 cursor-pointer relative" onClick={() => handleChatClick(chats[1])}>
                   <div className="w-6 h-6 rounded-full bg-gray-600 flex items-center justify-center text-xs text-white">
                     H
                   </div>
                   <div className="flex-1">
                     <div className="text-sm text-white">Hannah</div>
                   </div>
+                  <div className="flex items-center space-x-2">
+                    {/* Close icon - appears on hover */}
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        console.log('Static chat cannot be deleted');
+                      }}
+                      className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 p-1 hover:bg-gray-700 rounded-full"
+                      title="Static chat - cannot be deleted"
+                    >
+                      <svg className="w-4 h-4 text-gray-400 hover:text-white" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd"/>
+                      </svg>
+                    </button>
+                  </div>
                 </div>
                 
-                <div className="flex items-center space-x-3 p-2 hover:bg-gray-800 cursor-pointer" onClick={() => handleChatClick(chats[2])}>
+                <div className="group flex items-center space-x-3 p-2 hover:bg-gray-800 cursor-pointer relative" onClick={() => handleChatClick(chats[2])}>
                   <div className="w-6 h-6 rounded-full bg-gray-600 flex items-center justify-center text-xs text-white">
                     M
                   </div>
                   <div className="flex-1">
                     <div className="text-sm text-white">Math study group</div>
                   </div>
+                  <div className="flex items-center space-x-2">
+                    {/* Close icon - appears on hover */}
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        console.log('Static chat cannot be deleted');
+                      }}
+                      className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 p-1 hover:bg-gray-700 rounded-full"
+                      title="Static chat - cannot be deleted"
+                    >
+                      <svg className="w-4 h-4 text-gray-400 hover:text-white" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd"/>
+                      </svg>
+                    </button>
+                  </div>
                 </div>
                 
-                <div className="flex items-center space-x-3 p-2 hover:bg-gray-800 cursor-pointer" onClick={() => handleChatClick(chats[3])}>
+                <div className="group flex items-center space-x-3 p-2 hover:bg-gray-800 cursor-pointer relative" onClick={() => handleChatClick(chats[3])}>
                   <div className="w-6 h-6 rounded-full bg-gray-600 flex items-center justify-center text-xs text-white">
                     E
                   </div>
                   <div className="flex-1">
                     <div className="text-sm text-white">English tutor</div>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    {/* Close icon - appears on hover */}
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        console.log('Static chat cannot be deleted');
+                      }}
+                      className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 p-1 hover:bg-gray-700 rounded-full"
+                      title="Static chat - cannot be deleted"
+                    >
+                      <svg className="w-4 h-4 text-gray-400 hover:text-white" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd"/>
+                      </svg>
+                    </button>
                   </div>
                 </div>
                 
