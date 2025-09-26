@@ -171,12 +171,12 @@ export default function ChallengesContent({ masteryData, getColorClasses, onLess
       subject: 'Mathematics', 
       lesson: 'Advanced Calculus Problem Solving', 
       challengeType: 'Interactive Exercise',
-      credits: '180/200', 
+      credits: '180', 
       mastery: 88, 
       progress: 76, 
       time: '45 min', 
       difficulty: 'Advanced',
-      level: 'Advanced',
+      level: '12',
       deadline: '-02h 30m',
       status: 'in_progress', 
       buttonText: 'Continue' 
@@ -187,12 +187,12 @@ export default function ChallengesContent({ masteryData, getColorClasses, onLess
       subject: 'Physics', 
       lesson: 'Quantum Mechanics Lab Simulation', 
       challengeType: 'Virtual Lab',
-      credits: '100/200', 
+      credits: '100', 
       mastery: 75, 
       progress: 45, 
       time: '60 min', 
       difficulty: 'Advanced',
-      level: 'Expert',
+      level: '11',
       deadline: '-05h 15m',
       status: 'in_progress', 
       buttonText: 'Continue' 
@@ -203,12 +203,12 @@ export default function ChallengesContent({ masteryData, getColorClasses, onLess
       subject: 'Chemistry', 
       lesson: 'Organic Compound Analysis', 
       challengeType: 'Problem Set',
-      credits: '160/200', 
+      credits: '160', 
       mastery: 92, 
       progress: 80, 
       time: '50 min', 
       difficulty: 'Intermediate',
-      level: 'Intermediate',
+      level: '10',
       deadline: '-01h 45m',
       status: 'in_progress', 
       buttonText: 'Continue' 
@@ -219,12 +219,12 @@ export default function ChallengesContent({ masteryData, getColorClasses, onLess
       subject: 'Computer Science', 
       lesson: 'Algorithm Design Patterns', 
       challengeType: 'Coding Challenge',
-      credits: '140/200', 
+      credits: '140', 
       mastery: 85, 
       progress: 70, 
       time: '75 min', 
       difficulty: 'Advanced',
-      level: 'Advanced',
+      level: '12',
       deadline: '-12h 20m',
       status: 'in_progress', 
       buttonText: 'Continue' 
@@ -237,12 +237,12 @@ export default function ChallengesContent({ masteryData, getColorClasses, onLess
       subject: 'Cardio Fitness', 
       lesson: '5K Running Challenge', 
       challengeType: 'Physical Activity',
-      credits: '80/100', 
+      credits: '80', 
       mastery: 0, 
       progress: 30, 
       time: '30 min', 
       difficulty: 'Beginner',
-      level: 'Beginner',
+      level: '9',
       deadline: '-03h 45m',
       status: 'in_progress', 
       buttonText: 'Continue' 
@@ -253,12 +253,12 @@ export default function ChallengesContent({ masteryData, getColorClasses, onLess
       subject: 'Strength Training', 
       lesson: 'Full Body Circuit Workout', 
       challengeType: 'Workout Routine',
-      credits: '100/120', 
+      credits: '100', 
       mastery: 0, 
       progress: 85, 
       time: '45 min', 
       difficulty: 'Intermediate',
-      level: 'Intermediate',
+      level: '10',
       deadline: '-08h 10m',
       status: 'in_progress', 
       buttonText: 'Continue' 
@@ -269,12 +269,12 @@ export default function ChallengesContent({ masteryData, getColorClasses, onLess
       subject: 'Flexibility', 
       lesson: 'Daily Yoga Flow Session', 
       challengeType: 'Guided Practice',
-      credits: '60/80', 
+      credits: '60', 
       mastery: 0, 
       progress: 75, 
       time: '25 min', 
       difficulty: 'Beginner',
-      level: 'Beginner',
+      level: '9',
       deadline: 'Completed',
       status: 'completed', 
       buttonText: 'Completed' 
@@ -287,12 +287,12 @@ export default function ChallengesContent({ masteryData, getColorClasses, onLess
       subject: 'Mental Wellness', 
       lesson: 'Mindfulness Meditation Practice', 
       challengeType: 'Guided Practice',
-      credits: '60/80', 
+      credits: '60', 
       mastery: 0, 
       progress: 60, 
       time: '20 min', 
       difficulty: 'Beginner',
-      level: 'Beginner',
+      level: '9',
       deadline: '-04h 20m',
       status: 'in_progress', 
       buttonText: 'Continue' 
@@ -303,12 +303,12 @@ export default function ChallengesContent({ masteryData, getColorClasses, onLess
       subject: 'Emotional Health', 
       lesson: 'Stress Management Techniques', 
       challengeType: 'Interactive Workshop',
-      credits: '85/100', 
+      credits: '85', 
       mastery: 0, 
       progress: 40, 
       time: '50 min', 
       difficulty: 'Intermediate',
-      level: 'Intermediate',
+      level: '10',
       deadline: '-06h 55m',
       status: 'in_progress', 
       buttonText: 'Continue' 
@@ -319,12 +319,12 @@ export default function ChallengesContent({ masteryData, getColorClasses, onLess
       subject: 'Social Skills', 
       lesson: 'Active Listening Workshop', 
       challengeType: 'Role Playing',
-      credits: '70/90', 
+      credits: '70', 
       mastery: 0, 
       progress: 55, 
       time: '40 min', 
       difficulty: 'Intermediate',
-      level: 'Intermediate',
+      level: '11',
       deadline: '-09h 30m',
       status: 'in_progress', 
       buttonText: 'Continue' 
@@ -337,12 +337,12 @@ export default function ChallengesContent({ masteryData, getColorClasses, onLess
       subject: 'Money Management', 
       lesson: 'Personal Budget Planning', 
       challengeType: 'Life Skill Module',
-      credits: '110/150', 
+      credits: '110', 
       mastery: 0, 
       progress: 25, 
       time: '40 min', 
       difficulty: 'Beginner',
-      level: 'Beginner',
+      level: '9',
       deadline: '-15h 00m',
       status: 'in_progress', 
       buttonText: 'Start' 
@@ -353,12 +353,12 @@ export default function ChallengesContent({ masteryData, getColorClasses, onLess
       subject: 'Communication', 
       lesson: 'Public Speaking Fundamentals', 
       challengeType: 'Skill Building',
-      credits: '95/120', 
+      credits: '95', 
       mastery: 0, 
       progress: 70, 
       time: '35 min', 
       difficulty: 'Intermediate',
-      level: 'Intermediate',
+      level: '11',
       deadline: '-07h 25m',
       status: 'in_progress', 
       buttonText: 'Continue' 
@@ -369,12 +369,12 @@ export default function ChallengesContent({ masteryData, getColorClasses, onLess
       subject: 'Time Management', 
       lesson: 'Productivity Systems Design', 
       challengeType: 'Planning Workshop',
-      credits: '80/100', 
+      credits: '80', 
       mastery: 0, 
       progress: 90, 
       time: '30 min', 
       difficulty: 'Beginner',
-      level: 'Advanced',
+      level: '12',
       deadline: '-00h 45m',
       status: 'in_progress', 
       buttonText: 'Continue' 
@@ -640,7 +640,7 @@ export default function ChallengesContent({ masteryData, getColorClasses, onLess
               <option>Deadline</option>
               <option>Progress</option>
             </select>
-          </div>
+                  </div>
           
           <div className="flex items-center space-x-3">
             <span className="text-sm text-gray-700">Show completed</span>
@@ -711,7 +711,7 @@ export default function ChallengesContent({ masteryData, getColorClasses, onLess
                     <div className="flex items-center space-x-2">
                       <span className="px-2 py-1 text-xs font-medium bg-black text-white">
                         {categoryInfo.name}
-                      </span>
+                    </span>
                       <span className="px-2 py-1 text-xs font-medium bg-black text-white">
                         {lesson.challengeType}
                       </span>
@@ -720,15 +720,8 @@ export default function ChallengesContent({ masteryData, getColorClasses, onLess
                       </span>
                     </div>
                   </td>
-                  <td className="py-4 px-4">
-                    <span className={`px-2 py-1 text-xs font-medium ${
-                      lesson.level === 'Beginner' ? 'bg-green-100 text-green-800' :
-                      lesson.level === 'Intermediate' ? 'bg-yellow-100 text-yellow-800' :
-                      lesson.level === 'Advanced' ? 'bg-orange-100 text-orange-800' :
-                      'bg-red-100 text-red-800'
-                    }`}>
-                      {lesson.level}
-                    </span>
+                  <td className="py-4 px-4 text-base text-gray-900 font-medium">
+                    {lesson.level}
                   </td>
                   <td className="py-4 px-4 text-base text-gray-600">{lesson.credits}</td>
                   <td className="py-4 px-4">
@@ -744,22 +737,22 @@ export default function ChallengesContent({ masteryData, getColorClasses, onLess
                   <td className="py-4 px-4">
                     <div className="flex items-center justify-between">
                       <span className="text-base text-gray-600">{lesson.progress}%</span>
-                      {lesson.status === 'completed' ? (
+                  {lesson.status === 'completed' ? (
                         <button className="border border-black text-black bg-transparent px-4 py-2 text-sm font-medium hover:bg-black hover:text-white transition-colors ml-4">
                           Completed
-                        </button>
-                      ) : lesson.status === 'in_progress' ? (
+                    </button>
+                  ) : lesson.status === 'in_progress' ? (
                         <button className="text-black px-4 py-2 text-sm font-medium hover:opacity-80 transition-colors ml-4" style={{ backgroundColor: '#DBFF4D' }}>
                           Continue
-                        </button>
-                      ) : (
+                    </button>
+                  ) : (
                         <button className="bg-black text-white px-4 py-2 text-sm font-medium hover:opacity-80 transition-colors ml-4">
                           Start
-                        </button>
-                      )}
+                    </button>
+                  )}
                     </div>
-                  </td>
-                </tr>
+                </td>
+              </tr>
               );
             })}
           </tbody>
