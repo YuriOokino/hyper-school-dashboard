@@ -915,9 +915,10 @@ export default function ChallengesContent({ masteryData, getColorClasses, onLess
                       <button 
                         className={`w-full py-3 text-sm font-bold uppercase transition-colors ${
                           challenge.progress > 0 
-                            ? 'bg-lime-400 text-black hover:bg-lime-500' 
+                            ? 'text-black hover:opacity-80' 
                             : 'bg-black text-white hover:bg-gray-800'
                         }`}
+                        style={challenge.progress > 0 ? { backgroundColor: '#DBFF4D' } : {}}
                       >
                         {challenge.progress > 0 ? 'Continue' : 'Start'}
                       </button>
