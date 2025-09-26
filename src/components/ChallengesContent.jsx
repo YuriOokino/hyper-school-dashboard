@@ -176,6 +176,8 @@ export default function ChallengesContent({ masteryData, getColorClasses, onLess
       progress: 76, 
       time: '45 min', 
       difficulty: 'Advanced',
+      level: 'Advanced',
+      deadline: '-02h 30m',
       status: 'in_progress', 
       buttonText: 'Continue' 
     },
@@ -190,6 +192,8 @@ export default function ChallengesContent({ masteryData, getColorClasses, onLess
       progress: 45, 
       time: '60 min', 
       difficulty: 'Advanced',
+      level: 'Expert',
+      deadline: '-05h 15m',
       status: 'in_progress', 
       buttonText: 'Continue' 
     },
@@ -204,6 +208,8 @@ export default function ChallengesContent({ masteryData, getColorClasses, onLess
       progress: 80, 
       time: '50 min', 
       difficulty: 'Intermediate',
+      level: 'Intermediate',
+      deadline: '-01h 45m',
       status: 'in_progress', 
       buttonText: 'Continue' 
     },
@@ -218,6 +224,8 @@ export default function ChallengesContent({ masteryData, getColorClasses, onLess
       progress: 70, 
       time: '75 min', 
       difficulty: 'Advanced',
+      level: 'Advanced',
+      deadline: '-12h 20m',
       status: 'in_progress', 
       buttonText: 'Continue' 
     },
@@ -234,6 +242,8 @@ export default function ChallengesContent({ masteryData, getColorClasses, onLess
       progress: 30, 
       time: '30 min', 
       difficulty: 'Beginner',
+      level: 'Beginner',
+      deadline: '-03h 45m',
       status: 'in_progress', 
       buttonText: 'Continue' 
     },
@@ -248,6 +258,8 @@ export default function ChallengesContent({ masteryData, getColorClasses, onLess
       progress: 85, 
       time: '45 min', 
       difficulty: 'Intermediate',
+      level: 'Intermediate',
+      deadline: '-08h 10m',
       status: 'in_progress', 
       buttonText: 'Continue' 
     },
@@ -262,6 +274,8 @@ export default function ChallengesContent({ masteryData, getColorClasses, onLess
       progress: 75, 
       time: '25 min', 
       difficulty: 'Beginner',
+      level: 'Beginner',
+      deadline: 'Completed',
       status: 'completed', 
       buttonText: 'Completed' 
     },
@@ -278,6 +292,8 @@ export default function ChallengesContent({ masteryData, getColorClasses, onLess
       progress: 60, 
       time: '20 min', 
       difficulty: 'Beginner',
+      level: 'Beginner',
+      deadline: '-04h 20m',
       status: 'in_progress', 
       buttonText: 'Continue' 
     },
@@ -292,6 +308,8 @@ export default function ChallengesContent({ masteryData, getColorClasses, onLess
       progress: 40, 
       time: '50 min', 
       difficulty: 'Intermediate',
+      level: 'Intermediate',
+      deadline: '-06h 55m',
       status: 'in_progress', 
       buttonText: 'Continue' 
     },
@@ -306,6 +324,8 @@ export default function ChallengesContent({ masteryData, getColorClasses, onLess
       progress: 55, 
       time: '40 min', 
       difficulty: 'Intermediate',
+      level: 'Intermediate',
+      deadline: '-09h 30m',
       status: 'in_progress', 
       buttonText: 'Continue' 
     },
@@ -322,6 +342,8 @@ export default function ChallengesContent({ masteryData, getColorClasses, onLess
       progress: 25, 
       time: '40 min', 
       difficulty: 'Beginner',
+      level: 'Beginner',
+      deadline: '-15h 00m',
       status: 'in_progress', 
       buttonText: 'Start' 
     },
@@ -336,6 +358,8 @@ export default function ChallengesContent({ masteryData, getColorClasses, onLess
       progress: 70, 
       time: '35 min', 
       difficulty: 'Intermediate',
+      level: 'Intermediate',
+      deadline: '-07h 25m',
       status: 'in_progress', 
       buttonText: 'Continue' 
     },
@@ -350,6 +374,8 @@ export default function ChallengesContent({ masteryData, getColorClasses, onLess
       progress: 90, 
       time: '30 min', 
       difficulty: 'Beginner',
+      level: 'Advanced',
+      deadline: '-00h 45m',
       status: 'in_progress', 
       buttonText: 'Continue' 
     }
@@ -607,11 +633,14 @@ export default function ChallengesContent({ masteryData, getColorClasses, onLess
           <div className="flex items-center space-x-2">
             <span className="text-sm font-medium">Sort by</span>
             <select className="border border-gray-300 px-3 py-1 text-sm bg-white">
+              <option>Challenge</option>
+              <option>Tags</option>
+              <option>Level</option>
+              <option>Hyper Credits</option>
+              <option>Deadline</option>
               <option>Progress</option>
-              <option>Name</option>
-              <option>Credits</option>
             </select>
-                  </div>
+          </div>
           
           <div className="flex items-center space-x-3">
             <span className="text-sm text-gray-700">Show completed</span>
@@ -666,7 +695,9 @@ export default function ChallengesContent({ masteryData, getColorClasses, onLess
             <tr className="border-b border-gray-200">
               <th className="text-left py-3 px-4 font-semibold text-base text-gray-900">Challenge</th>
               <th className="text-left py-3 px-4 font-semibold text-base text-gray-900">Tags</th>
+              <th className="text-left py-3 px-4 font-semibold text-base text-gray-900">Level</th>
               <th className="text-left py-3 px-4 font-semibold text-base text-gray-900">Hyper Credits</th>
+              <th className="text-left py-3 px-4 font-semibold text-base text-gray-900">Deadline</th>
               <th className="text-left py-3 px-4 font-semibold text-base text-gray-900">Progress</th>
             </tr>
           </thead>
@@ -680,7 +711,7 @@ export default function ChallengesContent({ masteryData, getColorClasses, onLess
                     <div className="flex items-center space-x-2">
                       <span className="px-2 py-1 text-xs font-medium bg-black text-white">
                         {categoryInfo.name}
-                    </span>
+                      </span>
                       <span className="px-2 py-1 text-xs font-medium bg-black text-white">
                         {lesson.challengeType}
                       </span>
@@ -689,26 +720,46 @@ export default function ChallengesContent({ masteryData, getColorClasses, onLess
                       </span>
                     </div>
                   </td>
+                  <td className="py-4 px-4">
+                    <span className={`px-2 py-1 text-xs font-medium ${
+                      lesson.level === 'Beginner' ? 'bg-green-100 text-green-800' :
+                      lesson.level === 'Intermediate' ? 'bg-yellow-100 text-yellow-800' :
+                      lesson.level === 'Advanced' ? 'bg-orange-100 text-orange-800' :
+                      'bg-red-100 text-red-800'
+                    }`}>
+                      {lesson.level}
+                    </span>
+                  </td>
                   <td className="py-4 px-4 text-base text-gray-600">{lesson.credits}</td>
+                  <td className="py-4 px-4">
+                    <span className={`text-base font-medium ${
+                      lesson.deadline === 'Completed' ? 'text-green-600' :
+                      lesson.deadline.includes('-00h') ? 'text-red-600' :
+                      lesson.deadline.includes('-01h') || lesson.deadline.includes('-02h') || lesson.deadline.includes('-03h') ? 'text-orange-600' :
+                      'text-gray-600'
+                    }`}>
+                      {lesson.deadline}
+                    </span>
+                  </td>
                   <td className="py-4 px-4">
                     <div className="flex items-center justify-between">
                       <span className="text-base text-gray-600">{lesson.progress}%</span>
-                  {lesson.status === 'completed' ? (
+                      {lesson.status === 'completed' ? (
                         <button className="border border-black text-black bg-transparent px-4 py-2 text-sm font-medium hover:bg-black hover:text-white transition-colors ml-4">
                           Completed
-                    </button>
-                  ) : lesson.status === 'in_progress' ? (
+                        </button>
+                      ) : lesson.status === 'in_progress' ? (
                         <button className="text-black px-4 py-2 text-sm font-medium hover:opacity-80 transition-colors ml-4" style={{ backgroundColor: '#DBFF4D' }}>
                           Continue
-                    </button>
-                  ) : (
+                        </button>
+                      ) : (
                         <button className="bg-black text-white px-4 py-2 text-sm font-medium hover:opacity-80 transition-colors ml-4">
                           Start
-                    </button>
-                  )}
+                        </button>
+                      )}
                     </div>
-                </td>
-              </tr>
+                  </td>
+                </tr>
               );
             })}
           </tbody>
