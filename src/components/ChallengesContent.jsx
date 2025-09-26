@@ -528,7 +528,7 @@ export default function ChallengesContent({ masteryData, getColorClasses, onLess
 
   // Challenges section component (filters + table)
   const ChallengesSection = () => (
-    <div className="bg-white p-6 mb-6">
+      <div className="bg-white p-6 mb-6">
       {/* Header */}
       <h2 className="text-3xl font-bold text-gray-900 mb-6 uppercase font-['Oswald']">YOUR CHALLENGES</h2>
       
@@ -563,8 +563,8 @@ export default function ChallengesContent({ masteryData, getColorClasses, onLess
                         <span className="text-sm text-gray-700">{filter.label}</span>
                       </label>
                     ))}
-                  </div>
-                  
+        </div>
+        
                   <h3 className="text-sm font-semibold text-gray-900 mb-3 mt-4">Filter by Subject</h3>
                   <div className="space-y-2">
                     {availableFilters.slice(4).map((filter) => (
@@ -578,12 +578,12 @@ export default function ChallengesContent({ masteryData, getColorClasses, onLess
                         <span className="text-sm text-gray-700">{filter.label}</span>
                       </label>
                     ))}
-                  </div>
+                </div>
                 </div>
               </div>
-            )}
-          </div>
-          
+                )}
+              </div>
+              
           {activeFilters.map((filterId) => {
             const filter = availableFilters.find(f => f.id === filterId);
             return (
@@ -595,13 +595,13 @@ export default function ChallengesContent({ masteryData, getColorClasses, onLess
                 >
                   <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd"/>
-                  </svg>
+                    </svg>
                 </button>
-              </div>
+                  </div>
             );
           })}
-        </div>
-
+                </div>
+                
         {/* Controls */}
         <div className="flex items-center space-x-4">
           <div className="flex items-center space-x-2">
@@ -611,25 +611,37 @@ export default function ChallengesContent({ masteryData, getColorClasses, onLess
               <option>Name</option>
               <option>Credits</option>
             </select>
-          </div>
+                  </div>
           
-          <div className="flex items-center space-x-2">
-            <span className="text-sm font-medium">Show completed</span>
-            <button
-              onClick={() => setShowCompleted(!showCompleted)}
-              className={`relative inline-flex h-6 w-11 items-center transition-colors ${
-                showCompleted ? 'bg-black' : 'bg-gray-200'
-              }`}
-            >
-              <span
-                className={`inline-block h-4 w-4 transform bg-white transition-transform ${
-                  showCompleted ? 'translate-x-6' : 'translate-x-1'
-                }`}
+          <div className="flex items-center space-x-3">
+            <span className="text-sm text-gray-700">Show completed</span>
+            <div className="relative">
+              <input 
+                type="checkbox" 
+                id="showCompleted"
+                checked={showCompleted}
+                onChange={(e) => setShowCompleted(e.target.checked)}
+                className="sr-only"
               />
-            </button>
-          </div>
-        </div>
-      </div>
+              <label 
+                htmlFor="showCompleted"
+                className="block w-12 h-6 rounded-full cursor-pointer transition-colors duration-200 flex items-center"
+                style={{ 
+                  backgroundColor: showCompleted ? '#121214' : '#E8EBFB',
+                  boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.1)'
+                }}
+              >
+                <div 
+                  className="w-5 h-5 bg-white rounded-full shadow-md transform transition-transform duration-200"
+                  style={{ 
+                    transform: showCompleted ? 'translateX(28px)' : 'translateX(2px)'
+                  }}
+                    ></div>
+              </label>
+                  </div>
+                </div>
+              </div>
+            </div>
 
       {/* Search Bar */}
       <div className="mb-6">
@@ -637,8 +649,8 @@ export default function ChallengesContent({ masteryData, getColorClasses, onLess
           <svg className="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
             <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd"/>
           </svg>
-          <input
-            type="text"
+          <input 
+            type="text" 
             placeholder="Search"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
@@ -646,7 +658,7 @@ export default function ChallengesContent({ masteryData, getColorClasses, onLess
           />
         </div>
       </div>
-      
+
       {/* Table */}
       <div className="overflow-x-auto">
         <table className="w-full">
@@ -668,7 +680,7 @@ export default function ChallengesContent({ masteryData, getColorClasses, onLess
                     <div className="flex items-center space-x-2">
                       <span className="px-2 py-1 text-xs font-medium bg-black text-white">
                         {categoryInfo.name}
-                      </span>
+                    </span>
                       <span className="px-2 py-1 text-xs font-medium bg-black text-white">
                         {lesson.challengeType}
                       </span>
@@ -681,22 +693,22 @@ export default function ChallengesContent({ masteryData, getColorClasses, onLess
                   <td className="py-4 px-4">
                     <div className="flex items-center justify-between">
                       <span className="text-base text-gray-600">{lesson.progress}%</span>
-                      {lesson.status === 'completed' ? (
+                  {lesson.status === 'completed' ? (
                         <button className="border border-black text-black bg-transparent px-4 py-2 text-sm font-medium hover:bg-black hover:text-white transition-colors ml-4">
                           Completed
-                        </button>
-                      ) : lesson.status === 'in_progress' ? (
+                    </button>
+                  ) : lesson.status === 'in_progress' ? (
                         <button className="text-black px-4 py-2 text-sm font-medium hover:opacity-80 transition-colors ml-4" style={{ backgroundColor: '#DBFF4D' }}>
                           Continue
-                        </button>
-                      ) : (
+                    </button>
+                  ) : (
                         <button className="bg-black text-white px-4 py-2 text-sm font-medium hover:opacity-80 transition-colors ml-4">
                           Start
-                        </button>
-                      )}
+                    </button>
+                  )}
                     </div>
-                  </td>
-                </tr>
+                </td>
+              </tr>
               );
             })}
           </tbody>
@@ -756,7 +768,7 @@ export default function ChallengesContent({ masteryData, getColorClasses, onLess
           </button>
         </div>
       </div>
-    </div>
+            </div>
   );
 
   // Find Your Next Challenge section component
@@ -770,7 +782,7 @@ export default function ChallengesContent({ masteryData, getColorClasses, onLess
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-2xl font-bold text-gray-900 uppercase font-['Oswald']">FIND YOUR NEXT CHALLENGE</h2>
           <div className="flex space-x-2">
-            <button 
+              <button
               onClick={prevCarousel}
               disabled={!canGoPrev}
               className={`p-2 transition-colors ${
@@ -781,9 +793,9 @@ export default function ChallengesContent({ masteryData, getColorClasses, onLess
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-              </svg>
-            </button>
-            <button 
+                </svg>
+              </button>
+                  <button
               onClick={nextCarousel}
               disabled={!canGoNext}
               className={`p-2 transition-colors ${
@@ -794,10 +806,10 @@ export default function ChallengesContent({ masteryData, getColorClasses, onLess
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </button>
+                </svg>
+              </button>
+            </div>
           </div>
-        </div>
         
         <div className="overflow-hidden">
           <div className="flex space-x-4 transition-transform duration-300 ease-in-out" 
@@ -827,30 +839,30 @@ export default function ChallengesContent({ masteryData, getColorClasses, onLess
                         <span className="px-2 py-1 text-xs font-medium bg-white text-gray-700 uppercase">
                           {challenge.difficulty}
                         </span>
-                      </div>
+              </div>
                       {challenge.isFavorite && (
                         <button className="p-1 bg-white shadow-sm hover:bg-gray-50">
                           <svg className="w-4 h-4 text-red-500" fill="currentColor" viewBox="0 0 20 20">
                             <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
-                          </svg>
-                        </button>
+                </svg>
+              </button>
                       )}
-                    </div>
-                  </div>
-                  
+            </div>
+          </div>
+
                   {/* Card content */}
                   <div className="p-4">
                     <div className="flex items-center justify-between mb-2">
                       <span className="px-2 py-1 text-xs font-medium bg-gray-100 text-gray-700 uppercase">
                         {challenge.challengeType}
-                      </span>
+                        </span>
                       <div className="flex items-center text-sm text-gray-600">
                         <svg className="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20" style={{ color: '#DBFF4D' }}>
                           <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
-                        </svg>
+                </svg>
                         <span className="font-medium">{challenge.points}</span>
-                      </div>
-                    </div>
+              </div>
+            </div>
                     
                     <h3 className="font-semibold text-gray-900 mb-1 text-sm leading-tight">{challenge.title}</h3>
                     <p className="text-xs text-gray-600 mb-3">{challenge.subject}</p>
@@ -859,7 +871,7 @@ export default function ChallengesContent({ masteryData, getColorClasses, onLess
                       <div className="flex items-center justify-between text-xs">
                         <span className="text-gray-600">Progress</span>
                         <span className="font-medium">{challenge.progress}%</span>
-                      </div>
+            </div>
                       <div className="w-full bg-gray-200 h-1">
                         <div 
                           className="h-1 transition-all duration-300" 
@@ -868,20 +880,20 @@ export default function ChallengesContent({ masteryData, getColorClasses, onLess
                             backgroundColor: categoryInfo.color
                           }}
                         ></div>
-                      </div>
+                </div>
                       <div className="flex items-center justify-between text-xs text-gray-500">
                         <span>{challenge.estimatedTime}</span>
                         <span>{challenge.subject}</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+              </div>
+            </div>
+          </div>
+          </div>
               );
             })}
-          </div>
-        </div>
-      </div>
-    );
+              </div>
+            </div>
+    </div>
+  );
   };
 
   // Modal component for all subjects
