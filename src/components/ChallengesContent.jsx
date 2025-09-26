@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 export default function ChallengesContent({ masteryData, getColorClasses, onLessonClick }) {
   const [activeTab, setActiveTab] = useState('all');
-  const [activeFilters, setActiveFilters] = useState([]);
+  const [activeFilters, setActiveFilters] = useState(['THINK', 'Mathematics', 'Physics']);
   const [searchQuery, setSearchQuery] = useState('');
   const [showCompleted, setShowCompleted] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
