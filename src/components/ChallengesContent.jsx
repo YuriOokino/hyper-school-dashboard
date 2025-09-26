@@ -860,7 +860,7 @@ export default function ChallengesContent({ masteryData, getColorClasses, onLess
             {nextChallengeData.map((challenge) => {
               const categoryInfo = categoryConfig[challenge.category];
               return (
-                <div key={challenge.id} className="flex-shrink-0 w-80 bg-white overflow-hidden hover:shadow-md transition-shadow cursor-pointer" onClick={onLessonClick}>
+                <div key={challenge.id} className="flex-shrink-0 w-80 bg-white overflow-hidden hover:shadow-[0_0_0_2px_black] transition-shadow cursor-pointer" onClick={onLessonClick}>
                   {/* Category Wave Background */}
                   <div 
                     className="relative h-40 overflow-hidden"
@@ -872,11 +872,11 @@ export default function ChallengesContent({ masteryData, getColorClasses, onLess
                     }}
                   >
                     <div className="absolute top-4 right-4">
-                      <div className="flex items-center text-white">
+                      <div className="flex items-center text-black">
                         <svg className="w-5 h-5 mr-1" fill="currentColor" viewBox="0 0 20 20" style={{ color: '#DBFF4D' }}>
                           <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
                         </svg>
-                        <span className="text-2xl font-bold text-white">{challenge.points}</span>
+                        <span className="text-2xl font-bold text-black">{challenge.points}</span>
                       </div>
                     </div>
                   </div>
