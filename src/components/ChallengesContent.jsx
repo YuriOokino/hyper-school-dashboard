@@ -821,11 +821,11 @@ export default function ChallengesContent({ masteryData, getColorClasses, onLess
     const canGoNext = carouselIndex < nextChallengeData.length - cardsPerView;
 
     return (
-      <div className="bg-white p-6 mb-6">
+      <div className="p-6 mb-6">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-2xl font-bold text-gray-900 uppercase font-['Oswald']">FIND YOUR NEXT CHALLENGE</h2>
           <div className="flex space-x-2">
-              <button
+            <button 
               onClick={prevCarousel}
               disabled={!canGoPrev}
               className={`p-2 transition-colors ${
@@ -836,9 +836,9 @@ export default function ChallengesContent({ masteryData, getColorClasses, onLess
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                </svg>
-              </button>
-                  <button
+              </svg>
+            </button>
+            <button 
               onClick={nextCarousel}
               disabled={!canGoNext}
               className={`p-2 transition-colors ${
@@ -849,21 +849,21 @@ export default function ChallengesContent({ masteryData, getColorClasses, onLess
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </button>
-            </div>
+              </svg>
+            </button>
           </div>
+        </div>
         
         <div className="overflow-hidden">
           <div className="flex space-x-4 transition-transform duration-300 ease-in-out" 
-               style={{ transform: `translateX(-${carouselIndex * (256 + 16)}px)` }}>
+               style={{ transform: `translateX(-${carouselIndex * (320 + 16)}px)` }}>
             {nextChallengeData.map((challenge) => {
               const categoryInfo = categoryConfig[challenge.category];
               return (
-                <div key={challenge.id} className="flex-shrink-0 w-64 bg-white overflow-hidden hover:shadow-md transition-shadow cursor-pointer" onClick={onLessonClick}>
+                <div key={challenge.id} className="flex-shrink-0 w-80 bg-white overflow-hidden hover:shadow-md transition-shadow cursor-pointer" onClick={onLessonClick}>
                   {/* Category Wave Background */}
                   <div 
-                    className="relative h-32 overflow-hidden"
+                    className="relative h-40 overflow-hidden"
                     style={{
                       backgroundImage: `url(${categoryInfo.svgImage})`,
                       backgroundSize: '100% auto',
@@ -871,66 +871,59 @@ export default function ChallengesContent({ masteryData, getColorClasses, onLess
                       backgroundRepeat: 'no-repeat'
                     }}
                   >
-                    <div className="absolute inset-0 flex items-start justify-between p-3">
-                      <div className="flex items-center space-x-1">
-                        <span 
-                          className="px-2 py-1 text-xs font-bold text-white uppercase"
-                          style={{ backgroundColor: categoryInfo.color }}
-                        >
-                          {categoryInfo.name}
-                        </span>
-                        <span className="px-2 py-1 text-xs font-medium bg-white text-gray-700 uppercase">
-                          {challenge.difficulty}
-                        </span>
-              </div>
-                      {challenge.isFavorite && (
-                        <button className="p-1 bg-white shadow-sm hover:bg-gray-50">
-                          <svg className="w-4 h-4 text-red-500" fill="currentColor" viewBox="0 0 20 20">
-                            <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
-                </svg>
-              </button>
-                      )}
-            </div>
-          </div>
-
+                    <div className="absolute top-4 right-4">
+                      <div className="flex items-center text-white">
+                        <svg className="w-5 h-5 mr-1" fill="currentColor" viewBox="0 0 20 20" style={{ color: '#DBFF4D' }}>
+                          <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
+                        </svg>
+                        <span className="text-2xl font-bold text-white">{challenge.points}</span>
+                      </div>
+                    </div>
+                  </div>
+                  
                   {/* Card content */}
                   <div className="p-4">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="px-2 py-1 text-xs font-medium bg-gray-100 text-gray-700 uppercase">
-                        {challenge.challengeType}
-                        </span>
-                      <div className="flex items-center text-sm text-gray-600">
-                        <svg className="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20" style={{ color: '#DBFF4D' }}>
-                          <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
-                </svg>
-                        <span className="font-medium">{challenge.points}</span>
-              </div>
-            </div>
+                    {/* Tags */}
+                    <div className="flex items-center space-x-2 mb-3">
+                      <span className="px-3 py-1 text-xs font-medium bg-black text-white">
+                        {categoryInfo.name}
+                      </span>
+                      <span className="px-3 py-1 text-xs font-medium bg-white text-black border border-black">
+                        {challenge.subject}
+                      </span>
+                    </div>
                     
-                    <h3 className="font-semibold text-gray-900 mb-1 text-sm leading-tight">{challenge.title}</h3>
-                    <p className="text-xs text-gray-600 mb-3">{challenge.subject}</p>
+                    <h3 className="text-xl font-bold text-gray-900 mb-2 uppercase">CHALLENGE</h3>
+                    <p className="text-sm text-gray-600 mb-4">This is a short description of the activity</p>
                     
-                    <div className="space-y-2">
-                      <div className="flex items-center justify-between text-xs">
-                        <span className="text-gray-600">Progress</span>
-                        <span className="font-medium">{challenge.progress}%</span>
-            </div>
-                      <div className="w-full bg-gray-200 h-1">
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm font-medium">Progress</span>
+                        <span className="text-sm font-bold">{challenge.progress}%</span>
+                      </div>
+                      <div className="w-full bg-gray-200 h-2">
                         <div 
-                          className="h-1 transition-all duration-300" 
+                          className="h-2 transition-all duration-300" 
                           style={{ 
                             width: `${challenge.progress}%`,
-                            backgroundColor: categoryInfo.color
+                            backgroundColor: challenge.progress > 0 ? '#000' : 'transparent'
                           }}
                         ></div>
+                      </div>
+                      
+                      {/* Action Button */}
+                      <button 
+                        className={`w-full py-3 text-sm font-bold uppercase transition-colors ${
+                          challenge.progress > 0 
+                            ? 'bg-lime-400 text-black hover:bg-lime-500' 
+                            : 'bg-black text-white hover:bg-gray-800'
+                        }`}
+                      >
+                        {challenge.progress > 0 ? 'Continue' : 'Start'}
+                      </button>
+                    </div>
+                  </div>
                 </div>
-                      <div className="flex items-center justify-between text-xs text-gray-500">
-                        <span>{challenge.estimatedTime}</span>
-                        <span>{challenge.subject}</span>
-              </div>
-            </div>
-          </div>
-          </div>
               );
             })}
               </div>
