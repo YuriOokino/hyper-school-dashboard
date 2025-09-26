@@ -633,7 +633,6 @@ export default function ChallengesContent({ masteryData, getColorClasses, onLess
           <div className="flex items-center space-x-2">
             <span className="text-sm font-medium">Sort by</span>
             <select className="border border-gray-300 px-3 py-1 text-sm bg-white">
-              <option>Challenge</option>
               <option>Tags</option>
               <option>Level</option>
               <option>Hyper Credits</option>
