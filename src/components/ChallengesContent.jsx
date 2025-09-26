@@ -172,7 +172,7 @@ export default function ChallengesContent({ masteryData, getColorClasses, onLess
 
   // Mastery section component
   const MasterySection = () => (
-    <div className="bg-white p-6">
+    <div className="bg-white p-6 mb-6">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold">MASTERY</h2>
         <button 
@@ -367,9 +367,9 @@ export default function ChallengesContent({ masteryData, getColorClasses, onLess
     );
   };
 
-  // All Lessons section component
-  const AllLessonsSection = () => (
-    <div className="bg-white p-6">
+  // Challenges section component (tabs + table)
+  const ChallengesSection = () => (
+    <div className="bg-white p-6 mb-6">
       {/* Tabs */}
       <div className="flex space-x-8 mb-6">
         <button
@@ -1164,7 +1164,7 @@ export default function ChallengesContent({ masteryData, getColorClasses, onLess
   return (
     <>
       <MasterySection />
-      <AllLessonsSection />
+      <ChallengesSection />
       <ContinueSection />
       {showAllSubjects && <AllSubjectsModal />}
     </>
