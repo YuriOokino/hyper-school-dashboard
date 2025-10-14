@@ -5,7 +5,6 @@ export default function SquadContent() {
   const [tutorMessages, setTutorMessages] = useState({});
   const [newMessage, setNewMessage] = useState('');
   const [newSquadMessage, setNewSquadMessage] = useState('');
-  const [activeLeaderboardTab, setActiveLeaderboardTab] = useState('students');
   const [showSquadModal, setShowSquadModal] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [squadFeedItems, setSquadFeedItems] = useState([]);
@@ -392,36 +391,124 @@ export default function SquadContent() {
   return (
     <div className="space-y-4 pb-4">
       {/* Header with Squad Info */}
-      <div className="p-3">
-        <div className="flex items-start justify-between mb-4">
-                <div>
-            <h1 className="text-3xl font-bold text-gray-900 uppercase mb-2" style={{ fontFamily: 'Oswald' }}>LIGHTNING BOLTS</h1>
-            <div className="flex items-center space-x-3 mb-1">
-              <p className="text-lg text-gray-600">Squad Lead: Ms. Rodriguez</p>
-              <button className="px-3 py-1 text-sm font-medium text-white bg-black hover:bg-gray-800 transition-colors">
-                Message
-              </button>
-                </div>
-            <div className="flex items-center space-x-3">
-              <span className="text-lg text-gray-600">95 Students</span>
-              <button 
-                onClick={() => setShowSquadModal(true)}
-                className="text-sm font-medium text-black hover:text-gray-600 transition-colors flex items-center space-x-1"
-              >
-                <span>View All</span>
-                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd"/>
-                </svg>
-                </button>
-            </div>
-          </div>
-          <div className="text-right">
-            <div className="text-2xl font-bold text-gray-900">#2</div>
-            <div className="text-sm text-gray-600">Squad Rank</div>
+      <div>
+        {/* Title and Rank */}
+        <div className="flex items-center space-x-4 mb-4">
+          <h1 className="text-3xl font-bold text-gray-900 uppercase" style={{ fontFamily: 'Oswald' }}>LIGHTNING BOLTS</h1>
+          <div className="flex items-center space-x-2 px-4 py-2 bg-yellow-100 border-2 border-yellow-400">
+            <svg className="w-6 h-6 text-yellow-600" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+            </svg>
+            <span className="text-2xl font-bold text-gray-900">#2</span>
+            <span className="text-sm font-medium text-gray-600">Rank</span>
           </div>
         </div>
-        
+
+        {/* Info Cards Grid */}
+        <div className="grid grid-cols-4 gap-2">
+          {/* Card 1: Squad Leader */}
+          <div className="col-span-1 bg-white border-2 border-gray-200 p-4 flex flex-col justify-between">
+            <div>
+              <h3 className="font-bold text-gray-900 uppercase mb-3">Squad Leader</h3>
+              <div className="flex items-center space-x-3 mb-3">
+                <div className="relative">
+                  <div className="w-12 h-12 rounded-full bg-purple-500 flex items-center justify-center text-white font-bold text-lg">
+                    MR
+                  </div>
+                  <div className="absolute -bottom-1 -right-1">
+                    <div className="w-4 h-4 bg-green-500 border-2 border-white rounded-full"></div>
+                  </div>
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="font-bold text-gray-900">Ms. Rodriguez</div>
+                  <div className="text-xs text-green-600">● Online</div>
+                </div>
               </div>
+            </div>
+            <button className="w-full px-3 py-2 text-sm font-medium text-white bg-black hover:bg-gray-800 transition-colors">
+              Message
+            </button>
+          </div>
+
+          {/* Card 2: Squad Members */}
+          <div className="col-span-1 bg-white border-2 border-gray-200 p-4 flex flex-col justify-between">
+            <div>
+              <h3 className="font-bold text-gray-900 uppercase mb-3">Squad Members</h3>
+              <div className="mb-3">
+                <div className="text-3xl font-bold text-gray-900 mb-1">95</div>
+                <div className="text-sm text-gray-600 mb-2">Total Students</div>
+                <div className="flex items-center space-x-1">
+                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                  <span className="text-xs text-gray-600">82 online</span>
+                </div>
+              </div>
+            </div>
+            <button 
+              onClick={() => setShowSquadModal(true)}
+              className="w-full px-3 py-2 text-sm font-medium border-2 border-gray-900 hover:bg-gray-900 hover:text-white transition-colors"
+            >
+              View All
+            </button>
+          </div>
+
+          {/* Card 3: Leaderboard Preview (spans 2 columns) */}
+          <div className="col-span-2 bg-white border-2 border-gray-200 p-4">
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="font-bold text-gray-900 uppercase">Leaderboard Preview</h3>
+              <button className="text-xs font-medium text-black hover:text-gray-600 transition-colors flex items-center space-x-1">
+                <span>View Full Rankings</span>
+                <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd"/>
+                </svg>
+              </button>
+            </div>
+            
+            <div className="grid grid-cols-2 gap-4">
+              {/* Top 5 Students */}
+              <div>
+                <h4 className="font-semibold text-gray-900 mb-2">Top Students</h4>
+                <div className="space-y-1">
+                  {individualLeaderboard.slice(0, 5).map((user, index) => (
+                    <div 
+                      key={index} 
+                      className={`flex items-center justify-between text-sm py-1 px-2 ${
+                        user.isCurrentUser ? 'bg-yellow-100 font-bold' : ''
+                      }`}
+                    >
+                      <div className="flex items-center space-x-2">
+                        <span className="text-gray-500 font-medium">#{index + 1}</span>
+                        <span className="truncate">{user.name}</span>
+                      </div>
+                      <span className="text-gray-600">{user.points}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Top 5 Squads */}
+              <div>
+                <h4 className="font-semibold text-gray-900 mb-2">Top Squads</h4>
+                <div className="space-y-1">
+                  {squadLeaderboard.slice(0, 5).map((squad, index) => (
+                    <div 
+                      key={index} 
+                      className={`flex items-center justify-between text-sm py-1 px-2 ${
+                        squad.isCurrentSquad ? 'bg-yellow-100 font-bold' : ''
+                      }`}
+                    >
+                      <div className="flex items-center space-x-2">
+                        <span className="text-gray-500 font-medium">#{squad.rank}</span>
+                        <span className="truncate">{squad.name}</span>
+                      </div>
+                      <span className="text-gray-600">{squad.points}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
               
 
       {/* Squad Feed - Supervised Group Chat + Achievements */}
@@ -430,7 +517,7 @@ export default function SquadContent() {
           {/* Left Sidebar - Tutors */}
           <div className="w-80 border-r border-gray-200 flex flex-col bg-gray-50">
             <div className="p-4 border-b border-gray-200 bg-white">
-              <h3 className="text-sm font-bold text-gray-900 uppercase mb-1">Squad Chat</h3>
+              <h3 className="font-bold text-gray-900 uppercase mb-1">Squad Chat</h3>
               <div className="flex items-center space-x-2 mt-2">
                 <svg className="w-4 h-4 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
                   <path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"/>
@@ -787,106 +874,14 @@ export default function SquadContent() {
         </div>
       </div>
 
-      {/* Leaderboard - Full Width */}
-      <div className="mt-6 mb-6">
-        <div className="bg-white border border-gray-200 flex flex-col" style={{ maxHeight: '500px' }}>
-          <div className="p-6  flex-shrink-0">
-            <h2 className="text-xl font-bold text-gray-900 mb-4 uppercase">LEADERBOARD</h2>
-            <div className="flex space-x-6">
-              <button
-                onClick={() => setActiveLeaderboardTab('students')}
-                className={`pb-2 font-medium transition-colors ${
-                  activeLeaderboardTab === 'students'
-                    ? 'text-black border-b-2 border-black'
-                    : 'text-gray-500 hover:text-gray-700'
-                }`}
-              >
-                Students
-              </button>
-              <button
-                onClick={() => setActiveLeaderboardTab('squads')}
-                className={`pb-2 font-medium transition-colors ${
-                  activeLeaderboardTab === 'squads'
-                    ? 'text-black border-b-2 border-black'
-                    : 'text-gray-500 hover:text-gray-700'
-                }`}
-              >
-                Squads
-              </button>
-          </div>
-        </div>
-
-          <div className="flex-1 overflow-y-auto p-6" style={{ scrollBehavior: 'smooth' }}>
-            {activeLeaderboardTab === 'students' ? (
-              <div className="space-y-3">
-                {individualLeaderboard.slice(0, 10).map((user, index) => (
-                  <div 
-                    key={index} 
-                    className={`flex items-center justify-between p-3 ${
-                      user.isCurrentUser ? '' : 'bg-gray-50'
-                    }`}
-                    style={user.isCurrentUser ? { backgroundColor: '#DBFF4D' } : {}}
-                  >
-                    <div className="flex items-center space-x-3">
-                      <div className="text-lg font-bold text-gray-700">#{index + 1}</div>
-                      <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center text-sm font-semibold">
-                        {user.name.charAt(0)}
-                      </div>
-                <div className="flex-1">
-                        <div className="font-semibold text-gray-900">{user.name}</div>
-                        <div className="text-sm text-gray-600">
-                          {user.points.toLocaleString()} pts • Lv.{user.level} • {user.streak} day streak • {user.badges} badges
-                        </div>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-sm font-medium text-gray-900">{user.mastery}%</div>
-                      <div className="text-xs text-gray-500">Mastery</div>
-                </div>
-              </div>
-            ))}
-              </div>
-            ) : (
-              <div className="space-y-3">
-                {squadLeaderboard.slice(0, 10).map((squad, index) => (
-                  <div 
-                    key={index} 
-                    className={`flex items-center justify-between p-3 ${
-                      squad.isCurrentSquad ? '' : 'bg-gray-50'
-                    }`}
-                    style={squad.isCurrentSquad ? { backgroundColor: '#DBFF4D' } : {}}
-                  >
-                    <div className="flex items-center space-x-3">
-                      <div className="text-lg font-bold text-gray-700">#{squad.rank}</div>
-                      <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold" style={{ backgroundColor: '#FF69B4', color: 'white' }}>
-                        {squad.name.split(' ').map((word) => word.charAt(0)).join('').substring(0, 2)}
-                      </div>
-                      <div className="flex-1">
-                        <div className="font-semibold text-gray-900">{squad.name}</div>
-                        <div className="text-sm text-gray-600">
-                          {squad.points.toLocaleString()} pts • {squad.members} members • Avg Lv.{squad.avgLevel} • {squad.activeMembers} active
-                        </div>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-sm font-medium text-gray-900">{squad.mastery}%</div>
-                      <div className="text-xs text-gray-500">Mastery</div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
 
       {/* Squad Members Modal */}
       {showSquadModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" onClick={() => setShowSquadModal(false)}>
-          <div className="bg-white w-full max-w-sm max-h-[60vh] mx-4  flex flex-col" style={{}} onClick={(e) => e.stopPropagation()}>
+          <div className="bg-white w-full max-w-2xl max-h-[60vh] mx-4  flex flex-col" style={{}} onClick={(e) => e.stopPropagation()}>
             <div className="p-4  flex-shrink-0">
               <div className="flex items-center justify-between mb-3">
-                <h2 className="text-lg font-bold text-gray-900 uppercase">SQUAD MEMBERS</h2>
+                <h2 className="text-2xl font-bold text-gray-900 uppercase">SQUAD MEMBERS</h2>
                 <button 
                   onClick={() => setShowSquadModal(false)}
                   className="p-1 hover:bg-gray-100 transition-colors"
@@ -901,39 +896,30 @@ export default function SquadContent() {
                 placeholder="Search students..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-black"
+                className="w-full px-3 py-2 border border-gray-300 text-base focus:outline-none focus:ring-2 focus:ring-black"
               />
-              <p className="text-sm text-gray-600 mt-2">{filteredMembers.length} students</p>
+              <p className="text-base text-gray-600 mt-2">{filteredMembers.length} students</p>
             </div>
             <div className="flex-1 overflow-y-auto p-4">
               <div className="space-y-1">
                 {filteredMembers.map((member, index) => (
                   <div 
                     key={index} 
-                    className="flex items-center space-x-3 p-2 text-sm hover:bg-gray-50"
+                    className="flex items-center space-x-3 p-3 text-base hover:bg-gray-50"
                   >
                     <div className="relative">
-                      <div className="w-6 h-6 bg-gray-300 flex items-center justify-center text-xs font-semibold">
+                      <div className="w-10 h-10 bg-gray-300 flex items-center justify-center text-base font-semibold">
                         {member.name.charAt(0)}
                       </div>
                       <div className="absolute -bottom-0.5 -right-0.5">
-                        <div className={`w-2 h-2 border border-white rounded-full ${
+                        <div className={`w-3 h-3 border border-white rounded-full ${
                           member.status === 'online' ? 'bg-green-500' : 
                           member.status === 'idle' ? 'bg-pink-400' : 'bg-gray-400'
                         }`}></div>
                       </div>
                     </div>
                     <div className="flex-1 font-medium text-gray-900">{member.name}</div>
-                    <div className="text-xs text-gray-500">Lv.{member.level}</div>
-                    {!member.isCurrentUser && (
-                      <button
-                        onClick={() => handleChatWithMember(member)}
-                        className="px-2 py-1 text-xs font-medium text-black hover:bg-gray-200 transition-colors"
-                        style={{ backgroundColor: '#C4CEFF' }}
-                      >
-                        Chat
-                      </button>
-                    )}
+                    <div className="text-sm text-gray-500">Lv.{member.level}</div>
                   </div>
                 ))}
               </div>
