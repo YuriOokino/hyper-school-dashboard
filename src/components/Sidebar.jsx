@@ -169,7 +169,7 @@ export default function Sidebar({ setActivePage, onCollapseChange }) {
       {!isCollapsed && (
         <div className="px-4 mb-4">
           <h3 className="text-sm font-bold text-white mb-3">ACHIEVEMENTS</h3>
-          <div className="flex space-x-2">
+          <div className="flex space-x-2 mb-2">
             <div className="relative group">
               <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center cursor-pointer">
                 <span className="text-white text-xs">🏆</span>
@@ -202,6 +202,12 @@ export default function Sidebar({ setActivePage, onCollapseChange }) {
                 Goal Achiever
               </div>
             </div>
+          </div>
+          <div className="flex items-center cursor-pointer mt-2">
+            <span className="text-sm text-gray-400">View all</span>
+            <svg className="w-4 h-4 text-gray-400 ml-1" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd"/>
+            </svg>
           </div>
         </div>
       )}
@@ -246,8 +252,17 @@ export default function Sidebar({ setActivePage, onCollapseChange }) {
                 {/* Tutor Chats */}
                 {chats.map((chat) => (
                   <div key={chat.id} className="group flex items-center space-x-3 p-2 hover:bg-gray-800 cursor-pointer relative" onClick={() => handleChatClick(chat)}>
-                    <div className="w-8 h-8 rounded-full bg-gray-600 flex items-center justify-center text-sm text-white font-semibold">
-                      {chat.name.charAt(0)}
+                    <div className="relative">
+                      <div className="w-8 h-8 rounded-full bg-gray-600 flex items-center justify-center text-sm text-white font-semibold">
+                        {chat.name.charAt(0)}
+                      </div>
+                      <div className="absolute -bottom-0.5 -right-0.5">
+                        <div className={`w-3 h-3 border-2 border-black rounded-full ${
+                          chat.status === 'online' ? 'bg-green-500' : 
+                          chat.status === 'idle' ? 'bg-yellow-500' : 
+                          'bg-gray-500'
+                        }`}></div>
+                      </div>
                     </div>
                     <div className="flex-1">
                       <div className="text-sm text-white">{chat.name}</div>
@@ -257,16 +272,6 @@ export default function Sidebar({ setActivePage, onCollapseChange }) {
                     )}
                   </div>
                 ))}
-                
-                <div 
-                  className="flex items-center p-3 cursor-pointer mt-2"
-                  onClick={() => setActivePage('squad')}
-                >
-                  <span className="text-sm text-gray-400">View all</span>
-                  <svg className="w-4 h-4 text-gray-400 ml-1" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd"/>
-                  </svg>
-                </div>
               </>
             ) : (
               /* Collapsed Chat Icon */
@@ -280,13 +285,25 @@ export default function Sidebar({ setActivePage, onCollapseChange }) {
             )}
           </div>
         )}
+        
+        {!isCollapsed && (
+          <div className="flex items-center cursor-pointer mt-2" onClick={() => setActivePage('squad')}>
+            <span className="text-sm text-gray-400">View all</span>
+            <svg className="w-4 h-4 text-gray-400 ml-1" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd"/>
+            </svg>
+          </div>
+        )}
       </div>
       
       <div className={`${isCollapsed ? 'p-2' : 'p-4'}`}>
         {/* Chat with AI Tutor Button */}
         {!isCollapsed ? (
           <button 
-            className="w-full flex items-center justify-center space-x-2 hover:bg-gray-800 text-white py-3 px-4 transition-colors"
+            className="w-full flex items-center justify-center space-x-2 text-white py-3 px-4 transition-colors"
+            style={{ backgroundColor: 'rgba(255, 255, 255, 0.2)' }}
+            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.4)'}
+            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.3)'}
             onClick={() => handleChatClick(chats[2])}
           >
             <img 
@@ -302,7 +319,10 @@ export default function Sidebar({ setActivePage, onCollapseChange }) {
         ) : (
           <div className="flex justify-center">
             <button 
-              className="w-10 h-10 hover:bg-gray-800 text-white flex items-center justify-center transition-colors"
+              className="w-10 h-10 text-white flex items-center justify-center transition-colors"
+              style={{ backgroundColor: 'rgba(255, 255, 255, 0.2)' }}
+              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.4)'}
+              onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.3)'}
               onClick={() => handleChatClick(chats[2])}
             >
               <img 

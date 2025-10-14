@@ -26,7 +26,7 @@ export default function StudentDashboard() {
     {
       subject: "Math",
       percentage: 60,
-      level: "Intermediate",
+      level: "Level 6",
       levelNumber: "3 of 5",
       nextMilestone: "50 points to Level 4",
       lastStudied: "2 days ago",
@@ -41,7 +41,7 @@ export default function StudentDashboard() {
     {
       subject: "Science",
       percentage: 75,
-      level: "Advanced",
+      level: "Level 7",
       levelNumber: "4 of 5",
       nextMilestone: "25 points to Level 5",
       lastStudied: "1 day ago",
@@ -56,7 +56,7 @@ export default function StudentDashboard() {
     {
       subject: "English",
       percentage: 45,
-      level: "Beginner",
+      level: "Level 5",
       levelNumber: "2 of 5",
       nextMilestone: "75 points to Level 3",
       lastStudied: "3 days ago",
@@ -71,7 +71,7 @@ export default function StudentDashboard() {
     {
       subject: "History",
       percentage: 80,
-      level: "Expert",
+      level: "Level 8",
       levelNumber: "5 of 5",
       nextMilestone: "Mastered!",
       lastStudied: "Today",
