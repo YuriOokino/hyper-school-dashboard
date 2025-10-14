@@ -1,20 +1,14 @@
 import { useState, useEffect } from 'react';
 
 export default function SquadContent() {
-  const [selectedChat, setSelectedChat] = useState(null);
-  const [chatMessages, setChatMessages] = useState({});
+  const [selectedTutor, setSelectedTutor] = useState(null);
+  const [tutorMessages, setTutorMessages] = useState({});
   const [newMessage, setNewMessage] = useState('');
+  const [newSquadMessage, setNewSquadMessage] = useState('');
   const [activeLeaderboardTab, setActiveLeaderboardTab] = useState('students');
   const [showSquadModal, setShowSquadModal] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [showComments, setShowComments] = useState(null);
-  const [newComment, setNewComment] = useState('');
-  const [recentChatsState, setRecentChatsState] = useState([]);
-  const [collapsedSections, setCollapsedSections] = useState({
-    topChats: false,
-    tutors: false,
-    chatHistory: false
-  });
+  const [squadFeedItems, setSquadFeedItems] = useState([]);
   
   // Current user data
   const currentUser = {
@@ -48,8 +42,8 @@ export default function SquadContent() {
     { name: "Ocean Waves", points: 41800, members: 92, rank: 5, mastery: 83, avgLevel: 3.8, activeMembers: 78 }
   ];
 
-  // Recent chats data
-  const recentChats = [
+  // Tutor chats data
+  const tutorChats = [
     { 
       id: 0,
       name: "AI Tutor",
@@ -57,32 +51,13 @@ export default function SquadContent() {
       time: "Just now",
       unread: 0,
       type: "ai",
-      avatar: "AI"
-    },
-    { 
-      id: 1,
-      name: "Study Group Alpha",
-      lastMessage: "Anyone free for math help?",
-      time: "2 min ago",
-      unread: 3,
-      type: "group",
-      members: 8,
-      avatar: "SG"
-    },
-    { 
-      id: 2,
-      name: "Leo",
-      lastMessage: "Great job on the science quiz!",
-      time: "15 min ago",
-      unread: 1,
-      type: "individual",
-      status: "online",
-      avatar: "L"
+      avatar: "AI",
+      status: "online"
     }
   ];
 
-  // Sample chat messages
-  const sampleChatMessages = {
+  // Tutor chat messages
+  const initialTutorMessages = {
     0: [ // AI Tutor
       { id: 1, sender: "AI Tutor", message: "Hi Jennifer! How did your calculus exam go yesterday?", time: "9:15 AM", isCurrentUser: false, date: "Monday, January 13" },
       { id: 2, sender: "Jennifer", message: "It went well, thanks for the help with derivatives!", time: "9:16 AM", isCurrentUser: true, date: "Monday, January 13" },
@@ -96,80 +71,104 @@ export default function SquadContent() {
       { id: 10, sender: "Jennifer", message: "The conservation of momentum in collisions", time: "10:32 AM", isCurrentUser: true, date: "Today" },
       { id: 11, sender: "AI Tutor", message: "In elastic collisions, both momentum and kinetic energy are conserved. In inelastic, only momentum is conserved.", time: "10:33 AM", isCurrentUser: false, date: "Today" },
       { id: 12, sender: "Jennifer", message: "Can you give me a practice problem?", time: "10:35 AM", isCurrentUser: true, date: "Today" }
-    ],
-    1: [ // Study Group Alpha
-      { id: 1, sender: "Sarah", message: "Did everyone finish the chemistry lab report?", time: "3:20 PM", isCurrentUser: false, date: "Friday, January 10" },
-      { id: 2, sender: "Leo", message: "Still working on the conclusion section", time: "3:22 PM", isCurrentUser: false, date: "Friday, January 10" },
-      { id: 3, sender: "Jennifer", message: "I can share my notes if it helps", time: "3:25 PM", isCurrentUser: true, date: "Friday, January 10" },
-      { id: 4, sender: "Maya", message: "That would be amazing, thank you!", time: "3:26 PM", isCurrentUser: false, date: "Friday, January 10" },
-      { id: 5, sender: "Sarah", message: "Jennifer's notes are always so well organized", time: "3:28 PM", isCurrentUser: false, date: "Friday, January 10" },
-      { id: 6, sender: "Leo", message: "Agreed! They saved me in organic chemistry", time: "3:30 PM", isCurrentUser: false, date: "Friday, January 10" },
-      { id: 7, sender: "Maya", message: "Hey everyone! Ready for the study session tomorrow?", time: "7:45 PM", isCurrentUser: false, date: "Sunday, January 12" },
-      { id: 8, sender: "Jennifer", message: "Yes! I'll bring the whiteboard markers", time: "7:47 PM", isCurrentUser: true, date: "Sunday, January 12" },
-      { id: 9, sender: "Sarah", message: "I'll bring snacks and coffee", time: "7:48 PM", isCurrentUser: false, date: "Sunday, January 12" },
-      { id: 10, sender: "Leo", message: "Perfect! See you all at 2 PM in the library", time: "7:50 PM", isCurrentUser: false, date: "Sunday, January 12" },
-      { id: 11, sender: "Leo", message: "Anyone free for math help?", time: "2:15 PM", isCurrentUser: false, date: "Today", isNew: true },
-      { id: 12, sender: "Jennifer", message: "I can help! What topic?", time: "2:16 PM", isCurrentUser: true, date: "Today" },
-      { id: 13, sender: "Leo", message: "Quadratic equations are confusing me", time: "2:17 PM", isCurrentUser: false, date: "Today" },
-      { id: 14, sender: "Maya", message: "I'm also struggling with those! Mind if I join?", time: "2:18 PM", isCurrentUser: false, date: "Today" },
-      { id: 15, sender: "Jennifer", message: "Of course! The more the merrier 😊", time: "2:19 PM", isCurrentUser: true, date: "Today" }
-    ],
-    2: [ // Leo
-      { id: 1, sender: "Leo", message: "Hey! Did you see the new assignment posted?", time: "4:30 PM", isCurrentUser: false, date: "Thursday, January 9" },
-      { id: 2, sender: "Jennifer", message: "Yes, looks challenging but interesting", time: "4:35 PM", isCurrentUser: true, date: "Thursday, January 9" },
-      { id: 3, sender: "Leo", message: "Want to work on it together this weekend?", time: "4:36 PM", isCurrentUser: false, date: "Thursday, January 9" },
-      { id: 4, sender: "Jennifer", message: "Sounds great! Saturday afternoon work for you?", time: "4:38 PM", isCurrentUser: true, date: "Thursday, January 9" },
-      { id: 5, sender: "Leo", message: "Perfect! My place or the library?", time: "4:40 PM", isCurrentUser: false, date: "Thursday, January 9" },
-      { id: 6, sender: "Jennifer", message: "Library is good - quieter for studying", time: "4:42 PM", isCurrentUser: true, date: "Thursday, January 9" },
-      { id: 7, sender: "Leo", message: "How did you find the science quiz?", time: "11:20 AM", isCurrentUser: false, date: "Monday, January 13" },
-      { id: 8, sender: "Jennifer", message: "It was challenging but fair!", time: "11:25 AM", isCurrentUser: true, date: "Monday, January 13" },
-      { id: 9, sender: "Leo", message: "I totally blanked on the molecular structure question", time: "11:27 AM", isCurrentUser: false, date: "Monday, January 13" },
-      { id: 10, sender: "Jennifer", message: "That one was tricky! The benzene rings threw me off too", time: "11:30 AM", isCurrentUser: true, date: "Monday, January 13" },
-      { id: 11, sender: "Leo", message: "At least we survived organic chemistry this semester 😅", time: "11:32 AM", isCurrentUser: false, date: "Monday, January 13" },
-      { id: 12, sender: "Leo", message: "Great job on the quiz results! 🎉", time: "2:30 PM", isCurrentUser: false, date: "Today", isNew: true },
-      { id: 13, sender: "Jennifer", message: "Thanks! Your study tips really helped", time: "2:32 PM", isCurrentUser: true, date: "Today" },
-      { id: 14, sender: "Leo", message: "We should celebrate! Coffee after class?", time: "2:35 PM", isCurrentUser: false, date: "Today" },
-      { id: 15, sender: "Jennifer", message: "Absolutely! I know a great café near campus", time: "2:37 PM", isCurrentUser: true, date: "Today" }
     ]
   };
 
-  // Squad achievements data
-  const squadAchievements = [
+  // Initial squad feed data - mix of achievements and messages
+  const initialSquadFeed = [
     {
+      id: 1,
+      type: "achievement",
       user: "Leo",
       achievement: "🏆 Quiz Master",
       description: "Perfect score on Math quiz!",
       time: "2 min ago",
+      timestamp: Date.now() - 120000,
       reactions: { likes: 15, fire: 8, congrats: 12 },
-      comments: 3,
-      canReact: true
+      userReactions: []
     },
     {
+      id: 2,
+      type: "message",
+      user: "Maya",
+      message: "Congrats Leo! That's amazing! 🎉",
+      time: "3 min ago",
+      timestamp: Date.now() - 180000,
+      reactions: { likes: 3, fire: 0, congrats: 0 },
+      userReactions: []
+    },
+    {
+      id: 3,
+      type: "message",
+      user: "Jennifer",
+      message: "Way to go! Can you share your study techniques?",
+      time: "5 min ago",
+      timestamp: Date.now() - 300000,
+      reactions: { likes: 5, fire: 0, congrats: 0 },
+      userReactions: []
+    },
+    {
+      id: 4,
+      type: "achievement",
       user: "Sophia",
       achievement: "🎯 Streak Champion",
       description: "20-day learning streak achieved",
       time: "15 min ago",
+      timestamp: Date.now() - 900000,
       reactions: { likes: 23, fire: 5, congrats: 18 },
-      comments: 7,
-      canReact: true
+      userReactions: []
     },
     {
+      id: 5,
+      type: "message",
+      user: "Ethan",
+      message: "Sophia, you're an inspiration! Keep it up! 💪",
+      time: "16 min ago",
+      timestamp: Date.now() - 960000,
+      reactions: { likes: 7, fire: 2, congrats: 0 },
+      userReactions: []
+    },
+    {
+      id: 6,
+      type: "message",
+      user: "Ava",
+      message: "Does anyone have tips for the upcoming science test?",
+      time: "30 min ago",
+      timestamp: Date.now() - 1800000,
+      reactions: { likes: 4, fire: 0, congrats: 0 },
+      userReactions: []
+    },
+    {
+      id: 7,
+      type: "achievement",
       user: "Maya",
       achievement: "📚 Knowledge Seeker",
       description: "Completed 6 lessons today",
       time: "1 hour ago",
+      timestamp: Date.now() - 3600000,
       reactions: { likes: 11, fire: 14, congrats: 7 },
-      comments: 2,
-      canReact: true
+      userReactions: []
     },
     {
+      id: 8,
+      type: "message",
+      user: "Jordan",
+      message: "Hey squad! Who's ready for this week's challenges?",
+      time: "1.5 hours ago",
+      timestamp: Date.now() - 5400000,
+      reactions: { likes: 12, fire: 8, congrats: 0 },
+      userReactions: []
+    },
+    {
+      id: 9,
+      type: "achievement",
       user: "Ethan",
       achievement: "💡 Problem Solver",
       description: "Solved advanced calculus challenge",
       time: "2 hours ago",
+      timestamp: Date.now() - 7200000,
       reactions: { likes: 19, fire: 11, congrats: 15 },
-      comments: 5,
-      canReact: true
+      userReactions: []
     }
   ];
 
@@ -248,26 +247,33 @@ export default function SquadContent() {
     return <span className="text-gray-500 text-sm">— {change}</span>;
   };
 
-  const handleReaction = (achievementIndex, reactionType) => {
-    console.log(`Reacted with ${reactionType} to achievement ${achievementIndex}`);
-  };
-
-  const handleComment = (feedIndex) => {
-    setShowComments(showComments === feedIndex ? null : feedIndex);
-  };
-
-  const handleAddComment = (feedIndex) => {
-    if (newComment.trim()) {
-      // In a real app, this would update the backend
-      console.log(`Added comment to feed ${feedIndex}: ${newComment}`);
-      setNewComment('');
-    }
+  const handleReaction = (feedItemId, reactionType) => {
+    setSquadFeedItems(prevItems => 
+      prevItems.map(item => {
+        if (item.id === feedItemId) {
+          const hasReacted = item.userReactions.includes(reactionType);
+          return {
+            ...item,
+            reactions: {
+              ...item.reactions,
+              [reactionType]: hasReacted 
+                ? item.reactions[reactionType] - 1 
+                : item.reactions[reactionType] + 1
+            },
+            userReactions: hasReacted
+              ? item.userReactions.filter(r => r !== reactionType)
+              : [...item.userReactions, reactionType]
+          };
+        }
+        return item;
+      })
+    );
   };
 
   const handleConnectToTutor = (tutor) => {
-    // Create a new chat with the tutor
-    const newChat = {
-      id: Date.now(), // Simple ID generation
+    const tutorId = Date.now();
+    const newTutor = {
+      id: tutorId,
       name: `${tutor.subject} Tutor`,
       type: 'tutor',
       avatar: tutor.subject.charAt(0),
@@ -277,36 +283,32 @@ export default function SquadContent() {
       status: tutor.availability.includes('now') ? 'online' : 'idle'
     };
 
-    // Add to the beginning of the chat list
-    setRecentChatsState(prevChats => [newChat, ...prevChats]);
-    
-    // Initialize chat messages for this new chat
-    setChatMessages(prevMessages => ({
-      ...prevMessages,
-      [newChat.id]: [
+    // Initialize messages for this tutor
+    setTutorMessages(prev => ({
+      ...prev,
+      [tutorId]: [
         {
           id: 1,
           sender: `${tutor.subject} Tutor`,
           message: `Hi Jennifer! I'm your ${tutor.subject} tutor. How can I help you today?`,
           time: "now",
-          isCurrentUser: false
+          isCurrentUser: false,
+          date: "Today"
         }
       ]
     }));
 
-    // Auto-select the new chat
-    setSelectedChat(newChat);
-    
-    console.log(`Connected to ${tutor.subject} tutor`);
+    setSelectedTutor(newTutor);
   };
 
   const filteredMembers = squadMembers.filter(member =>
     member.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  // Initialize chat state with recentChats data
+  // Initialize squad feed and tutor messages
   useEffect(() => {
-    setRecentChatsState(recentChats);
+    setSquadFeedItems(initialSquadFeed);
+    setTutorMessages(initialTutorMessages);
   }, []);
 
   const handleChatWithMember = (member) => {
@@ -314,63 +316,76 @@ export default function SquadContent() {
     setShowSquadModal(false);
   };
 
-  const toggleSection = (section) => {
-    setCollapsedSections(prev => ({
-      ...prev,
-      [section]: !prev[section]
-    }));
-  };
-
-  const selectChat = (chat) => {
-    setSelectedChat(chat);
-    if (!chatMessages[chat.id]) {
-      setChatMessages(prev => ({
+  const selectTutor = (tutor) => {
+    setSelectedTutor(tutor);
+    if (!tutorMessages[tutor.id] && initialTutorMessages[tutor.id]) {
+      setTutorMessages(prev => ({
         ...prev,
-        [chat.id]: sampleChatMessages[chat.id] || []
+        [tutor.id]: initialTutorMessages[tutor.id]
       }));
     }
   };
 
-  const getCurrentMessages = () => {
-    if (!selectedChat) return [];
-    return chatMessages[selectedChat.id] || sampleChatMessages[selectedChat.id] || [];
+  const getCurrentTutorMessages = () => {
+    if (!selectedTutor) return [];
+    return tutorMessages[selectedTutor.id] || initialTutorMessages[selectedTutor.id] || [];
   };
 
-  const handleSendChatMessage = () => {
-    if (!newMessage.trim() || !selectedChat) return;
+  const handleSendTutorMessage = () => {
+    if (!newMessage.trim() || !selectedTutor) return;
     
     const newMsg = {
       id: Date.now(),
       sender: "Jennifer",
       message: newMessage,
       time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-      isCurrentUser: true
+      isCurrentUser: true,
+      date: "Today"
     };
 
-    setChatMessages(prev => ({
+    setTutorMessages(prev => ({
       ...prev,
-      [selectedChat.id]: [...(prev[selectedChat.id] || []), newMsg]
+      [selectedTutor.id]: [...(prev[selectedTutor.id] || []), newMsg]
     }));
     
     setNewMessage('');
     
-    // AI response simulation
-    if (selectedChat.type === 'ai') {
+    // AI/Tutor response simulation
+    if (selectedTutor.type === 'ai' || selectedTutor.type === 'tutor') {
       setTimeout(() => {
-        const aiResponse = {
+        const response = {
           id: Date.now() + 1,
-          sender: "AI Tutor",
+          sender: selectedTutor.name,
           message: "I understand you need help with that topic. Let me provide guidance and examples.",
           time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-          isCurrentUser: false
+          isCurrentUser: false,
+          date: "Today"
         };
         
-        setChatMessages(prev => ({
+        setTutorMessages(prev => ({
           ...prev,
-          [selectedChat.id]: [...(prev[selectedChat.id] || []), aiResponse]
+          [selectedTutor.id]: [...(prev[selectedTutor.id] || []), response]
         }));
       }, 1000);
     }
+  };
+
+  const handleSendSquadMessage = () => {
+    if (!newSquadMessage.trim()) return;
+    
+    const newMsg = {
+      id: Date.now(),
+      type: "message",
+      user: "Jennifer",
+      message: newSquadMessage,
+      time: "Just now",
+      timestamp: Date.now(),
+      reactions: { likes: 0, fire: 0, congrats: 0 },
+      userReactions: []
+    };
+
+    setSquadFeedItems(prev => [newMsg, ...prev]);
+    setNewSquadMessage('');
   };
 
 
@@ -409,481 +424,372 @@ export default function SquadContent() {
               </div>
               
 
-      {/* Main Content - Chat Interface */}
+      {/* Squad Feed - Supervised Group Chat + Achievements */}
       <div className="mb-4">
-        <div className=" flex flex-col h-[600px]" style={{}}>
-          {/* Search Bar and New Button - Top of Chat */}
-          <div className="p-4 bg-gray-800">
-            <div className="flex items-center justify-between">
-              <div className="relative" style={{ width: '320px' }}>
-                <svg className="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd"/>
+        <div className="bg-white border border-gray-200 flex" style={{ minHeight: '600px' }}>
+          {/* Left Sidebar - Tutors */}
+          <div className="w-80 border-r border-gray-200 flex flex-col bg-gray-50">
+            <div className="p-4 border-b border-gray-200 bg-white">
+              <h3 className="text-sm font-bold text-gray-900 uppercase mb-1">Squad Chat</h3>
+              <div className="flex items-center space-x-2 mt-2">
+                <svg className="w-4 h-4 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"/>
                 </svg>
-                <input
-                  type="text"
-                  placeholder="Search contact"
-                  className="w-full pl-10 pr-4 py-2 bg-white border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-              <button className="px-6 py-3 text-sm font-medium text-white border border-green-400 hover:bg-green-400 transition-colors" style={{ backgroundColor: '#DBFF4D', color: '#000' }}>
-                New ⊕
-              </button>
-            </div>
-          </div>
-
-          <div className="bg-white flex flex-1 min-h-0">
-          {/* Chat Sidebar - Enhanced Design */}
-          <div className="w-80  flex flex-col bg-white overflow-hidden">
-
-            <div className="flex-1 overflow-y-auto min-h-0">
-              {/* Top Chats Section */}
-              <div className="p-3">
-                <div className="flex items-center justify-between mb-2 cursor-pointer" onClick={() => toggleSection('topChats')}>
-                  <h3 className="text-sm font-medium text-gray-700">Top chats</h3>
-                  <svg className={`w-4 h-4 text-gray-400 transition-transform ${collapsedSections.topChats ? '-rotate-90' : ''}`} fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd"/>
-                  </svg>
-                </div>
-                
-                {!collapsedSections.topChats && (
-                  <div className="space-y-1">
-                    {recentChatsState.filter(chat => chat.type !== 'ai' && chat.type !== 'tutor').map((chat) => (
-                  <div 
-                    key={chat.id} 
-                    onClick={() => selectChat(chat)}
-                    className={`flex items-center p-2 hover:bg-gray-50 cursor-pointer mb-1 ${
-                      selectedChat?.id === chat.id ? 'bg-blue-100' : ''
-                    }`}
-                  >
-                    <div className="relative mr-3">
-                      <div className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold text-white" style={{ backgroundColor: '#FF69B4' }}>
-                        {chat.avatar}
-                      </div>
-                      {chat.type === 'individual' && (
-                        <div className="absolute -bottom-1 -right-1">
-                          <div className={`w-3 h-3 rounded-full border-2 border-white ${
-                            chat.status === 'online' ? 'bg-green-500' : 
-                            chat.status === 'idle' ? 'bg-yellow-500' : 'bg-gray-400'
-                          }`}></div>
-                        </div>
-                      )}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between">
-                        <span className="font-medium text-gray-900 truncate">{chat.name}</span>
-                        {chat.unread > 0 && (
-                          <span className="ml-2 px-1 text-xs font-bold text-white bg-pink-500">New!</span>
-                        )}
-                      </div>
-                      <div className="text-xs text-gray-600 capitalize">
-                        {chat.type === 'individual' ? chat.status : `${chat.members} Online`}
-                      </div>
-                    </div>
-                </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              {/* Tutors Section */}
-              <div className="p-3 ">
-                <div className="flex items-center justify-between mb-2 cursor-pointer" onClick={() => toggleSection('tutors')}>
-                  <h3 className="text-sm font-medium text-gray-700">Tutors</h3>
-                  <svg className={`w-4 h-4 text-gray-400 transition-transform ${collapsedSections.tutors ? '-rotate-90' : ''}`} fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd"/>
-                  </svg>
-                </div>
-                
-                {!collapsedSections.tutors && (
-                  <div className="space-y-1">
-                    {/* AI Tutor */}
-                <div 
-                  onClick={() => selectChat(recentChatsState.find(chat => chat.type === 'ai'))}
-                  className={`flex items-center p-2 hover:bg-gray-50 cursor-pointer mb-1 ${
-                    selectedChat?.type === 'ai' ? 'bg-blue-100' : ''
-                  }`}
-                >
-                  <div className="relative mr-3">
-                    <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ backgroundColor: '#3FC7FF' }}>
-                      <span className="text-white font-bold text-sm">AI</span>
-                    </div>
-                    <div className="absolute -bottom-1 -right-1">
-                      <div className="w-3 h-3 bg-green-500 border-2 border-white rounded-full"></div>
-                    </div>
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center justify-between">
-                      <span className="font-medium text-gray-900">AI Tutor</span>
-                      <button className="px-2 py-1 text-xs bg-gray-100 text-gray-700 hover:bg-gray-200">
-                        Chat
-                      </button>
-                    </div>
-                    <div className="text-xs text-green-600">Always active</div>
-                  </div>
-                </div>
-
-                {/* Subject Tutors */}
-                {availableTutors.slice(0, 4).map((tutor, index) => (
-                  <div 
-                    key={index}
-                    onClick={() => handleConnectToTutor(tutor)}
-                    className="flex items-center p-2 hover:bg-gray-50 cursor-pointer mb-1"
-                  >
-                    <div className="relative mr-3">
-                      <div className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm" style={{ backgroundColor: '#666' }}>
-                        {tutor.subject.charAt(0)}
-                      </div>
-                      <div className="absolute -bottom-1 -right-1">
-                        <div className={`w-3 h-3 rounded-full border-2 border-white ${
-                          tutor.availability.includes('now') ? 'bg-green-500' : 'bg-gray-400'
-                        }`}></div>
-                      </div>
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between">
-                        <span className="font-medium text-gray-900 truncate">{tutor.subject} Tutor</span>
-                        <button className="px-2 py-1 text-xs bg-gray-100 text-gray-700 hover:bg-gray-200">
-                          Chat
-                        </button>
-                      </div>
-                      <div className="text-xs text-gray-600">{tutor.availability.includes('now') ? 'Online' : 'Back at 2:30PM'}</div>
-                    </div>
-                  </div>
-                ))}
-                  </div>
-                )}
-              </div>
-
-              {/* All Chats */}
-              <div className="p-3 ">
-                <div className="flex items-center justify-between mb-2 cursor-pointer" onClick={() => toggleSection('chatHistory')}>
-                  <h3 className="text-sm font-medium text-gray-700">All chats</h3>
-                  <svg className={`w-4 h-4 text-gray-400 transition-transform ${collapsedSections.chatHistory ? '-rotate-90' : ''}`} fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd"/>
-                  </svg>
-                </div>
-                
-                {!collapsedSections.chatHistory && (
-                  <div className="space-y-1">
-                    <p className="text-xs text-gray-500 px-2">No additional chat history</p>
-                  </div>
-                )}
+                <span className="text-xs text-gray-600">
+                  Supervised by <span className="font-semibold">Ms. Rodriguez</span>
+                </span>
               </div>
             </div>
 
-            {/* User Status */}
-            <div className="p-3  bg-gray-900">
-              <div className="flex items-center space-x-3">
-                <div className="relative">
-                  <div className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold" style={{ backgroundColor: '#DBFF4D', color: '#000' }}>
-                    J
+            <div className="flex-1 overflow-y-auto p-3">
+              {/* Squad Feed Link */}
+              <div 
+                onClick={() => setSelectedTutor(null)}
+                className={`flex items-center p-3 cursor-pointer mb-3 transition-all ${
+                  !selectedTutor ? 'bg-blue-100 border-2 border-blue-500' : 'bg-white hover:bg-gray-100 border border-gray-200'
+                }`}
+              >
+                <div className="relative mr-3">
+                  <div className="w-10 h-10 rounded-full flex items-center justify-center font-bold text-white" style={{ backgroundColor: '#DBFF4D', color: '#000' }}>
+                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"/>
+                    </svg>
+                  </div>
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="font-semibold text-gray-900 text-sm">Squad Feed</div>
+                  <div className="text-xs text-gray-600">95 members online</div>
+                </div>
+              </div>
+
+              <div className="border-t border-gray-300 my-3"></div>
+              <h4 className="text-xs font-semibold text-gray-500 uppercase px-2 mb-2">Private Tutoring</h4>
+
+              {/* AI Tutor */}
+              <div 
+                onClick={() => selectTutor(tutorChats[0])}
+                className={`flex items-center p-3 cursor-pointer mb-2 transition-all ${
+                  selectedTutor?.id === tutorChats[0].id ? 'bg-blue-100 border-2 border-blue-500' : 'bg-white hover:bg-gray-100 border border-gray-200'
+                }`}
+              >
+                <div className="relative mr-3">
+                  <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ backgroundColor: '#3FC7FF' }}>
+                    <span className="text-white font-bold text-sm">AI</span>
                   </div>
                   <div className="absolute -bottom-1 -right-1">
                     <div className="w-3 h-3 bg-green-500 border-2 border-white rounded-full"></div>
                   </div>
                 </div>
-                <div className="flex-1">
-                  <div className="font-medium text-white">Jennifer</div>
-                  <div className="text-xs text-green-400">Online ●</div>
+                <div className="flex-1 min-w-0">
+                  <div className="font-semibold text-gray-900 text-sm">AI Tutor</div>
+                  <div className="text-xs text-green-600 font-medium">● Always Available</div>
                 </div>
               </div>
+
+              {availableTutors.map((tutor, index) => (
+                <div 
+                  key={index}
+                  onClick={() => handleConnectToTutor(tutor)}
+                  className={`flex items-center p-3 cursor-pointer mb-2 transition-all ${
+                    selectedTutor?.name === `${tutor.subject} Tutor` ? 'bg-blue-100 border-2 border-blue-500' : 'bg-white hover:bg-gray-100 border border-gray-200'
+                  }`}
+                >
+                  <div className="relative mr-3">
+                    <div className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm" style={{ backgroundColor: '#666' }}>
+                      {tutor.subject.charAt(0)}
+                    </div>
+                    <div className="absolute -bottom-1 -right-1">
+                      <div className={`w-3 h-3 rounded-full border-2 border-white ${
+                        tutor.availability.includes('now') ? 'bg-green-500' : 'bg-gray-400'
+                      }`}></div>
+                    </div>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="font-semibold text-gray-900 text-sm">{tutor.subject}</div>
+                    <div className={`text-xs font-medium ${tutor.availability.includes('now') ? 'text-green-600' : 'text-gray-500'}`}>
+                      {tutor.availability}
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
 
-            {/* Chat Main Area */}
-            <div className="flex-1 flex flex-col min-h-0 overflow-hidden">
-            {selectedChat ? (
+          {/* Main Content Area */}
+          <div className="flex-1 flex flex-col">
+            {selectedTutor ? (
+              /* Tutor Chat Interface */
               <>
-                {/* Chat Header - Slack Style */}
-                <div className="px-4 py-3  bg-white">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-3">
-                      <h3 className="text-lg font-bold text-gray-900">
-                        {selectedChat.type === 'group' && '# '}
-                        {selectedChat.name}
-                      </h3>
-                      
-                      {selectedChat.type === 'individual' && selectedChat.status && (
-                        <div className="flex items-center space-x-1">
-                          <div className={`w-2 h-2 rounded-full ${
-                            selectedChat.status === 'online' ? 'bg-green-500' : 
-                            selectedChat.status === 'idle' ? 'bg-yellow-500' : 'bg-gray-400'
-                          }`}></div>
-                          <span className="text-sm text-gray-600 capitalize">{selectedChat.status}</span>
-                        </div>
-                      )}
-                      
-                      {selectedChat.type === 'group' && (
-                        <div className="flex items-center space-x-2">
-                          {/* Member avatars */}
-                          <div className="flex -space-x-2">
-                            <div className="w-6 h-6 rounded-full border-2 border-white flex items-center justify-center text-xs font-semibold text-white" style={{ backgroundColor: '#C4CEFF' }}>
-                              L
-                            </div>
-                            <div className="w-6 h-6 rounded-full border-2 border-white flex items-center justify-center text-xs font-semibold text-white" style={{ backgroundColor: '#FF69B4' }}>
-                              A
-                            </div>
-                            <div className="w-6 h-6 rounded-full border-2 border-white flex items-center justify-center text-xs font-semibold text-white" style={{ backgroundColor: '#3FC7FF' }}>
-                              S
-                            </div>
-                            <div className="w-6 h-6 rounded-full border-2 border-white flex items-center justify-center text-xs font-semibold text-white" style={{ backgroundColor: '#DBFF4D', color: '#000' }}>
-                              J
-                            </div>
-                            <div className="w-6 h-6 rounded-full border-2 border-white bg-gray-300 flex items-center justify-center text-xs font-semibold text-gray-600">
-                              +{selectedChat.members - 4}
-                            </div>
-                          </div>
-                          <span className="text-sm text-gray-600">{selectedChat.members} members</span>
-                        </div>
-                      )}
-                      
-                      {selectedChat.type === 'ai' && (
-                        <span className="px-2 py-1 bg-green-100 text-green-800 text-xs font-medium">AI Assistant</span>
-                      )}
-                      
-                      {selectedChat.type === 'tutor' && (
-                        <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs font-medium">Subject Tutor</span>
-                      )}
-                    </div>
-                    
-                    <div className="flex items-center space-x-1">
-                      <button className="p-2 hover:bg-gray-100 text-gray-600 hover:text-gray-800 transition-colors">
-                        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                          <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
-                        </svg>
-                      </button>
-                      <button className="p-2 hover:bg-gray-100 text-gray-600 hover:text-gray-800 transition-colors">
-                        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                          <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"/>
-                        </svg>
-                      </button>
-                    </div>
-        </div>
-      </div>
+                {/* Back to Squad Feed Link */}
+                <div className="px-4 py-3 bg-gradient-to-r from-blue-50 to-purple-50 border-b border-gray-200">
+                  <button 
+                    onClick={() => setSelectedTutor(null)}
+                    className="flex items-center space-x-2 text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors"
+                  >
+                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd"/>
+                    </svg>
+                    <span>Back to Squad Feed</span>
+                  </button>
+                </div>
 
-                {/* Messages Area - Slack Style */}
-                <div className="flex-1 overflow-y-auto bg-gray-50 min-h-0">
-                  <div className="p-4 space-y-1">
-                    {getCurrentMessages().map((message, index) => {
-                      const previousMessage = getCurrentMessages()[index - 1];
-                      const showAvatar = !previousMessage || previousMessage.sender !== message.sender || previousMessage.isCurrentUser !== message.isCurrentUser;
-                      const showDateSeparator = !previousMessage || previousMessage.date !== message.date;
-                      const showNewSeparator = message.isNew && (!previousMessage || !previousMessage.isNew);
-                      
-                      
-                      return (
-                        <div key={message.id}>
-                          {/* Date Separator */}
-                          {showDateSeparator && (
-                            <div className="flex items-center my-4 -mx-4 px-4">
-                              <div className="flex-1 h-px bg-gray-300"></div>
-                              <div className="px-4 text-xs font-medium text-gray-600 bg-gray-50">
-                                {message.date}
-                              </div>
-                              <div className="flex-1 h-px bg-gray-300"></div>
-                            </div>
-                          )}
-                          
-                          {/* NEW Separator */}
-                          {showNewSeparator && (
-                            <div className="flex items-center my-3 -mx-4 px-4">
-                              <div className="flex-1 h-px bg-red-300"></div>
-                              <div className="px-3 py-1 text-xs font-bold text-red-600 bg-red-50 border border-red-200">
-                                NEW
-                              </div>
-                              <div className="flex-1 h-px bg-red-300"></div>
-                            </div>
-                          )}
-                          
-                          <div className="group hover:bg-gray-50 -mx-4 px-4 py-1">
-                            <div className="flex items-start space-x-3">
-                              {showAvatar ? (
-                                <div className="flex-shrink-0 mt-1">
-                                  <div className="w-9 h-9 flex items-center justify-center text-sm font-semibold text-white" 
-                                       style={{ 
-                                         backgroundColor: message.isCurrentUser ? '#DBFF4D' : 
-                                                        message.sender === 'AI Tutor' ? '#3FC7FF' :
-                                                        message.sender.includes('Tutor') ? '#FF69B4' : '#C4CEFF'
-                                       }}>
-                                    {message.isCurrentUser ? 'J' : message.sender.charAt(0)}
-                                  </div>
-                                </div>
-                              ) : (
-                                <div className="w-9 flex-shrink-0 flex justify-center">
-                                  <div className="text-xs text-gray-500 opacity-0 group-hover:opacity-100 mt-1">
-                                    {message.time}
-                                  </div>
-                                </div>
-                              )}
-                              
-                              <div className="flex-1 min-w-0">
-                                {showAvatar && (
-                                  <div className="flex items-baseline space-x-2 mb-1">
-                                    <span className="text-sm font-bold text-gray-900">
-                                      {message.isCurrentUser ? 'Jennifer' : message.sender}
-                                    </span>
-                                    <span className="text-xs text-gray-500">
-                                      {message.time}
-                                    </span>
-                                  </div>
-                                )}
-                                
-                                <div className="text-sm text-gray-900 leading-relaxed">
-                                  {message.message}
-                                </div>
-                                
-                                {/* Message actions (appear on hover) */}
-                                <div className="opacity-0 group-hover:opacity-100 transition-opacity mt-1">
-                <div className="flex items-center space-x-1">
-                                    <button className="p-1 hover:bg-gray-200 text-gray-500 hover:text-gray-700 text-xs">
-                                      😊
-                                    </button>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      );
-                    })}
+                <div className="p-4 border-b border-gray-200 bg-white">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-10 h-10 rounded-full flex items-center justify-center" 
+                         style={{ backgroundColor: selectedTutor.type === 'ai' ? '#3FC7FF' : '#666' }}>
+                      <span className="text-white font-bold text-sm">
+                        {selectedTutor.type === 'ai' ? 'AI' : selectedTutor.avatar}
+                      </span>
+                    </div>
+                    <div>
+                      <div className="font-bold text-gray-900">{selectedTutor.name}</div>
+                      <div className="text-xs text-green-600">● Online - Private Session</div>
+                    </div>
                   </div>
                 </div>
 
-                {/* Message Input - Slack Style */}
-                <div className="p-4 bg-white">
-                  <div className="relative">
-                    <div className="border border-gray-300 focus-within:border-black focus-within:shadow-sm bg-white">
-                      <div className="flex items-end p-3">
-                        <div className="flex-1">
-                          <input
-                            type="text"
-                            value={newMessage}
-                            onChange={(e) => setNewMessage(e.target.value)}
-                            placeholder={`Message ${selectedChat.name}`}
-                            className="w-full text-sm text-gray-900 placeholder-gray-500 border-0 focus:outline-none resize-none bg-transparent"
-                            onKeyPress={(e) => e.key === 'Enter' && !e.shiftKey && (e.preventDefault(), handleSendChatMessage())}
-                          />
-                        </div>
-                        
-                        {/* Input toolbar */}
-                        <div className="flex items-center space-x-2 ml-3">
-                          <button className="p-1 text-gray-500 hover:text-gray-700 hover:bg-gray-100">
-                            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                              <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clipRule="evenodd"/>
-                            </svg>
-                          </button>
-                          <button className="p-1 text-gray-500 hover:text-gray-700 hover:bg-gray-100">
-                            😊
-                          </button>
-                          <button
-                            onClick={handleSendChatMessage}
-                            className="px-3 py-1 bg-black text-white hover:bg-gray-800 transition-colors text-xs font-medium"
-                          >
-                            Send
-                          </button>
+                <div className="flex-1 overflow-y-auto bg-gray-50 p-4">
+                  <div className="space-y-3">
+                    {getCurrentTutorMessages().map((message) => (
+                      <div key={message.id} className={`flex ${message.isCurrentUser ? 'justify-end' : 'justify-start'}`}>
+                        <div className={`max-w-md px-4 py-2 ${
+                          message.isCurrentUser 
+                            ? 'bg-black text-white' 
+                            : 'bg-white border border-gray-200 text-gray-900'
+                        }`}>
+                          <div className="text-sm">{message.message}</div>
+                          <div className={`text-xs mt-1 ${message.isCurrentUser ? 'text-gray-300' : 'text-gray-500'}`}>
+                            {message.time}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    
-                    {/* Format toolbar (like Slack) */}
-                    <div className="flex items-center justify-between mt-2 text-xs text-gray-500">
+                    ))}
+                  </div>
+                </div>
+
+                <div className="p-4 border-t border-gray-200 bg-white">
+                  <div className="border border-gray-300 focus-within:border-black bg-white">
+                    <input
+                      type="text"
+                      value={newMessage}
+                      onChange={(e) => setNewMessage(e.target.value)}
+                      placeholder="Ask a question..."
+                      className="w-full px-3 py-3 text-sm focus:outline-none bg-transparent"
+                      onKeyPress={(e) => e.key === 'Enter' && !e.shiftKey && (e.preventDefault(), handleSendTutorMessage())}
+                    />
+                    <div className="flex items-center justify-between px-3 pb-2">
                       <div className="flex items-center space-x-3">
-                        <button className="hover:text-gray-700">
-                          <strong>B</strong>
+                        <button className="text-gray-500 hover:text-gray-700 transition-colors">
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
+                          </svg>
                         </button>
-                        <button className="hover:text-gray-700">
-                          <em>I</em>
+                        <button className="text-gray-500 hover:text-gray-700 transition-colors">
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                          </svg>
                         </button>
-                        <button className="hover:text-gray-700">
+                        <button className="text-gray-500 hover:text-gray-700 transition-colors font-bold text-sm">
+                          B
+                        </button>
+                        <button className="text-gray-500 hover:text-gray-700 transition-colors italic text-sm">
+                          I
+                        </button>
+                        <button className="text-gray-500 hover:text-gray-700 transition-colors text-sm">
                           <s>S</s>
                         </button>
-                        <button className="hover:text-gray-700">
-                          + Add file
-                        </button>
-                        <button className="hover:text-gray-700">
-                          🔗 Link
-                  </button>
                       </div>
-                      <div className="text-xs text-gray-400">
-                        <span className="font-medium">Enter</span> to send, <span className="font-medium">Shift + Enter</span> for new line
-                      </div>
+                      <button
+                        onClick={handleSendTutorMessage}
+                        className="px-4 py-1.5 bg-black text-white hover:bg-gray-800 transition-colors text-sm font-medium"
+                      >
+                        Send
+                      </button>
                     </div>
                   </div>
                 </div>
               </>
             ) : (
-              <div className="flex-1 flex items-center justify-center bg-gray-50">
-                <div className="text-center">
-                  <svg className="w-16 h-16 text-gray-400 mx-auto mb-4" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clipRule="evenodd"/>
-                  </svg>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">Select a conversation</h3>
-                  <p className="text-gray-600">Choose from your recent messages to start chatting</p>
+              /* Unified Feed - Achievements + Messages */
+              <>
+                <div className="flex-1 overflow-y-auto bg-gray-50">
+            <div className="max-w-4xl mx-auto p-4 space-y-3">
+              {squadFeedItems.map((item) => (
+                <div key={item.id}>
+                  {item.type === 'achievement' ? (
+                    /* Achievement Card - Prominent */
+                    <div className="bg-gradient-to-r from-yellow-50 to-orange-50 border-2 border-yellow-300 p-4 shadow-sm hover:shadow-md transition-all">
+                      <div className="flex items-start space-x-3 mb-3">
+                        <div className="w-12 h-12 rounded-full flex items-center justify-center font-bold text-white text-lg" style={{ backgroundColor: '#FF69B4' }}>
+                          {item.user.charAt(0)}
+                        </div>
+                        <div className="flex-1">
+                          <div className="flex items-center space-x-2 mb-1">
+                            <span className="font-bold text-gray-900 text-base">{item.user}</span>
+                            <span className="text-sm text-gray-500">{item.time}</span>
+                          </div>
+                          <div className="text-2xl font-bold text-gray-900 mb-1">{item.achievement}</div>
+                          <div className="text-sm text-gray-700">{item.description}</div>
+                        </div>
+                      </div>
+                      
+                      {/* Prominent Reactions */}
+                      <div className="flex items-center space-x-2 pt-3 border-t border-yellow-200">
+                        <button 
+                          onClick={() => handleReaction(item.id, 'likes')}
+                          className={`flex items-center space-x-2 px-4 py-2 rounded-full transition-all ${
+                            item.userReactions.includes('likes')
+                              ? 'bg-blue-100 border-2 border-blue-500'
+                              : 'bg-white border border-gray-300 hover:border-blue-400 hover:bg-blue-50'
+                          }`}
+                        >
+                          <span className="text-2xl">👍</span>
+                          <span className="font-bold text-gray-900">{item.reactions.likes}</span>
+                        </button>
+                        <button 
+                          onClick={() => handleReaction(item.id, 'fire')}
+                          className={`flex items-center space-x-2 px-4 py-2 rounded-full transition-all ${
+                            item.userReactions.includes('fire')
+                              ? 'bg-orange-100 border-2 border-orange-500'
+                              : 'bg-white border border-gray-300 hover:border-orange-400 hover:bg-orange-50'
+                          }`}
+                        >
+                          <span className="text-2xl">🔥</span>
+                          <span className="font-bold text-gray-900">{item.reactions.fire}</span>
+                        </button>
+                        <button 
+                          onClick={() => handleReaction(item.id, 'congrats')}
+                          className={`flex items-center space-x-2 px-4 py-2 rounded-full transition-all ${
+                            item.userReactions.includes('congrats')
+                              ? 'bg-green-100 border-2 border-green-500'
+                              : 'bg-white border border-gray-300 hover:border-green-400 hover:bg-green-50'
+                          }`}
+                        >
+                          <span className="text-2xl">🎉</span>
+                          <span className="font-bold text-gray-900">{item.reactions.congrats}</span>
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    /* Regular Message */
+                    <div className="bg-white border border-gray-200 p-3 hover:shadow-sm transition-all">
+                      <div className="flex items-start space-x-3">
+                        <div className="w-10 h-10 rounded-full flex items-center justify-center font-bold text-white" 
+                             style={{ backgroundColor: item.user === 'Jennifer' ? '#DBFF4D' : '#C4CEFF' }}>
+                          <span style={{ color: item.user === 'Jennifer' ? '#000' : '#FFF' }}>
+                            {item.user.charAt(0)}
+                          </span>
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center space-x-2 mb-1">
+                            <span className="font-semibold text-gray-900">{item.user}</span>
+                            <span className="text-xs text-gray-500">{item.time}</span>
+                          </div>
+                          <div className="text-sm text-gray-800">{item.message}</div>
+                          
+                          {/* Message Reactions - Smaller */}
+                          <div className="flex items-center space-x-1 mt-2">
+                            <button 
+                              onClick={() => handleReaction(item.id, 'likes')}
+                              className={`flex items-center space-x-1 px-2 py-1 rounded-full text-xs transition-all ${
+                                item.userReactions.includes('likes')
+                                  ? 'bg-blue-100'
+                                  : 'hover:bg-gray-100'
+                              }`}
+                            >
+                              <span>👍</span>
+                              {item.reactions.likes > 0 && <span className="font-medium">{item.reactions.likes}</span>}
+                            </button>
+                            <button 
+                              onClick={() => handleReaction(item.id, 'fire')}
+                              className={`flex items-center space-x-1 px-2 py-1 rounded-full text-xs transition-all ${
+                                item.userReactions.includes('fire')
+                                  ? 'bg-orange-100'
+                                  : 'hover:bg-gray-100'
+                              }`}
+                            >
+                              <span>🔥</span>
+                              {item.reactions.fire > 0 && <span className="font-medium">{item.reactions.fire}</span>}
+                            </button>
+                            <button 
+                              onClick={() => handleReaction(item.id, 'congrats')}
+                              className={`flex items-center space-x-1 px-2 py-1 rounded-full text-xs transition-all ${
+                                item.userReactions.includes('congrats')
+                                  ? 'bg-green-100'
+                                  : 'hover:bg-gray-100'
+                              }`}
+                            >
+                              <span>🎉</span>
+                              {item.reactions.congrats > 0 && <span className="font-medium">{item.reactions.congrats}</span>}
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
-              </div>
-            )}
+              ))}
             </div>
+          </div>
+
+                {/* Message Input for Squad Feed */}
+                <div className="p-4 bg-white border-t border-gray-200">
+                  <div className="max-w-4xl mx-auto">
+                    <div className="border-2 border-gray-300 focus-within:border-black bg-white">
+                      <div className="flex items-center px-3 pt-3">
+                        <div className="w-10 h-10 rounded-full flex items-center justify-center font-bold flex-shrink-0" style={{ backgroundColor: '#DBFF4D', color: '#000' }}>
+                          J
+                        </div>
+                        <input
+                          type="text"
+                          value={newSquadMessage}
+                          onChange={(e) => setNewSquadMessage(e.target.value)}
+                          placeholder="Share with your squad..."
+                          className="flex-1 mx-3 text-sm text-gray-900 placeholder-gray-500 border-0 focus:outline-none bg-transparent"
+                          onKeyPress={(e) => e.key === 'Enter' && !e.shiftKey && (e.preventDefault(), handleSendSquadMessage())}
+                        />
+                      </div>
+                      <div className="flex items-center justify-between px-3 pb-2 pt-2">
+                        <div className="flex items-center space-x-3 ml-12">
+                          <button className="text-gray-500 hover:text-gray-700 transition-colors">
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
+                            </svg>
+                          </button>
+                          <button className="text-gray-500 hover:text-gray-700 transition-colors">
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                            </svg>
+                          </button>
+                          <button className="text-gray-500 hover:text-gray-700 transition-colors font-bold text-sm">
+                            B
+                          </button>
+                          <button className="text-gray-500 hover:text-gray-700 transition-colors italic text-sm">
+                            I
+                          </button>
+                          <button className="text-gray-500 hover:text-gray-700 transition-colors text-sm">
+                            <s>S</s>
+                          </button>
+                        </div>
+                        <button
+                          onClick={handleSendSquadMessage}
+                          className="px-4 py-1.5 text-sm font-medium text-white bg-black hover:bg-gray-800 transition-colors"
+                        >
+                          Send
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6 mb-6">
-        {/* Squad Achievements */}
-        <div className="bg-white  flex flex-col" style={{ maxHeight: '400px' }}>
-          <div className="p-6  flex-shrink-0">
-            <h2 className="text-xl font-bold text-gray-900 uppercase">SQUAD ACHIEVEMENTS</h2>
-            <p className="text-sm text-gray-600 mt-1">Recent achievements from your squad</p>
-          </div>
-          <div className="flex-1 overflow-y-auto p-6" style={{ scrollBehavior: 'smooth' }}>
-            <div className="space-y-4">
-              {squadAchievements.map((feed, index) => (
-                <div key={index} className="bg-gray-50  p-3 hover:shadow-sm transition-all duration-200 hover:bg-gray-100">
-                  <div className="flex items-start space-x-3 mb-2">
-                    <div className="w-8 h-8 flex items-center justify-center" style={{ backgroundColor: '#FF69B4' }}>
-                      <span className="text-xs font-semibold text-white">{feed.user.charAt(0)}</span>
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center space-x-2 mb-1">
-                        <span className="font-semibold text-gray-900 text-sm">{feed.user}</span>
-                        <span className="text-xs text-gray-500">{feed.time}</span>
-                      </div>
-                      <div className="text-sm font-medium text-gray-800 mb-1">{feed.achievement}</div>
-                      <div className="text-xs text-gray-600">{feed.description}</div>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center justify-between mt-2 pt-2 ">
-                    <div className="flex space-x-3 text-xs">
-                      <button 
-                        onClick={() => handleReaction(index, 'like')}
-                        className="flex items-center space-x-1 text-gray-500 hover:text-blue-600 transition-colors"
-                      >
-                        <span>👍</span>
-                        <span>{feed.reactions.likes}</span>
-                      </button>
-                      <button 
-                        onClick={() => handleReaction(index, 'fire')}
-                        className="flex items-center space-x-1 text-gray-500 hover:text-orange-600 transition-colors"
-                      >
-                        <span>🔥</span>
-                        <span>{feed.reactions.fire}</span>
-                      </button>
-                      <button 
-                        onClick={() => handleReaction(index, 'congrats')}
-                        className="flex items-center space-x-1 text-gray-500 hover:text-green-600 transition-colors"
-                      >
-                        <span>🎉</span>
-                        <span>{feed.reactions.congrats}</span>
-                      </button>
-                  </div>
-                </div>
-              </div>
-            ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Leaderboard */}
-        <div className="bg-white  flex flex-col" style={{ maxHeight: '400px' }}>
+      {/* Leaderboard - Full Width */}
+      <div className="mt-6 mb-6">
+        <div className="bg-white border border-gray-200 flex flex-col" style={{ maxHeight: '500px' }}>
           <div className="p-6  flex-shrink-0">
             <h2 className="text-xl font-bold text-gray-900 mb-4 uppercase">LEADERBOARD</h2>
             <div className="flex space-x-6">
@@ -970,7 +876,6 @@ export default function SquadContent() {
                 ))}
               </div>
             )}
-          </div>
           </div>
         </div>
       </div>
