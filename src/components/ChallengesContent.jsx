@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import ProgressTimeline from './ProgressTimeline';
 
 export default function ChallengesContent({ masteryData, getColorClasses, onLessonClick }) {
   const [activeTab, setActiveTab] = useState('all');
@@ -1035,6 +1036,7 @@ export default function ChallengesContent({ masteryData, getColorClasses, onLess
   return (
     <>
       <MasterySection />
+      <ProgressTimeline />
       <ChallengesSection />
       <NextChallengeSection />
       {showAllSubjects && <AllSubjectsModal />}
