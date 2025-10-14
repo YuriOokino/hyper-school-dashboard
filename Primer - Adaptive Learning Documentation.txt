@@ -1,0 +1,268 @@
+﻿Primer Adaptive Learning System
+________________
+
+
+Introduction
+This document outlines the core logic, algorithms, and structures that power Primer’s adaptive learning system. Designed to assess a learner's current knowledge state and guide them to optimal learning paths, the system uses a dynamic topic selection engine, guided by topic graph analysis and user performance.
+It covers:
+* Definitions of key topic properties and status indicators
+* Rules for topic eligibility, selection, and assessment
+* Two adaptive topic selection strategies: Adaptive Cycling and Centrality Locked
+* The placement testing process, including the best-of-3 evaluation, edge topic identification, and prerequisite validation
+* A step-by-step walkthrough of a test run to illustrate the system in action
+* Comparative metrics to evaluate strategic performance across simulations
+
+
+This framework enables scalable, personalized placement and study experiences for learners, ensuring they start at the right level and build knowledge efficiently.
+Topic Terminology & Properties
+Topic Properties
+* Importance: The number of all dependent topics.
+* Complexity:  The number of all prerequisite topics. 
+* Prerequisites: Directly connected topics that are needed to give context to this topic.
+* All Prerequisites: Expanded set of all topics, both directly connected or indirectly connected, that this topic depends on for necessary context.
+* Dependents: Directly connected topics that rely on this topic’s knowledge to give necessary context.
+* All Dependents: Expanded set of all topics, both directly connected or indirectly connected, that rely on this topic for understanding.
+* Group ID: Group marker for logical grouping of connected topics.
+
+
+
+
+
+
+
+Topic Types
+* Eligible for study: A topic where all its prerequisites are either Presumed Known, Known, or Mastered, and the topic itself is not yet known. These topics are eligible for direct placement testing and study transitions.
+* Edge of Knowledge: Topic on one side of the edge is known, and on the other side is either unknown or null (no dependent topic).
+* Leaf Topic: A topic that has no dependent topics 
+* Root Topic: A topic that has no prerequisite topics
+* Middle Topic: A topic that is neither an edge nor a leaf.
+* Regressed Topic: Any topic with a failed review, or a review overdue for at least a week.
+
+Topic Statuses
+   * Untested: Topic has not been attempted yet.
+   * Presumed Known: Passed via single assessment question or is a prerequisite of a known topic.
+   * Known: Passed via best-of-3 (2 out of 3 correct).
+   * Mastered: Passed via 5 consecutive correct answers.
+   * Presumed Not Known: Failed via single assessment question or is dependent on a not known topic.
+   * Not Known: Failed best-of-3 (2 out of 3 incorrect).
+
+
+
+
+Topic Selection
+Selection Methods
+   * Importance: Select the topic with the most dependents (highest importance) from the remaining graph.
+   * Centrality: Selects a topic in the middle of the remaining graph using the betweenness centrality algorithm.
+   * Complexity: Picks the topic with the most prerequisites (highest complexity) from the remaining graph.
+
+Selection Strategies
+      * Adaptive Cycling: Cycle between the Importance, Centrality, and Complexity topic selection methods, depending upon the topic assessment result.
+      * Starts with Importance.
+      * Success causes the method to switch from Importance to Centrality or from Centrality to Complexity.
+      * Failure causes the method to switch from Complexity to Centrality or from Centrality to Importance.
+      * Centrality Locked: The topic selection method is locked to Centrality upon failure of a topic selected by using the Centrality or Complexity selection method. 
+      * Starts with Importance.
+      * Success causes the method to switch from Importance to Complexity.
+      * Failure causes the method to switch from Complexity to Centrality, and lock at Centrality for the remainder of the examination.
+Placement Exam
+The placement exam aims to rapidly identify a single topic for study, which is unknown and at the edge of the student’s knowledge,  by adaptively testing topics and adjusting based on the learner's responses. 
+Assessing a Topic - Decision Tree
+Only topics marked as Untested are considered eligible for selection during the placement exam. These topics are chosen based on their relationship to the current topic, such as being a prerequisite or a dependent topic. Topics already assessed (Presumed Not Known, Not Known,  Presumed Known, Known, or Mastered) are excluded from further selection.
+      * Ask a question.
+      * If correct answer ✅, 
+      * If any dependent topic is Untested, then select another topic to evaluate from all dependent topics.
+      * If all direct dependent topics are Not Known or Presumed Not Known, or there are no dependent topics, then ask up to 2 more questions and determine the Known / Not Known status based on the best-of-3.
+      * If Known, then continue to evaluate dependent topics.
+      * If Not Known, then continue to evaluate prerequisite topics.
+      * If incorrect answer ❌
+      * If any direct prerequisite is Untested, then continue to evaluate all prerequisite topics.
+      * If all direct prerequisites are Presumed Known
+      * Test the prerequisite using best-of-3.
+      * If passed ✅✅ → status updated to Known
+      * If failed ❌❌ → this prerequisite becomes the new edge topic
+      * Validation recurses until an edge topic with all Known or Mastered prerequisite topics is found
+      * If all direct prerequisite topics are Known, then ask up to 2 more questions to determine the Known / Not Known status, based on the best-of-3.[a][b]
+      * If Known, the first incorrect answer was a mistake, and we should continue to pick topics to evaluate from the dependent topics.   
+      * If Not Known, this is a topic eligible for study (we’ve found the edge of knowledge which is between this topic and its direct prerequisites) and the placement exam can exit.
+
+
+Placement Test Demo
+This adaptive test demonstration shows how questions are dynamically selected for a student based on their correct and incorrect answers. As the test progresses, the system identifies the student's knowledge level and recommends optimal learning paths.
+Topic Tree
+Numbers (I: 15, C: 0)
+├── Counting (I: 3, C: 1)
+│   ├── Skip Counting (I: 1, C: 2)
+│   │   └── Number Comparison (I: 0, C: 4)
+│   └── Even and Odd Numbers (I: 1, C: 2)
+│       └── Number Comparison (I: 0, C: 4)
+├── Place Value (I: 2, C: 1)
+│   ├── Identifying Digits (I: 1, C: 2)
+│   │   └── Expanded Form (I: 0, C: 3)
+│   └── Expanded Form (I: 0, C: 3)
+└── Basic Operations (I: 7, C: 1)
+   └── Addition (I: 6, C: 2)
+       ├── Subtraction (I: 4, C: 3)
+       │   └── Division (I: 3, C: 5)
+       │       └── Fractions (I: 2, C: 6)
+       │           └── Understanding Halves (I: 1, C: 7)
+       │               └── Comparing Fractions (I: 0, C: 8)
+       └── Multiplication (I: 4, C: 3)
+           └── Division (I: 3, C: 5)
+               └── Fractions (I: 2, C: 6)
+                   └── Understanding Halves (I: 1, C: 7)
+                       └── Comparing Fractions (I: 0, C: 8)
+Step-by-Step Scenario Execution
+Step 1: Numbers Assessment
+Topic: Numbers (I: 15, C: 0)
+├─ Selection Method: Importance (highest importance = 15)
+├─ Assessment: Single question, correct answer  ✅
+├─ Status: Presumed Known
+├─ Action: Mark prerequisites as Presumed Known (none)
+└─ Next: Select from dependent topics
+Step 2: Division Assessment
+Topic: Division (I: 3, C: 5)
+├─ Selection Method: Centrality (after success, moved to Centrality)
+├─ Assessment: Single question, correct answer ✅
+├─ Status: Presumed Known
+├─ Action: Mark prerequisites as Presumed Known (Numbers, …)
+└─ Next: Select from dependent topics
+Step 3: Comparing Fractions Assessment
+Topic: Comparing Fractions (I: 0, C: 8)
+├─ Selection Method: Complexity (after success, move to Complexity)
+├─ Assessment: Single question, wrong answer ❌
+├─ Status: Presumed Not Known
+├─ Action: Mark dependent topics as Presumed Not Known (none - it's a leaf topic)
+└─ Next:  Select from Untested prerequisite topics
+Step 4: Fractions Assessment
+Topic: Fractions (I: 2, C: 6)
+├─ Selection Method: Centrality (after failure, fall back to Centrality)
+├─ Assessment: Single question, wrong answer ❌
+├─ Status: Presumed Not Known
+├─ Action: Mark dependent topics as Presumed Not Known (Understanding Halves, Comparing Fractions)
+└─ Next: Check prerequisites (Division) -  Presumed Known
+Step 5: Division Assessment  (Best-of-3)
+Topic: Division (I: 3, C: 5)
+├─ Selection Method: Prerequisite of Fractions (potential edge topic)
+├─ Assessment: Best-of-3, 2 correct answers ✅✅ (2/2)
+├─ Status: Known
+├─ Action: Mark prerequisites as Presumed Known (Subtraction, Multiplication, Addition, Basic Operations, Numbers)
+└─ Next: Complete Fractions (edge topic) assessment
+Step 6: Fractions Assessment (Best-of-3)
+Topic: Fractions (I: 2, C: 6)
+├─ Selection Method: Centrality (edge topic assessment)
+├─ Assessment: Best-of-3, 2 wrong answers  ❌❌ (0/2)
+├─ Status: Not Known
+└─ Action: Save Fractions for study (no Untested prerequisites)
+
+
+Final Result
+Study Topic Identified
+      * Fractions (I: 2, C: 6) - Saved for study mode
+      * Reason: Failed Best-of-3 assessment and all prerequisites validated as Known
+
+
+Study
+The system initiates study mode when an unknown edge topic is identified, which then becomes the designated study topic. The system will continue to concentrate on this topic until the student achieves mastery.
+Topic Mastery 
+When the designated study topic is successfully mastered (five consecutive correct answers), the system automatically transitions back to placement mode. The topic status is changed to Mastered and added to a review set with 7 days interval for future testing to ensure knowledge retention.
+Post-Mastery Placement Restart
+      * Mark the immediate subsequent topics as eligible for study.
+      * The system resumes the adaptive placement examination process by selecting from the Untested topics, excluding any topics that are dependent on the most recently mastered topic and any that have lower importance or higher complexity.
+      * The selection strategy continues from where it left off (IMPORTANCE, CENTRALITY, or COMPLEXITY).
+      * New edge topics may be identified as the placement process continues.
+      * This cycle continues until all topics are either mastered or another study topic is identified.
+
+
+Review 
+Once a topic is mastered, it is automatically added to a weekly review set. The system reassesses these topics every seven days to reinforce learning and ensure long-term retention. This adaptive approach ensures that learning remains fresh, helps identify any decline in understanding, and prompts re-study when needed.
+When a topic is marked as Known or Presumed Known during the Placement or Comprehensive Exam:
+      * It is automatically added to the review schedule.
+      * The initial review interval is determined by how far the topic is from the most complex related Known topic.
+      * For each step away from that most complex related Known topic, the review interval doubles:
+      * 1 step away → 14 days
+      * 2 steps away → 28 days
+      * 3 steps away → 56 days, and so on.
+Review Topic Assessment
+      * Ask a question.
+      * If correct answer ✅, 
+      * Topic is considered Known
+      * Initial Review Interval: 7 days after mastery achievement
+      * Successful Review: Next review interval doubles (7 → 14 → 28 → 56 days, ...)
+      * If incorrect answer ❌
+      * Ask up to 2 more questions to determine the Known / Not Known status, based on the best-of-3.
+      * If Known
+      * Successful Review: Next review interval doubles (7 → 14 → 28 → 56 days, ...) 
+      * If Not Known
+      * Remove from weekly review schedule
+      * Add to the study topics list and remove dependent study topics
+      * Recursively assess prerequisite topics to identify foundational gaps and reinforce learning from the bottom up.
+Overdue Review Topics
+A topic review becomes overdue if its scheduled review date has passed by at least one week. 
+
+Status: 
+      * The topic retains its completed status.
+      * It is additionally marked as a Regressed Topic.
+
+
+Impact:
+      * Not counted toward course progress or knowledge score.
+      * Added back into the study topics list.
+      * All dependent study topics are removed from the list
+
+
+Mastery Exam
+When there are no Not Known topics left, the system transitions into the Mastery Exam. The student is assessed on all topics that are not yet mastered, while already Mastered topics are skipped. The system selects the most important topic to ensure key concepts are mastered first.
+The purpose of the Mastery Exam is to confirm that the student has no gaps in their knowledge and that the topics that were presumed known are confirmed as known. To master a topic during this phase, the student must answer five questions correctly in a row.
+This final step ensures complete topic mastery and verifies the student’s readiness to graduate from the course.
+
+
+Comprehensive Exam
+The Comprehensive Exam expands upon the Placement Exam by aiming to assess the student’s understanding across the entire topic set, rather than identifying just one study topic. It follows the same adaptive approach for efficient topic selection and evaluation, but continues until every topic has been assigned a status.
+Purpose
+      * To generate a complete picture of the student’s current knowledge.
+      * To compute a Knowledge Score
+      * To help determine readiness for a particular course or grade level.
+      * To allow targeted study by identifying multiple weak areas.
+
+
+Knowledge Score
+The total number of topics marked as Presumed Known, Known, or Mastered.
+Assessing a Topic - Decision Tree
+Only topics marked as Untested are considered eligible for selection during the placement exam. These topics are chosen based on their relationship to the current topic, such as being a prerequisite or a dependent topic. Topics already assessed (Known, Not Known, Presumed Known, or Mastered) are excluded from further selection.
+      * Ask a question.
+      * If correct answer ✅, 
+      * If any dependent topic is Untested, then select another topic to evaluate from all dependent topics.
+      * If all direct dependent topics are Not Known or Presumed Not Known, or there are no dependent topics, then ask up to 2 more questions and determine the Known / Not Known status based on the best-of-3.
+      * If Known, then continue to evaluate dependent topics.
+      * If Not Known, then continue to evaluate prerequisite topics.
+      * If incorrect answer ❌
+      * If any direct prerequisite is Untested, then continue to evaluate all prerequisite topics.[c][d]
+      * If all direct prerequisites are Presumed Known[e][f]
+      * Test the prerequisite using best-of-3.
+      * If passed ✅✅ → status updated to Known
+      * If failed ❌❌ → this prerequisite becomes the new edge topic
+      * Validation recurses until an edge topic with all Known or Mastered prerequisite topics is found
+      * If all direct prerequisite topics are Known, then ask up to 2 more questions to determine the Known / Not Known status, based on the best-of-3.
+      * If Known, the first incorrect answer was a mistake, and we should continue to pick topics to evaluate from the dependent topics.   
+      * If Not Known, this is a topic eligible for study (we’ve found the edge of knowledge which is between this topic and its direct prerequisites) and continue to evaluate Untested topics.
+Pause and Resume
+      * The exam can be paused at any time.
+      * When resumed, the system restores the previous state and incorporates any updates made during the paused period.
+Completion
+      * The exam concludes when there are no more Untested topics remaining.
+      * The final Knowledge Score is the sum of Mastered, Known, and Presumed Known topics.
+
+Strategies Simulation Report
+Adaptive Cycling vs. Centrality Locked
+View comparative execution report. 
+This document contains:
+         * Execution logs and analysis from 100 simulation runs
+         * Metrics comparison for testing efficiency and topic coverage
+
+
+[a]Copy changes here to the comprehensive exam section.
+[b]Done
+[c]Copy changes here to the comprehensive exam section.
+[d]Done
+[e]Copy changes here to the comprehensive exam section.
+[f]Done
