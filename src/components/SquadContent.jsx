@@ -513,7 +513,7 @@ export default function SquadContent() {
 
       {/* Squad Feed - Supervised Group Chat + Achievements */}
       <div className="mb-4">
-        <div className="bg-white border border-gray-200 flex" style={{ minHeight: '600px' }}>
+        <div className="bg-white border border-gray-200 flex" style={{ height: 'calc(100vh - 100px)' }}>
           {/* Left Sidebar - Tutors */}
           <div className="w-80 border-r border-gray-200 flex flex-col bg-gray-50">
             <div className="p-4 border-b border-gray-200 bg-white">

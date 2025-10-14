@@ -4,7 +4,6 @@ export default function Sidebar({ setActivePage, onCollapseChange }) {
   const [isAccountOpen, setIsAccountOpen] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [selectedChat, setSelectedChat] = useState(null);
-  const [dynamicChats, setDynamicChats] = useState([]);
   const [isChatsExpanded, setIsChatsExpanded] = useState(true);
   const [isCollapsed, setIsCollapsed] = useState(false);
 
@@ -15,77 +14,55 @@ export default function Sidebar({ setActivePage, onCollapseChange }) {
     }
   }, [isCollapsed, onCollapseChange]);
 
-  // Chat data from Squad tab
+  // Tutor chats
   const chats = [
     { 
       id: 1,
-      name: "Leo", 
-      lastMessage: "Great job on the science quiz!",
-      time: "15 min ago",
-      unread: 0,
-      type: "individual",
-      status: "online"
-    },
-    { 
-      id: 2,
-      name: "Hannah", 
-      lastMessage: "Thanks for the help with calculus",
-      time: "1 hour ago",
-      unread: 2,
-      type: "individual",
-      status: "idle"
-    },
-    { 
-      id: 3,
-      name: "Math study group", 
-      lastMessage: "Anyone free for math help?",
-      time: "2 hours ago",
-      unread: 3,
-      type: "group",
-      status: "online"
-    },
-    { 
-      id: 4,
-      name: "English tutor", 
+      name: "English Tutor", 
       lastMessage: "Let's review your essay tomorrow",
       time: "1 day ago",
       unread: 0,
       type: "tutor",
-      status: "inactive"
+      status: "online",
+      isNew: true
+    },
+    { 
+      id: 2,
+      name: "Math Tutor", 
+      lastMessage: "Great work on the calculus homework",
+      time: "2 days ago",
+      unread: 0,
+      type: "tutor",
+      status: "online"
+    },
+    { 
+      id: 3,
+      name: "AI Tutor", 
+      lastMessage: "I'm here to help you learn",
+      time: "Just now",
+      unread: 0,
+      type: "ai",
+      status: "online"
     }
   ];
 
   // Sample chat messages
   const chatMessages = {
     1: [
-      { id: 1, sender: "Leo", message: "Hey! Did you see the new assignment posted?", time: "4:30 PM", isCurrentUser: false },
-      { id: 2, sender: "Jennifer", message: "Yes, looks challenging but interesting", time: "4:35 PM", isCurrentUser: true },
-      { id: 3, sender: "Leo", message: "Want to work on it together this weekend?", time: "4:36 PM", isCurrentUser: false },
-      { id: 4, sender: "Jennifer", message: "Sounds great! Saturday afternoon work for you?", time: "4:38 PM", isCurrentUser: true },
-      { id: 5, sender: "Leo", message: "Great job on the science quiz! 🎉", time: "2:30 PM", isCurrentUser: false }
-    ],
-    2: [
-      { id: 1, sender: "Hannah", message: "Hi Jennifer! Can you help me with calculus?", time: "2:00 PM", isCurrentUser: false },
-      { id: 2, sender: "Jennifer", message: "Of course! What topic are you working on?", time: "2:05 PM", isCurrentUser: true },
-      { id: 3, sender: "Hannah", message: "Integration by parts - I'm so confused", time: "2:06 PM", isCurrentUser: false },
-      { id: 4, sender: "Jennifer", message: "No worries! Let me explain the LIATE method", time: "2:10 PM", isCurrentUser: true },
-      { id: 5, sender: "Hannah", message: "Thanks for the help with calculus", time: "3:15 PM", isCurrentUser: false }
-    ],
-    3: [
-      { id: 1, sender: "Sarah", message: "Did everyone finish the chemistry lab report?", time: "3:20 PM", isCurrentUser: false },
-      { id: 2, sender: "Leo", message: "Still working on the conclusion section", time: "3:22 PM", isCurrentUser: false },
-      { id: 3, sender: "Jennifer", message: "I can share my notes if it helps", time: "3:25 PM", isCurrentUser: true },
-      { id: 4, sender: "Maya", message: "That would be amazing, thank you!", time: "3:26 PM", isCurrentUser: false },
-      { id: 5, sender: "Leo", message: "Anyone free for math help?", time: "2:15 PM", isCurrentUser: false }
-    ],
-    4: [
       { id: 1, sender: "English Tutor", message: "Hi Jennifer, how's your essay coming along?", time: "10:00 AM", isCurrentUser: false },
       { id: 2, sender: "Jennifer", message: "Making good progress! Almost done with the first draft", time: "10:15 AM", isCurrentUser: true },
       { id: 3, sender: "English Tutor", message: "Excellent! Remember to focus on your thesis statement", time: "10:20 AM", isCurrentUser: false },
       { id: 4, sender: "Jennifer", message: "Will do! Thanks for the guidance", time: "10:25 AM", isCurrentUser: true },
       { id: 5, sender: "English Tutor", message: "Let's review your essay tomorrow", time: "Yesterday", isCurrentUser: false }
     ],
-    'ai_tutor': [
+    2: [
+      { id: 1, sender: "Math Tutor", message: "Hi Jennifer! Ready to tackle some calculus problems?", time: "2:00 PM", isCurrentUser: false },
+      { id: 2, sender: "Jennifer", message: "Yes! I'm struggling with integration by parts", time: "2:05 PM", isCurrentUser: true },
+      { id: 3, sender: "Math Tutor", message: "Let's start with the LIATE method. It's a helpful way to choose u and dv", time: "2:06 PM", isCurrentUser: false },
+      { id: 4, sender: "Jennifer", message: "That makes so much more sense now!", time: "2:10 PM", isCurrentUser: true },
+      { id: 5, sender: "Math Tutor", message: "Great work on the calculus homework", time: "3:15 PM", isCurrentUser: false }
+    ],
+    3: [
       { id: 1, sender: "AI Tutor", message: "Hi Jennifer! I'm here to help you learn. What subject would you like to work on today?", time: "Just now", isCurrentUser: false },
       { id: 2, sender: "AI Tutor", message: "I can assist you with Math, Science, English, History, and many other subjects. Just let me know what you need help with!", time: "Just now", isCurrentUser: false }
     ]
@@ -107,41 +84,6 @@ export default function Sidebar({ setActivePage, onCollapseChange }) {
         return { text: 'Inactive', color: 'text-gray-500' };
       default:
         return { text: 'Inactive', color: 'text-gray-500' };
-    }
-  };
-
-  const handleAITutorClick = () => {
-    const aiTutorChat = {
-      id: 'ai_tutor',
-      name: "AI Tutor",
-      type: "ai",
-      lastMessage: "Hi Jennifer! I'm here to help you learn.",
-      time: "Just now",
-      unread: 0,
-      isNew: true,
-      status: "online"
-    };
-
-    // Check if AI Tutor chat already exists in dynamic chats
-    const existingChat = dynamicChats.find(chat => chat.id === 'ai_tutor');
-    if (!existingChat) {
-      // Add AI Tutor chat to the top of the dynamic chats list
-      setDynamicChats(prev => [aiTutorChat, ...prev]);
-    }
-
-    setSelectedChat(aiTutorChat);
-    setIsChatOpen(true);
-    setIsAccountOpen(false); // Close account panel if open
-  };
-
-  const handleDeleteChat = (chatId, event) => {
-    event.stopPropagation(); // Prevent chat click when clicking delete
-    setDynamicChats(prev => prev.filter(chat => chat.id !== chatId));
-    
-    // If the deleted chat was selected, close the chat panel
-    if (selectedChat && selectedChat.id === chatId) {
-      setIsChatOpen(false);
-      setSelectedChat(null);
     }
   };
 
@@ -191,8 +133,8 @@ export default function Sidebar({ setActivePage, onCollapseChange }) {
             setIsAccountOpen(!isAccountOpen);
           }}>
             <h2 className="text-xl font-bold text-white">Jennifer Roswell</h2>
-            <svg className={`w-4 h-4 text-gray-400 transition-transform ${isAccountOpen ? '-rotate-90' : ''}`} fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd"/>
+            <svg className="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clipRule="evenodd"/>
             </svg>
           </div>
           <div className="text-sm text-gray-400 mt-1">Level 6</div>
@@ -275,12 +217,12 @@ export default function Sidebar({ setActivePage, onCollapseChange }) {
         </div>
       )}
       
-      {/* CHATS Section */}
+      {/* CONVERSATIONS Section */}
       <div className={`${isCollapsed ? 'px-2' : 'px-4'} mb-4 flex-1`}>
         {!isCollapsed && (
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center space-x-2 cursor-pointer" onClick={() => setIsChatsExpanded(!isChatsExpanded)}>
-              <h3 className="text-sm font-bold text-white">CHATS</h3>
+              <h3 className="text-sm font-bold text-white">CONVERSATIONS</h3>
               <svg 
                 className={`w-4 h-4 text-gray-400 transition-transform duration-200 ${isChatsExpanded ? 'rotate-180' : ''}`} 
                 fill="currentColor" 
@@ -289,18 +231,11 @@ export default function Sidebar({ setActivePage, onCollapseChange }) {
                 <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd"/>
               </svg>
             </div>
-            <div className="flex items-center space-x-2">
-              <button className="p-1 hover:bg-gray-800">
-                <svg className="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd"/>
-                </svg>
-              </button>
-              <button className="p-1 hover:bg-gray-800">
-                <svg className="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"/>
-                </svg>
-              </button>
-            </div>
+            <button className="p-1 hover:bg-gray-800">
+              <svg className="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd"/>
+              </svg>
+            </button>
           </div>
         )}
         
@@ -308,148 +243,27 @@ export default function Sidebar({ setActivePage, onCollapseChange }) {
           <div className="space-y-1">
             {!isCollapsed ? (
               <>
-                {/* Dynamic Chats (AI Tutor, etc.) */}
-                {dynamicChats.map((chat) => (
+                {/* Tutor Chats */}
+                {chats.map((chat) => (
                   <div key={chat.id} className="group flex items-center space-x-3 p-2 hover:bg-gray-800 cursor-pointer relative" onClick={() => handleChatClick(chat)}>
-                    <div className="w-6 h-6 rounded-full flex items-center justify-center text-xs text-white">
-                      {chat.name === "AI Tutor" ? (
-                        <img 
-                          src="/assets/icons/AI chat icon.png" 
-                          alt="AI Chat" 
-                          className="w-4 h-4"
-                        />
-                      ) : (
-                        <div className="w-6 h-6 rounded-full bg-gray-600 flex items-center justify-center text-xs text-white">
-                          {chat.name.charAt(0)}
-                        </div>
-                      )}
+                    <div className="w-8 h-8 rounded-full bg-gray-600 flex items-center justify-center text-sm text-white font-semibold">
+                      {chat.name.charAt(0)}
                     </div>
                     <div className="flex-1">
                       <div className="text-sm text-white">{chat.name}</div>
                     </div>
-                    <div className="flex items-center space-x-2">
-                      {chat.isNew && (
-                        <span className="px-2 py-1 bg-pink-500 text-white text-xs rounded-full">New!</span>
-                      )}
-                      {/* Close icon - appears on hover */}
-                      <button
-                        onClick={(e) => handleDeleteChat(chat.id, e)}
-                        className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 p-1 hover:bg-gray-700 rounded-full"
-                        title="Delete chat"
-                      >
-                        <svg className="w-4 h-4 text-gray-400 hover:text-white" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd"/>
-                        </svg>
-                      </button>
-                    </div>
+                    {chat.isNew && (
+                      <span className="px-2 py-1 bg-pink-500 text-white text-xs rounded-full font-medium">New!</span>
+                    )}
                   </div>
                 ))}
                 
-                {/* Static Chats */}
-                <div className="group flex items-center space-x-3 p-2 hover:bg-gray-800 cursor-pointer relative" onClick={() => handleChatClick(chats[0])}>
-                  <div className="w-6 h-6 rounded-full bg-gray-600 flex items-center justify-center text-xs text-white">
-                    L
-                  </div>
-                  <div className="flex-1">
-                    <div className="text-sm text-white">Leo</div>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <span className="px-2 py-1 bg-pink-500 text-white text-xs rounded-full">New!</span>
-                    {/* Close icon - appears on hover */}
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        // For static chats, we could add them to a "deleted" list or just show a message
-                        console.log('Static chat cannot be deleted');
-                      }}
-                      className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 p-1 hover:bg-gray-700 rounded-full"
-                      title="Static chat - cannot be deleted"
-                    >
-                      <svg className="w-4 h-4 text-gray-400 hover:text-white" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd"/>
-                      </svg>
-                    </button>
-                  </div>
-                </div>
-                
-                <div className="group flex items-center space-x-3 p-2 hover:bg-gray-800 cursor-pointer relative" onClick={() => handleChatClick(chats[1])}>
-                  <div className="w-6 h-6 rounded-full bg-gray-600 flex items-center justify-center text-xs text-white">
-                    H
-                  </div>
-                  <div className="flex-1">
-                    <div className="text-sm text-white">Hannah</div>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    {/* Close icon - appears on hover */}
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        console.log('Static chat cannot be deleted');
-                      }}
-                      className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 p-1 hover:bg-gray-700 rounded-full"
-                      title="Static chat - cannot be deleted"
-                    >
-                      <svg className="w-4 h-4 text-gray-400 hover:text-white" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd"/>
-                      </svg>
-                    </button>
-                  </div>
-                </div>
-                
-                <div className="group flex items-center space-x-3 p-2 hover:bg-gray-800 cursor-pointer relative" onClick={() => handleChatClick(chats[2])}>
-                  <div className="w-6 h-6 rounded-full bg-gray-600 flex items-center justify-center text-xs text-white">
-                    M
-                  </div>
-                  <div className="flex-1">
-                    <div className="text-sm text-white">Math study group</div>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    {/* Close icon - appears on hover */}
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        console.log('Static chat cannot be deleted');
-                      }}
-                      className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 p-1 hover:bg-gray-700 rounded-full"
-                      title="Static chat - cannot be deleted"
-                    >
-                      <svg className="w-4 h-4 text-gray-400 hover:text-white" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd"/>
-                      </svg>
-                    </button>
-                  </div>
-                </div>
-                
-                <div className="group flex items-center space-x-3 p-2 hover:bg-gray-800 cursor-pointer relative" onClick={() => handleChatClick(chats[3])}>
-                  <div className="w-6 h-6 rounded-full bg-gray-600 flex items-center justify-center text-xs text-white">
-                    E
-                  </div>
-                  <div className="flex-1">
-                    <div className="text-sm text-white">English tutor</div>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    {/* Close icon - appears on hover */}
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        console.log('Static chat cannot be deleted');
-                      }}
-                      className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 p-1 hover:bg-gray-700 rounded-full"
-                      title="Static chat - cannot be deleted"
-                    >
-                      <svg className="w-4 h-4 text-gray-400 hover:text-white" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd"/>
-                      </svg>
-                    </button>
-                  </div>
-                </div>
-                
                 <div 
-                  className="flex items-center justify-between p-2 hover:bg-gray-800 cursor-pointer"
+                  className="flex items-center p-3 cursor-pointer mt-2"
                   onClick={() => setActivePage('squad')}
                 >
-                  <span className="text-sm text-gray-400">View all chats</span>
-                  <svg className="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                  <span className="text-sm text-gray-400">View all</span>
+                  <svg className="w-4 h-4 text-gray-400 ml-1" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd"/>
                   </svg>
                 </div>
@@ -457,7 +271,7 @@ export default function Sidebar({ setActivePage, onCollapseChange }) {
             ) : (
               /* Collapsed Chat Icon */
               <div className="flex justify-center">
-                <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-xs text-white cursor-pointer hover:bg-blue-700" onClick={() => handleChatClick(dynamicChats[0] || {id: 'ai', name: 'AI Tutor'})}>
+                <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-xs text-white cursor-pointer hover:bg-blue-700" onClick={() => handleChatClick(chats[0])}>
                   <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clipRule="evenodd"/>
                   </svg>
@@ -473,7 +287,7 @@ export default function Sidebar({ setActivePage, onCollapseChange }) {
         {!isCollapsed ? (
           <button 
             className="w-full flex items-center justify-center space-x-2 hover:bg-gray-800 text-white py-3 px-4 transition-colors"
-            onClick={handleAITutorClick}
+            onClick={() => handleChatClick(chats[2])}
           >
             <img 
               src="/assets/icons/AI chat icon.png" 
@@ -489,7 +303,7 @@ export default function Sidebar({ setActivePage, onCollapseChange }) {
           <div className="flex justify-center">
             <button 
               className="w-10 h-10 hover:bg-gray-800 text-white flex items-center justify-center transition-colors"
-              onClick={handleAITutorClick}
+              onClick={() => handleChatClick(chats[2])}
             >
               <img 
                 src="/assets/icons/AI chat icon.png" 
