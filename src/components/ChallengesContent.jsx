@@ -4,7 +4,6 @@ export default function ChallengesContent({ masteryData, getColorClasses, onLess
   const [timeView, setTimeView] = useState('year');
   const [showMoodHistory, setShowMoodHistory] = useState(false);
   const [currentMood, setCurrentMood] = useState(4);
-  const [socialActivity, setSocialActivity] = useState(4);
 
   // Mock data for the bar chart
   const monthlyData = [
@@ -111,53 +110,77 @@ export default function ChallengesContent({ masteryData, getColorClasses, onLess
       <div className="grid grid-cols-5 gap-4">
         {/* Wrapper 1: 4 Goals - spans 2 columns */}
         <div className="col-span-2 bg-white border-2 border-gray-200 p-4">
-          <div className="flex items-center mb-3">
-            <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+          <div className="flex items-center mb-4">
+            <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
             </svg>
-            <h2 className="text-sm font-bold text-gray-900 uppercase">TODAY'S GOALS</h2>
+            <h2 className="font-bold text-gray-900 uppercase" style={{ fontSize: '14px' }}>TODAY'S GOALS</h2>
           </div>
           <div className="grid grid-cols-4 gap-2">
-            <div className="p-3 text-center opacity-30" style={{ backgroundColor: '#6279E5' }}>
-              <h3 className="font-bold text-white text-xs">Knowledge</h3>
+            {/* Knowledge - not completed */}
+            <div className="relative text-center opacity-30 overflow-hidden" style={{ minHeight: '100px' }}>
+              <img src="/assets/pillars/think.svg" alt="Knowledge" className="absolute inset-0 w-full h-full object-cover" />
+              <div className="relative p-3 flex items-end justify-center h-full" style={{ minHeight: '100px' }}>
+                <h3 className="font-bold text-white text-xs">Knowledge</h3>
+              </div>
             </div>
-            <div className="p-3 text-center" style={{ backgroundColor: '#3FC7FF' }}>
-              <h3 className="font-bold text-white text-xs">Physical Health</h3>
+            
+            {/* Physical Health - completed */}
+            <div className="relative text-center overflow-hidden" style={{ minHeight: '100px' }}>
+              <img src="/assets/pillars/move.svg" alt="Physical Health" className="absolute inset-0 w-full h-full object-cover" />
+              <div className="absolute top-1 right-1 z-10">
+                <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                </svg>
+              </div>
+              <div className="relative p-3 flex items-end justify-center h-full" style={{ minHeight: '100px' }}>
+                <h3 className="font-bold text-white text-xs">Physical Health</h3>
+              </div>
             </div>
-            <div className="p-3 text-center" style={{ backgroundColor: '#6279E5' }}>
-              <h3 className="font-bold text-white text-xs">Mental Health</h3>
+            
+            {/* Mental Health - completed */}
+            <div className="relative text-center overflow-hidden" style={{ minHeight: '100px' }}>
+              <img src="/assets/pillars/thrive.svg" alt="Mental Health" className="absolute inset-0 w-full h-full object-cover" />
+              <div className="absolute top-1 right-1 z-10">
+                <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                </svg>
+              </div>
+              <div className="relative p-3 flex items-end justify-center h-full" style={{ minHeight: '100px' }}>
+                <h3 className="font-bold text-white text-xs">Mental Health</h3>
+              </div>
             </div>
-            <div className="p-3 text-center opacity-30" style={{ backgroundColor: '#DBFF4D' }}>
-              <h3 className="font-bold text-gray-900 text-xs">Life Skills</h3>
+            
+            {/* Life Skills - not completed */}
+            <div className="relative text-center opacity-30 overflow-hidden" style={{ minHeight: '100px' }}>
+              <img src="/assets/pillars/connect.svg" alt="Life Skills" className="absolute inset-0 w-full h-full object-cover" />
+              <div className="relative p-3 flex items-end justify-center h-full" style={{ minHeight: '100px' }}>
+                <h3 className="font-bold text-gray-900 text-xs">Life Skills</h3>
+              </div>
             </div>
           </div>
         </div>
 
         {/* Wrapper 2: Level 6 */}
-        <div className="bg-white border-2 border-gray-200 p-4 flex flex-col items-center justify-center">
-          <div className="flex items-center mb-3">
-            <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+        <div className="bg-white border-2 border-gray-200 p-4">
+          <div className="flex items-center mb-4">
+            <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
               <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
             </svg>
-            <h2 className="text-sm font-bold text-gray-900 uppercase">LEVEL 6</h2>
+            <h2 className="font-bold text-gray-900 uppercase" style={{ fontSize: '14px' }}>LEVEL 6</h2>
           </div>
-          <div className="relative w-20 h-20 flex items-center justify-center">
-            <svg viewBox="0 0 100 100" className="w-20 h-20">
-              <polygon points="50,5 95,35 80,90 20,90 5,35" fill="#FF8C00" />
-            </svg>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <span className="text-2xl font-bold text-white">79%</span>
-            </div>
+          <div className="flex items-center justify-center">
+            <img src="/assets/icons/level-icon.png" alt="Level 6" className="w-20 h-20" />
           </div>
         </div>
 
         {/* Wrapper 3: New Badges */}
         <div className="bg-white border-2 border-gray-200 p-4">
-          <div className="flex items-center mb-3">
-            <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+          <div className="flex items-center mb-4">
+            <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
             </svg>
-            <h2 className="text-sm font-bold text-gray-900 uppercase">NEW BADGES</h2>
+            <h2 className="font-bold text-gray-900 uppercase" style={{ fontSize: '14px' }}>NEW BADGES</h2>
           </div>
           <div className="flex items-center space-x-2">
             <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-green-400 flex items-center justify-center flex-shrink-0">
@@ -179,11 +202,11 @@ export default function ChallengesContent({ masteryData, getColorClasses, onLess
 
         {/* Wrapper 4: Streak */}
         <div className="bg-white border-2 border-gray-200 p-4">
-          <div className="flex items-center mb-3">
-            <svg className="w-4 h-4 mr-2 text-orange-500" fill="currentColor" viewBox="0 0 20 20">
+          <div className="flex items-center mb-4">
+            <svg className="w-5 h-5 mr-2 text-orange-500" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03zM12.12 15.12A3 3 0 017 13s.879.5 2.5.5c0-1 .5-4 1.25-4.5.5 1 .786 1.293 1.371 1.879A2.99 2.99 0 0113 13a2.99 2.99 0 01-.879 2.121z" clipRule="evenodd" />
             </svg>
-            <h2 className="text-sm font-bold text-gray-900 uppercase">STREAK</h2>
+            <h2 className="font-bold text-gray-900 uppercase" style={{ fontSize: '14px' }}>STREAK</h2>
           </div>
           <div className="text-center">
             <div className="text-2xl font-bold text-gray-900 mb-1">4 days</div>
@@ -205,46 +228,100 @@ export default function ChallengesContent({ masteryData, getColorClasses, onLess
       {/* Mastery Progress Chart - White Container */}
       <div className="bg-white border-2 border-gray-200 p-6">
         <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center space-x-2 text-sm text-gray-600">
-            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
-            </svg>
-            <button className="hover:text-gray-900">◀</button>
-            <span className="font-medium">2026-2027</span>
-            <button className="hover:text-gray-900">▶</button>
+          <div className="flex items-center gap-4">
+            {/* Time View Buttons - FIRST */}
+            <div className="flex space-x-2">
+              <button onClick={() => setTimeView('year')} className={`px-4 py-2 text-sm font-medium transition-colors ${timeView === 'year' ? 'bg-pink-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>
+                Year
+              </button>
+              <button onClick={() => setTimeView('month')} className={`px-4 py-2 text-sm font-medium transition-colors ${timeView === 'month' ? 'bg-pink-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>
+                Month
+              </button>
+              <button onClick={() => setTimeView('week')} className={`px-4 py-2 text-sm font-medium transition-colors ${timeView === 'week' ? 'bg-pink-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>
+                Week
+              </button>
+            </div>
+            
+            {/* Date Selector - SECOND */}
+            <div className="flex items-center space-x-2 text-sm text-gray-600">
+              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
+              </svg>
+              <button className="hover:text-gray-900">◀</button>
+              <span className="font-medium">2026-2027</span>
+              <button className="hover:text-gray-900">▶</button>
+            </div>
           </div>
-          <div className="flex space-x-2">
-            <button onClick={() => setTimeView('year')} className={`px-4 py-2 text-sm font-medium transition-colors ${timeView === 'year' ? 'bg-pink-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>
-              Year
-            </button>
-            <button onClick={() => setTimeView('month')} className={`px-4 py-2 text-sm font-medium transition-colors ${timeView === 'month' ? 'bg-pink-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>
-              Month
-            </button>
-            <button onClick={() => setTimeView('week')} className={`px-4 py-2 text-sm font-medium transition-colors ${timeView === 'week' ? 'bg-pink-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>
-              Week
-            </button>
+          
+          {/* Subject Filter Dropdown - Right Side */}
+          <div className="flex items-center space-x-2 text-sm">
+            <span className="text-gray-600">Subject:</span>
+            <select className="border border-gray-300 px-3 py-1 text-sm text-gray-700 bg-white hover:border-gray-400 focus:outline-none focus:border-gray-500">
+              <option>All</option>
+              <option>Math</option>
+              <option>Science</option>
+              <option>English</option>
+              <option>History</option>
+            </select>
           </div>
         </div>
 
-        {/* Bar Chart */}
-        <div className="relative h-64 flex items-end space-x-4 px-4">
-          {monthlyData.map((data, index) => {
-            const maxValue = Math.max(...monthlyData.map(d => d.value));
-            const heightPercentage = (data.value / maxValue) * 100;
-            
-            return (
-              <div key={index} className="flex-1 flex flex-col items-center group">
-                <div className="relative w-full mb-2">
-                  <div className="w-full bg-gray-300 hover:bg-gray-400 transition-colors cursor-pointer relative" style={{ height: `${heightPercentage * 2}px` }}>
-                    <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-900 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                      {data.value}%
+        {/* Bar Chart with Grid */}
+        <div className="relative">
+          {/* Y-axis labels and gridlines */}
+          <div className="absolute left-0 top-0 bottom-8 w-12 flex flex-col justify-between text-xs text-gray-500">
+            <div className="relative">
+              <span className="absolute right-2 -top-2">100%</span>
+            </div>
+            <div className="relative">
+              <span className="absolute right-2 -top-2">80%</span>
+            </div>
+            <div className="relative">
+              <span className="absolute right-2 -top-2">60%</span>
+            </div>
+            <div className="relative">
+              <span className="absolute right-2 -top-2">40%</span>
+            </div>
+            <div className="relative">
+              <span className="absolute right-2 -top-2">20%</span>
+            </div>
+            <div className="relative">
+              <span className="absolute right-2 -top-2">0%</span>
+            </div>
+          </div>
+
+          {/* Chart area with gridlines */}
+          <div className="ml-12 relative h-64">
+            {/* Horizontal gridlines */}
+            <div className="absolute inset-0 flex flex-col justify-between pointer-events-none">
+              <div className="border-t border-gray-200"></div>
+              <div className="border-t border-gray-200"></div>
+              <div className="border-t border-gray-200"></div>
+              <div className="border-t border-gray-200"></div>
+              <div className="border-t border-gray-200"></div>
+              <div className="border-t border-gray-200"></div>
+            </div>
+
+            {/* Bars */}
+            <div className="relative h-full flex items-end space-x-3 px-4">
+              {monthlyData.map((data, index) => {
+                const heightPercentage = data.value;
+                
+                return (
+                  <div key={index} className="flex-1 flex flex-col items-center group">
+                    <div className="relative w-full mb-2">
+                      <div className="w-full bg-gray-300 hover:bg-gray-400 transition-colors cursor-pointer relative" style={{ height: `${(heightPercentage / 100) * 240}px` }}>
+                        <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-900 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                          {data.value}%
+                        </div>
+                      </div>
                     </div>
+                    <span className="text-xs text-gray-600 font-medium">{data.month}</span>
                   </div>
-                </div>
-                <span className="text-xs text-gray-600 font-medium">{data.month}</span>
-              </div>
-            );
-          })}
+                );
+              })}
+            </div>
+          </div>
         </div>
       </div>
 
@@ -266,10 +343,13 @@ export default function ChallengesContent({ masteryData, getColorClasses, onLess
             
             <div className="space-y-4">
               {knowledgeItems.map((item) => (
-                <div key={item.id} className="flex items-center gap-4 border-b-2 border-gray-200 last:border-b-0 pb-4 last:pb-0">
-                  {/* Left: Pink rectangle with subject */}
-                  <div className="w-32 h-20 flex-shrink-0 bg-gradient-to-b from-pink-400 to-pink-600 flex items-end justify-center p-2">
-                    <span className="text-white font-bold text-sm">{item.subject}</span>
+                <div key={item.id} className="flex items-center gap-4">
+                  {/* Left: Think image with subject */}
+                  <div className="w-32 h-20 flex-shrink-0 relative overflow-hidden">
+                    <img src="/assets/pillars/think.svg" alt="Knowledge" className="absolute inset-0 w-full h-full object-cover" />
+                    <div className="relative flex items-end justify-center h-full p-2">
+                      <span className="text-white font-bold text-sm">{item.subject}</span>
+                    </div>
                   </div>
                   
                   {/* Center: Vertical flex with challenge info */}
@@ -356,36 +436,65 @@ export default function ChallengesContent({ masteryData, getColorClasses, onLess
         LIFE SKILLS
       </h2>
 
-      <div className="space-y-4">
-        {lifeSkills.map((skill) => (
-          <div key={skill.id} className="bg-white border-2 border-gray-200 flex">
-            <div className="w-2 bg-gradient-to-b from-orange-400 to-orange-600 flex-shrink-0"></div>
-            <div className="flex-1 p-4">
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex-1">
-                  <h3 className="font-bold text-gray-900 mb-2">{skill.title}</h3>
-                  <div className="text-sm text-gray-600 mb-2">
-                    Progress: <span className="font-bold text-gray-900">{skill.progress}%</span>
+      {/* ONE white container with Life Skills and empty gray section side by side */}
+      <div className="bg-white border-2 border-gray-200 p-6">
+        <div className="flex gap-6 items-stretch">
+          {/* Left: Life Skills Section - larger */}
+          <div className="flex-[2]">
+            <div className="space-y-4">
+              {lifeSkills.map((skill) => (
+                <div key={skill.id} className="flex items-center gap-4">
+                  {/* Left: Thrive image */}
+                  <div className="w-32 h-20 flex-shrink-0 relative overflow-hidden">
+                    <img src="/assets/pillars/thrive.svg" alt="Life Skills" className="absolute inset-0 w-full h-full object-cover" />
                   </div>
-                  <div className="w-full bg-gray-300 h-2 mb-2">
-                    <div className="h-2 transition-all duration-300" style={{ width: `${skill.progress}%`, backgroundColor: '#3B82F6' }}></div>
+                  
+                  {/* Center: Vertical flex with skill info */}
+                  <div className="flex-1 flex flex-col gap-2">
+                    {/* Skill name */}
+                    <div className="flex items-center gap-2">
+                      <h4 className="font-bold text-gray-900">{skill.title}</h4>
+                    </div>
+
+                    {/* Progress section */}
+                    <div>
+                      {/* Progress level + credits on same line */}
+                      <div className="flex items-center justify-between mb-1">
+                        <div className="flex items-center space-x-2 text-sm">
+                          <span className="text-gray-600">Progress:</span>
+                          <span className="font-bold text-gray-900">{skill.progress}%</span>
+                        </div>
+                        <div className="flex items-center text-sm">
+                          <svg className="w-4 h-4 text-purple-500 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
+                          </svg>
+                          <span className="font-bold text-gray-900">{skill.points}/{skill.maxPoints}</span>
+                        </div>
+                      </div>
+                      
+                      {/* Progress bar below */}
+                      <div className="w-full bg-gray-300 h-2">
+                        <div className="h-2 bg-blue-500 transition-all duration-300" style={{ width: `${skill.progress}%` }}></div>
+                      </div>
+                    </div>
                   </div>
+
+                  {/* Right: Status button */}
+                  <button className="py-2 px-6 text-sm font-bold transition-colors flex-shrink-0 w-32 bg-gray-900 text-white hover:bg-gray-800">
+                    CONTINUE
+                  </button>
                 </div>
-                <div className="ml-4 text-right">
-                  <div className="flex items-center text-sm">
-                    <svg className="w-4 h-4 text-purple-500 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
-                    </svg>
-                    <span className="font-bold text-gray-900">{skill.points}/{skill.maxPoints}</span>
-                  </div>
-                </div>
-              </div>
-              <button className="w-full bg-gray-900 text-white py-2 px-4 text-sm font-bold hover:bg-gray-800 transition-colors">
-                CONTINUE
-              </button>
+              ))}
             </div>
           </div>
-        ))}
+
+          {/* Right: Empty gray section */}
+          <div className="flex-1">
+            <div className="bg-gray-100 p-4 h-full">
+              {/* Empty for now */}
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Physical Health and Mental Health Row */}
@@ -462,15 +571,49 @@ export default function ChallengesContent({ masteryData, getColorClasses, onLess
 
             <div>
               <h3 className="font-bold text-gray-900 uppercase mb-3">SOCIAL ACTIVITY</h3>
-              <div className="flex items-center justify-center mb-4">
-                <span className="text-5xl font-bold text-gray-900">{socialActivity}/5</span>
-                <svg className="w-8 h-8 ml-2 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 100-2 1 1 0 000 2zm7-1a1 1 0 11-2 0 1 1 0 012 0zm-.464 5.535a1 1 0 10-1.415-1.414 3 3 0 01-4.242 0 1 1 0 00-1.415 1.414 5 5 0 007.072 0z" clipRule="evenodd" />
-                </svg>
+              <div className="grid grid-cols-3 gap-3">
+                {/* Like 10 posts - Completed */}
+                <div className="flex flex-col items-center text-center">
+                  <div className="w-12 h-12 mb-2 flex items-center justify-center">
+                    <svg className="w-10 h-10 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                  <div className="text-xs font-bold text-gray-900 mb-1">Like 10 posts</div>
+                  <div className="text-xs text-gray-600 mb-2">10/10 likes</div>
+                  <button className="w-full py-1 px-2 text-xs font-bold text-gray-900" style={{ backgroundColor: '#DBFF4D' }}>
+                    Completed!
+                  </button>
+                </div>
+
+                {/* Leave 10 comments - In Progress */}
+                <div className="flex flex-col items-center text-center">
+                  <div className="w-12 h-12 mb-2 flex items-center justify-center">
+                    <svg className="w-10 h-10 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                  <div className="text-xs font-bold text-gray-900 mb-1">Leave 10 comments</div>
+                  <div className="text-xs text-gray-600 mb-2">4/10 comments</div>
+                  <button className="w-full py-1 px-2 text-xs font-bold bg-gray-900 text-white hover:bg-gray-800 transition-colors">
+                    Connect
+                  </button>
+                </div>
+
+                {/* Check in with Ms. Ramirez */}
+                <div className="flex flex-col items-center text-center">
+                  <div className="w-12 h-12 mb-2 flex items-center justify-center">
+                    <div className="w-10 h-10 bg-blue-500 text-white rounded-lg flex items-center justify-center text-xs font-bold">
+                      HELLO
+                    </div>
+                  </div>
+                  <div className="text-xs font-bold text-gray-900 mb-1">Check in with Ms. Ramirez</div>
+                  <div className="text-xs text-gray-600 mb-2">&nbsp;</div>
+                  <button className="w-full py-1 px-2 text-xs font-bold bg-gray-900 text-white hover:bg-gray-800 transition-colors">
+                    Chat now
+                  </button>
+                </div>
               </div>
-              <button className="w-full bg-gray-900 text-white py-2 px-4 text-sm font-bold hover:bg-gray-800 transition-colors">
-                New check
-              </button>
             </div>
           </div>
         </div>

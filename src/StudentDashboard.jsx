@@ -12,7 +12,7 @@ import RightPanel from './components/RightPanel';
 
 export default function StudentDashboard() {
   const [activeTab, setActiveTab] = useState('knowledge');
-  const [activePage, setActivePage] = useState('dashboard');
+  const [activePage, setActivePage] = useState('challenges');
   const [showLesson, setShowLesson] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [dailyGoals, setDailyGoals] = useState({
