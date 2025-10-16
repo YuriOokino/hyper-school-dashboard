@@ -93,23 +93,6 @@ export default function TopNavigation({ activePage, setActivePage, activeTab, se
           <div className="col-span-8 flex items-center space-x-8">
             <button 
               onClick={() => {
-                setActivePage('dashboard');
-                if (setActiveTab) setActiveTab('knowledge');
-              }}
-              className={`flex items-center space-x-2 px-4 py-2 h-12 transition-colors ${
-                activePage === 'dashboard' 
-                  ? 'text-white' 
-                  : 'text-white hover:text-gray-200'
-              }`}
-              style={{
-                backgroundColor: activePage === 'dashboard' ? '#FE55A4' : 'transparent'
-              }}
-            >
-              <img src="/assets/icons/home.svg" alt="Overview" className="w-5 h-5" />
-              <span className="font-oswald font-medium uppercase">Overview</span>
-            </button>
-            <button 
-              onClick={() => {
                 setActivePage('challenges');
                 if (setActiveTab) setActiveTab('classes');
               }}
@@ -126,20 +109,6 @@ export default function TopNavigation({ activePage, setActivePage, activeTab, se
               <span className="font-oswald font-medium uppercase">Challenges</span>
             </button>
             <button 
-              onClick={() => setActivePage('rewards')}
-              className={`flex items-center space-x-2 px-4 py-2 h-12 transition-colors ${
-                activePage === 'rewards' 
-                  ? 'text-white' 
-                  : 'text-white hover:text-gray-200'
-              }`}
-              style={{
-                backgroundColor: activePage === 'rewards' ? '#FE55A4' : 'transparent'
-              }}
-            >
-              <img src="/assets/icons/shopping_bag.svg" alt="Rewards" className="w-5 h-5" />
-              <span className="font-oswald font-medium uppercase">Rewards</span>
-            </button>
-            <button 
               onClick={() => setActivePage('squad')}
               className={`flex items-center space-x-2 px-4 py-2 h-12 transition-colors ${
                 activePage === 'squad' 
@@ -152,6 +121,20 @@ export default function TopNavigation({ activePage, setActivePage, activeTab, se
             >
               <img src="/assets/icons/perm_contact_calendar.svg" alt="Squad" className="w-5 h-5" />
               <span className="font-oswald font-medium uppercase">Squad</span>
+            </button>
+            <button 
+              onClick={() => setActivePage('rewards')}
+              className={`flex items-center space-x-2 px-4 py-2 h-12 transition-colors ${
+                activePage === 'rewards' 
+                  ? 'text-white' 
+                  : 'text-white hover:text-gray-200'
+              }`}
+              style={{
+                backgroundColor: activePage === 'rewards' ? '#FE55A4' : 'transparent'
+              }}
+            >
+              <img src="/assets/icons/shopping_bag.svg" alt="Rewards" className="w-5 h-5" />
+              <span className="font-oswald font-medium uppercase">Rewards</span>
             </button>
           </div>
           <div className="col-span-4 flex items-center justify-end space-x-4">
