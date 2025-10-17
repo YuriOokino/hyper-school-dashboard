@@ -294,7 +294,7 @@ export default function OverviewContent() {
                 </div>
               </div>
               <div className="text-base text-gray-600">
-                <div>topics completed</div>
+                <div>Topics Mastered</div>
               </div>
             </div>
           </div>
