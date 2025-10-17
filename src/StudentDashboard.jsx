@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import TopNavigation from './components/TopNavigation';
 import Sidebar from './components/Sidebar';
+import OverviewContent from './components/OverviewContent';
 import DashboardContent from './components/DashboardContent';
 import LearningContent from './components/LearningContent';
 import ChallengesContent from './components/ChallengesContent';
@@ -12,7 +13,7 @@ import RightPanel from './components/RightPanel';
 
 export default function StudentDashboard() {
   const [activeTab, setActiveTab] = useState('knowledge');
-  const [activePage, setActivePage] = useState('challenges');
+  const [activePage, setActivePage] = useState('overview');
   const [showLesson, setShowLesson] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [dailyGoals, setDailyGoals] = useState({
@@ -315,12 +316,10 @@ export default function StudentDashboard() {
             />
           ) : (
             <div className="p-6">
-              {activePage === 'challenges' ? (
-                <ChallengesContent 
-                  masteryData={masteryData} 
-                  getColorClasses={getColorClasses} 
-                  onLessonClick={() => setShowLesson(true)}
-                />
+              {activePage === 'overview' ? (
+                <OverviewContent />
+              ) : activePage === 'challenges' ? (
+                <ChallengesContent />
               ) : (
               <>
                 {/* Daily Goals - Only on Dashboard */}

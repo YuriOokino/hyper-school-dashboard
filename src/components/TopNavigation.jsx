@@ -93,6 +93,22 @@ export default function TopNavigation({ activePage, setActivePage, activeTab, se
           <div className="col-span-8 flex items-center space-x-8">
             <button 
               onClick={() => {
+                setActivePage('overview');
+              }}
+              className={`flex items-center space-x-2 px-4 py-2 h-12 transition-colors ${
+                activePage === 'overview' 
+                  ? 'text-white' 
+                  : 'text-white hover:text-gray-200'
+              }`}
+              style={{
+                backgroundColor: activePage === 'overview' ? '#FE55A4' : 'transparent'
+              }}
+            >
+              <img src="/assets/icons/home.svg" alt="Overview" className="w-5 h-5" />
+              <span className="font-oswald font-medium uppercase">Overview</span>
+            </button>
+            <button 
+              onClick={() => {
                 setActivePage('challenges');
                 if (setActiveTab) setActiveTab('classes');
               }}
