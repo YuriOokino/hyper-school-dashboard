@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-export default function Sidebar({ setActivePage, onCollapseChange }) {
+export default function Sidebar({ setActivePage, onCollapseChange, setSelectedChatFromSidebar }) {
   const [isAccountOpen, setIsAccountOpen] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [selectedChat, setSelectedChat] = useState(null);
@@ -49,22 +49,21 @@ export default function Sidebar({ setActivePage, onCollapseChange }) {
   // Sample chat messages
   const chatMessages = {
     1: [
-      { id: 1, sender: "English Tutor", message: "Hi Jennifer, how's your essay coming along?", time: "10:00 AM", isCurrentUser: false },
-      { id: 2, sender: "Jennifer", message: "Making good progress! Almost done with the first draft", time: "10:15 AM", isCurrentUser: true },
-      { id: 3, sender: "English Tutor", message: "Excellent! Remember to focus on your thesis statement", time: "10:20 AM", isCurrentUser: false },
-      { id: 4, sender: "Jennifer", message: "Will do! Thanks for the guidance", time: "10:25 AM", isCurrentUser: true },
-      { id: 5, sender: "English Tutor", message: "Let's review your essay tomorrow", time: "Yesterday", isCurrentUser: false }
+      { id: 1, sender: "English Tutor", message: "Lorem ipsum dolor sit amet consectetur. Dolor enim vulputate pretium ultricies vestibulum scelerisque adipiscing quam pulvinar. Vulputate cum nec odio dictum. Sed vel arcu malesuada eget malesuada orci. Elit eget at viverra in ut vitae massa risus in.", time: "Yesterday 5:31 PM", isCurrentUser: false, isNew: false },
+      { id: 2, sender: "Jennifer", message: "Lorem ipsum dolor sit amet consectetur!", time: "Yesterday 5:31 PM", isCurrentUser: true, isNew: false },
+      { id: 3, sender: "Jennifer", message: "Lorem ipsum dolor sit amet consectetur. Odio varius sagittis nunc velit magna leo volutpat interdum quam. Ut consequat ipsum aliquet ante rutrum purus neque varius. Nec purus eu porttitor elementum pulvinar ornare nec volutpat. Vehicula vitae urna interdum imperdiet elementum odio.", time: "Yesterday 5:31 PM", isCurrentUser: true, isNew: false },
+      { id: 4, sender: "English Tutor", message: "Lorem ipsum dolor sit amet consectetur. Dolor enim vulputate pretium ultricies vestibulum scelerisque adipiscing quam pulvinar. Vulputate cum nec odio dictum. Sed vel arcu malesuada eget malesuada orci. Elit eget at viverra in ut vitae massa risus in.", time: "Today 9:12 AM", isCurrentUser: false, isNew: true }
     ],
     2: [
-      { id: 1, sender: "Math Tutor", message: "Hi Jennifer! Ready to tackle some calculus problems?", time: "2:00 PM", isCurrentUser: false },
-      { id: 2, sender: "Jennifer", message: "Yes! I'm struggling with integration by parts", time: "2:05 PM", isCurrentUser: true },
-      { id: 3, sender: "Math Tutor", message: "Let's start with the LIATE method. It's a helpful way to choose u and dv", time: "2:06 PM", isCurrentUser: false },
-      { id: 4, sender: "Jennifer", message: "That makes so much more sense now!", time: "2:10 PM", isCurrentUser: true },
-      { id: 5, sender: "Math Tutor", message: "Great work on the calculus homework", time: "3:15 PM", isCurrentUser: false }
+      { id: 1, sender: "Math Tutor", message: "Hi Jennifer! Ready to tackle some calculus problems?", time: "2:00 PM", isCurrentUser: false, isNew: false },
+      { id: 2, sender: "Jennifer", message: "Yes! I'm struggling with integration by parts", time: "2:05 PM", isCurrentUser: true, isNew: false },
+      { id: 3, sender: "Math Tutor", message: "Let's start with the LIATE method. It's a helpful way to choose u and dv", time: "2:06 PM", isCurrentUser: false, isNew: false },
+      { id: 4, sender: "Jennifer", message: "That makes so much more sense now!", time: "2:10 PM", isCurrentUser: true, isNew: false },
+      { id: 5, sender: "Math Tutor", message: "Great work on the calculus homework", time: "3:15 PM", isCurrentUser: false, isNew: true }
     ],
     3: [
-      { id: 1, sender: "AI Tutor", message: "Hi Jennifer! I'm here to help you learn. What subject would you like to work on today?", time: "Just now", isCurrentUser: false },
-      { id: 2, sender: "AI Tutor", message: "I can assist you with Math, Science, English, History, and many other subjects. Just let me know what you need help with!", time: "Just now", isCurrentUser: false }
+      { id: 1, sender: "AI Tutor", message: "Hi Jennifer! I'm here to help you learn. What subject would you like to work on today?", time: "Just now", isCurrentUser: false, isNew: true },
+      { id: 2, sender: "AI Tutor", message: "I can assist you with Math, Science, English, History, and many other subjects. Just let me know what you need help with!", time: "Just now", isCurrentUser: false, isNew: true }
     ]
   };
 
@@ -433,54 +432,53 @@ export default function Sidebar({ setActivePage, onCollapseChange }) {
         <div 
           className="absolute top-0 left-full bg-white shadow-2xl z-50 overflow-hidden flex flex-col"
           style={{
-            width: '400px',
+            width: '628px',
             minHeight: '100vh',
             maxHeight: '100vh',
             marginLeft: isAccountOpen ? '400px' : '0px' // Push right if account panel is open
           }}
         >
           {/* Chat Header */}
-          <div className="flex items-center justify-between p-4 border-b bg-gray-50">
+          <div className="flex items-center justify-between px-6 py-4 border-b bg-white">
             <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center text-sm text-white font-semibold">
-                {selectedChat.name.charAt(0)}
+              <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm text-white font-semibold ${
+                selectedChat.id === 1 ? 'bg-orange-500' : 
+                selectedChat.id === 2 ? 'bg-blue-500' : 
+                'bg-purple-500'
+              }`}>
+                {selectedChat.name.split(' ')[0].charAt(0)}
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-gray-900">{selectedChat.name}</h3>
-                <span className={`text-xs ${getStatusDisplay(selectedChat.status).color}`}>
+                <h3 className="text-base font-bold text-gray-900">{selectedChat.name}</h3>
+                <span className={`text-sm ${getStatusDisplay(selectedChat.status).color}`}>
                   {getStatusDisplay(selectedChat.status).text}
                 </span>
               </div>
             </div>
-            <div className="flex items-center space-x-1">
-              <button 
-                className="p-2 hover:bg-gray-200 rounded-full transition-colors"
-                title="Call"
-              >
-                <svg className="w-5 h-5 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
-                </svg>
-              </button>
+            <div className="flex items-center space-x-2">
               <button 
                 onClick={() => {
+                  if (setSelectedChatFromSidebar) {
+                    setSelectedChatFromSidebar(selectedChat);
+                  }
                   setActivePage('squad');
                   setIsChatOpen(false);
                 }}
-                className="p-2 hover:bg-gray-200 rounded-full transition-colors"
-                title="Open in Squad tab"
+                className="p-2 hover:bg-gray-100 transition-colors"
+                title="Open in new window"
               >
                 <img 
                   src="/assets/icons/open_in_new.png" 
-                  alt="Open in new tab" 
+                  alt="Open in new" 
                   className="w-5 h-5"
                 />
               </button>
               <button 
                 onClick={() => setIsChatOpen(false)}
-                className="p-2 hover:bg-gray-200 rounded-full transition-colors"
-                title="Close chat"
+                className="p-2 hover:bg-gray-100 transition-colors"
+                title="Close"
               >
-                <svg className="w-5 h-5 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
+                <svg className="w-6 h-6 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd"/>
                 </svg>
               </button>
@@ -488,42 +486,66 @@ export default function Sidebar({ setActivePage, onCollapseChange }) {
           </div>
           
           {/* Messages Area */}
-          <div className="flex-1 overflow-y-auto p-4 bg-gray-50">
-            <div className="space-y-4">
-              {chatMessages[selectedChat.id]?.map((message) => (
-                <div key={message.id} className={`flex ${message.isCurrentUser ? 'justify-end' : 'justify-start'}`}>
-                  <div className={`max-w-xs lg:max-w-md px-4 py-2 ${
-                    message.isCurrentUser 
-                      ? 'bg-black text-white' 
-                      : 'bg-white text-gray-900 border'
-                  }`}>
-                    {!message.isCurrentUser && (
-                      <div className="text-xs font-semibold mb-1 text-gray-600">
-                        {message.sender}
+          <div className="flex-1 overflow-y-auto bg-white">
+            <div className="space-y-6">
+              {chatMessages[selectedChat.id]?.map((message, index) => {
+                const messages = chatMessages[selectedChat.id];
+                const showNewDivider = index > 0 && !messages[index - 1].isNew && message.isNew;
+                
+                return (
+                  <div key={message.id}>
+                    {showNewDivider && (
+                      <div className="flex items-center justify-center py-4">
+                        <div className="flex-1 border-t border-gray-300"></div>
+                        <span className="px-4 text-sm font-medium text-gray-500">NEW</span>
+                        <div className="flex-1 border-t border-gray-300"></div>
                       </div>
                     )}
-                    <div className="text-sm">{message.message}</div>
-                    <div className={`text-xs mt-1 ${
-                      message.isCurrentUser ? 'text-gray-300' : 'text-gray-500'
-                    }`}>
-                      {message.time}
+                    <div className="px-6">
+                      <div className="flex items-start space-x-3">
+                        <div className={`w-10 h-10 rounded-full flex-shrink-0 flex items-center justify-center text-sm text-white font-semibold ${
+                          message.isCurrentUser ? 'bg-pink-500' : 
+                          selectedChat.id === 1 ? 'bg-orange-500' : 
+                          selectedChat.id === 2 ? 'bg-blue-500' : 
+                          'bg-purple-500'
+                        }`}>
+                          {message.sender.charAt(0)}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-baseline space-x-2 mb-1">
+                            <span className="text-base font-bold text-gray-900">{message.sender}</span>
+                            <span className="text-sm text-gray-500">{message.time}</span>
+                          </div>
+                          <p className="text-sm text-gray-900 leading-relaxed">{message.message}</p>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
           
           {/* Message Input */}
-          <div className="p-4 border-t bg-white">
-            <div className="flex space-x-2">
+          <div className="px-6 py-4 border-t bg-white">
+            <div className="flex items-center space-x-3 px-4 py-3 border border-gray-300 bg-white">
               <input
                 type="text"
-                placeholder="Type a message..."
-                className="flex-1 px-4 py-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
+                placeholder="Type your message"
+                className="flex-1 text-sm text-gray-600 focus:outline-none placeholder-gray-400"
               />
-              <button className="px-4 py-2 bg-black text-white hover:bg-gray-800 transition-colors">
-                <svg className="w-5 h-5 transform rotate-90" fill="currentColor" viewBox="0 0 20 20">
+              <button className="p-1 hover:bg-gray-100 transition-colors" title="Attach file">
+                <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                </svg>
+              </button>
+              <button className="p-1 hover:bg-gray-100 transition-colors" title="Emoji">
+                <svg className="w-5 h-5 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 100-2 1 1 0 000 2zm7-1a1 1 0 11-2 0 1 1 0 012 0zm-.464 5.535a1 1 0 10-1.415-1.414 3 3 0 01-4.242 0 1 1 0 00-1.415 1.414 5 5 0 007.072 0z" clipRule="evenodd" />
+                </svg>
+              </button>
+              <button className="p-2 bg-gray-900 hover:bg-gray-800 transition-colors" title="Send">
+                <svg className="w-5 h-5 text-white transform rotate-45" fill="currentColor" viewBox="0 0 20 20">
                   <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"/>
                 </svg>
               </button>

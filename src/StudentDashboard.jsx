@@ -16,6 +16,7 @@ export default function StudentDashboard() {
   const [activePage, setActivePage] = useState('overview');
   const [showLesson, setShowLesson] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [selectedChatFromSidebar, setSelectedChatFromSidebar] = useState(null);
   const [dailyGoals, setDailyGoals] = useState({
     think: { current: 1, target: 5, completed: false },
     move: { current: 6000, target: 5000, completed: true },
@@ -287,7 +288,11 @@ export default function StudentDashboard() {
   return (
     <div className="h-screen flex overflow-hidden" style={{ backgroundColor: '#E8EBFB' }}>
       <div className={`${isSidebarCollapsed ? 'w-16' : 'w-64'} flex-shrink-0 h-screen transition-all duration-300`}>
-        <Sidebar setActivePage={setActivePage} onCollapseChange={setIsSidebarCollapsed} />
+        <Sidebar 
+          setActivePage={setActivePage} 
+          onCollapseChange={setIsSidebarCollapsed}
+          setSelectedChatFromSidebar={setSelectedChatFromSidebar}
+        />
       </div>
       
       <div className="flex-1 flex flex-col min-w-0 h-screen">
@@ -425,7 +430,10 @@ export default function StudentDashboard() {
                       setActiveTab={setActiveTab}
                     />
                   ) : activePage === 'squad' ? (
-                    <SquadContent />
+                    <SquadContent 
+                      selectedChatFromSidebar={selectedChatFromSidebar}
+                      setSelectedChatFromSidebar={setSelectedChatFromSidebar}
+                    />
                   ) : activePage === 'rewards' ? (
                     <RewardsContent />
                   ) : (
