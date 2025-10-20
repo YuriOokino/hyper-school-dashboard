@@ -22,8 +22,8 @@ export default function SquadContent({ selectedChatFromSidebar, setSelectedChatF
   // Individual leaderboard data
   const individualLeaderboard = [
     { name: "Jonathan", points: 4228, level: 7, status: "online", mastery: 95, streak: 12, badges: 8 },
+    { name: "Ava", points: 3800, level: 6, status: "idle", mastery: 82, streak: 5, badges: 6 },
     { name: "Jennifer", points: 3656, level: 6, status: "online", mastery: 88, isCurrentUser: true, streak: 7, badges: 5 },
-    { name: "Ava", points: 1420, level: 4, status: "idle", mastery: 82, streak: 5, badges: 6 },
     { name: "Sarah", points: 1250, level: 4, status: "offline", mastery: 79, streak: 3, badges: 4 },
     { name: "Maya", points: 1180, level: 3, status: "online", mastery: 85, streak: 8, badges: 3 },
     { name: "Jordan", points: 1150, level: 3, status: "online", mastery: 77, streak: 4, badges: 5 },
@@ -107,7 +107,7 @@ export default function SquadContent({ selectedChatFromSidebar, setSelectedChatF
     ]
   };
 
-  // Initial squad feed data - mix of achievements and messages
+  // Initial squad feed data - organized with nested comments
   const initialSquadFeed = [
     {
       id: 1,
@@ -118,27 +118,27 @@ export default function SquadContent({ selectedChatFromSidebar, setSelectedChatF
       time: "2 min ago",
       timestamp: Date.now() - 120000,
       reactions: { likes: 15, fire: 8, congrats: 12 },
-      userReactions: []
-    },
-    {
-      id: 2,
-      type: "message",
-      user: "Maya",
-      message: "Congrats Leo! That's amazing! 🎉",
-      time: "3 min ago",
-      timestamp: Date.now() - 180000,
-      reactions: { likes: 3, fire: 0, congrats: 0 },
-      userReactions: []
-    },
-    {
-      id: 3,
-      type: "message",
-      user: "Jennifer",
-      message: "Way to go! Can you share your study techniques?",
-      time: "5 min ago",
-      timestamp: Date.now() - 300000,
-      reactions: { likes: 5, fire: 0, congrats: 0 },
-      userReactions: []
+      userReactions: [],
+      comments: [
+        {
+          id: 2,
+          user: "Maya",
+          message: "Congrats Leo! That's amazing! 🎉",
+          time: "3 min ago",
+          timestamp: Date.now() - 180000,
+          reactions: { likes: 3, fire: 0, congrats: 0 },
+          userReactions: []
+        },
+        {
+          id: 3,
+          user: "Jennifer",
+          message: "Way to go! Can you share your study techniques?",
+          time: "5 min ago",
+          timestamp: Date.now() - 300000,
+          reactions: { likes: 5, fire: 0, congrats: 0 },
+          userReactions: []
+        }
+      ]
     },
     {
       id: 4,
@@ -149,17 +149,18 @@ export default function SquadContent({ selectedChatFromSidebar, setSelectedChatF
       time: "15 min ago",
       timestamp: Date.now() - 900000,
       reactions: { likes: 23, fire: 5, congrats: 18 },
-      userReactions: []
-    },
-    {
-      id: 5,
-      type: "message",
-      user: "Ethan",
-      message: "Sophia, you're an inspiration! Keep it up! 💪",
-      time: "16 min ago",
-      timestamp: Date.now() - 960000,
-      reactions: { likes: 7, fire: 2, congrats: 0 },
-      userReactions: []
+      userReactions: [],
+      comments: [
+        {
+          id: 5,
+          user: "Ethan",
+          message: "Sophia, you're an inspiration! Keep it up! 💪",
+          time: "16 min ago",
+          timestamp: Date.now() - 960000,
+          reactions: { likes: 7, fire: 2, congrats: 0 },
+          userReactions: []
+        }
+      ]
     },
     {
       id: 6,
@@ -180,7 +181,8 @@ export default function SquadContent({ selectedChatFromSidebar, setSelectedChatF
       time: "1 hour ago",
       timestamp: Date.now() - 3600000,
       reactions: { likes: 11, fire: 14, congrats: 7 },
-      userReactions: []
+      userReactions: [],
+      comments: []
     },
     {
       id: 8,
@@ -201,7 +203,8 @@ export default function SquadContent({ selectedChatFromSidebar, setSelectedChatF
       time: "2 hours ago",
       timestamp: Date.now() - 7200000,
       reactions: { likes: 19, fire: 11, congrats: 15 },
-      userReactions: []
+      userReactions: [],
+      comments: []
     }
   ];
 
@@ -506,7 +509,7 @@ export default function SquadContent({ selectedChatFromSidebar, setSelectedChatF
             </button>
           </div>
           
-          <div className="grid grid-cols-2 gap-12">
+          <div className="grid grid-cols-2 gap-4">
             {/* Top Students */}
             <div>
               <h3 className="font-bold text-gray-900 mb-4 uppercase text-sm">TOP STUDENTS</h3>
@@ -555,34 +558,48 @@ export default function SquadContent({ selectedChatFromSidebar, setSelectedChatF
       <div className="mb-4">
         <div className="bg-white flex" style={{ height: 'calc(100vh - 100px)' }}>
           {/* Left Sidebar - Tutors */}
-          <div className="w-80 flex flex-col bg-white">
-            <div className="px-6 flex items-center" style={{ backgroundColor: brandColors.black, minHeight: '88px' }}>
-              <h3 className="font-bold uppercase text-white text-lg">SQUAD CHAT</h3>
+          <div className="w-80 flex flex-col bg-white border-r border-gray-300">
+            <div className="px-6 flex items-center space-x-3" style={{ backgroundColor: brandColors.black, minHeight: '56px' }}>
+              {selectedTutor && (
+                <div className="w-10 h-10 rounded-full flex items-center justify-center" 
+                     style={{ backgroundColor: selectedTutor.type === 'ai' ? '#3FC7FF' : '#666' }}>
+                  <span className="text-white font-bold text-sm">
+                    {selectedTutor.type === 'ai' ? 'AI' : selectedTutor.avatar}
+                  </span>
+                </div>
+              )}
+              <div>
+                <h3 className="font-bold text-white text-base">
+                  {selectedTutor ? selectedTutor.name : 'Thunderbolts Main Hall'}
+                </h3>
+                {selectedTutor && (
+                  <div className="text-xs text-green-400">Online - Private Session</div>
+                )}
+              </div>
             </div>
 
             <div className="flex-1 overflow-y-auto p-3">
-              {/* Squad Feed Link */}
+              {/* Main Hall Link */}
               <div 
                 onClick={() => setSelectedTutor(null)}
-                className={`flex items-center p-3 cursor-pointer mb-3 transition-all border ${
-                  !selectedTutor ? 'bg-white border-gray-300 shadow-sm' : 'bg-white border-gray-200 hover:bg-gray-50'
-                }`}
+                className="flex items-center p-3 cursor-pointer mb-3 transition-all border"
+                style={{ 
+                  backgroundColor: !selectedTutor ? '#C4CEFF' : '#E8EBFB',
+                  borderColor: !selectedTutor ? '#C4CEFF' : '#E8EBFB'
+                }}
               >
                 <div className="relative mr-3">
-                  <div className="w-10 h-10 rounded-full flex items-center justify-center font-bold" style={{ backgroundColor: brandColors.lime, color: brandColors.black }}>
+                  <div className="w-10 h-10 rounded-full flex items-center justify-center font-bold" style={{ backgroundColor: brandColors.black, color: 'white' }}>
                     <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                       <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"/>
                     </svg>
                   </div>
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="font-semibold text-sm text-gray-900">Squad Feed</div>
+                  <div className="font-semibold text-sm text-gray-900">Main Hall</div>
                   <div className="text-xs text-gray-600">95 members online</div>
                 </div>
               </div>
-
-              <div className="border-t border-gray-300 my-3"></div>
-              <h4 className="text-xs font-semibold uppercase px-2 mb-2 text-gray-500">Private Tutoring</h4>
 
               {/* Display all tutor chats */}
               {tutorChats.map((tutor) => {
@@ -598,9 +615,10 @@ export default function SquadContent({ selectedChatFromSidebar, setSelectedChatF
                   <div 
                     key={tutor.id}
                     onClick={() => selectTutor(tutor)}
-                    className={`flex items-center p-3 cursor-pointer mb-2 transition-all border ${
-                      selectedTutor?.id === tutor.id ? 'bg-white border-gray-300 shadow-sm' : 'bg-white border-gray-200 hover:bg-gray-50'
+                    className={`flex items-center p-3 cursor-pointer mb-2 transition-all border border-gray-200 hover:bg-gray-50 ${
+                      selectedTutor?.id === tutor.id ? 'shadow-sm' : ''
                     }`}
+                    style={{ backgroundColor: selectedTutor?.id === tutor.id ? '#F3F4F6' : 'white' }}
                   >
                     <div className="relative mr-3">
                       <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ backgroundColor: bgColor }}>
@@ -619,15 +637,16 @@ export default function SquadContent({ selectedChatFromSidebar, setSelectedChatF
               })}
 
               <div className="border-t border-gray-300 my-3"></div>
-              <h4 className="text-xs font-semibold uppercase px-2 mb-2 text-gray-500">Connect to New Tutor</h4>
+              <h4 className="text-xs font-semibold uppercase px-2 mb-2 text-gray-500">Connect with tutor</h4>
 
               {availableTutors.filter(t => !['English', 'Mathematics'].includes(t.subject)).map((tutor, index) => (
                 <div 
                   key={index}
                   onClick={() => handleConnectToTutor(tutor)}
-                  className={`flex items-center p-3 cursor-pointer mb-2 transition-all border ${
-                    selectedTutor?.name === `${tutor.subject} Tutor` ? 'bg-white border-gray-300 shadow-sm' : 'bg-white border-gray-200 hover:bg-gray-50'
+                  className={`flex items-center p-3 cursor-pointer mb-2 transition-all border border-gray-200 hover:bg-gray-50 ${
+                    selectedTutor?.name === `${tutor.subject} Tutor` ? 'shadow-sm' : ''
                   }`}
+                  style={{ backgroundColor: selectedTutor?.name === `${tutor.subject} Tutor` ? '#F3F4F6' : 'white' }}
                 >
                   <div className="relative mr-3">
                     <div className="w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm text-white" style={{ backgroundColor: brandColors.lilac }}>
@@ -655,34 +674,6 @@ export default function SquadContent({ selectedChatFromSidebar, setSelectedChatF
             {selectedTutor ? (
               /* Tutor Chat Interface */
               <>
-                {/* Back to Squad Feed Link */}
-                <div className="px-4 py-3 bg-gradient-to-r from-blue-50 to-purple-50 border-b border-gray-200">
-                  <button 
-                    onClick={() => setSelectedTutor(null)}
-                    className="flex items-center space-x-2 text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors"
-                  >
-                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd"/>
-                    </svg>
-                    <span>Back to Squad Feed</span>
-                  </button>
-                </div>
-
-                <div className="p-4 border-b border-gray-200 bg-white">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 rounded-full flex items-center justify-center" 
-                         style={{ backgroundColor: selectedTutor.type === 'ai' ? '#3FC7FF' : '#666' }}>
-                      <span className="text-white font-bold text-sm">
-                        {selectedTutor.type === 'ai' ? 'AI' : selectedTutor.avatar}
-                      </span>
-                    </div>
-                    <div>
-                      <div className="font-bold text-gray-900">{selectedTutor.name}</div>
-                      <div className="text-xs text-green-600">Online - Private Session</div>
-                    </div>
-                  </div>
-                </div>
-
                 <div className="flex-1 overflow-y-auto bg-white p-6">
                   <div className="space-y-6">
                     {getCurrentTutorMessages().map((message, index) => {
@@ -758,20 +749,15 @@ export default function SquadContent({ selectedChatFromSidebar, setSelectedChatF
             ) : (
               /* Unified Feed - Achievements + Messages */
               <>
-                {/* Black Header Banner */}
-                <div className="px-6 flex items-center justify-between" style={{ backgroundColor: brandColors.black, minHeight: '88px' }}>
-                  <span className="text-white font-bold text-lg">Thunderbolts Main Hall</span>
-                </div>
-
                 <div className="flex-1 overflow-y-auto bg-white p-6">
                   <div className="space-y-6">
                     {squadFeedItems.map((item) => (
                       <div key={item.id}>
                         {item.type === 'achievement' ? (
-                          /* Achievement Card */
-                          <div className="p-6 bg-white border-2" 
+                          /* Achievement Card with nested comments */
+                          <div className="p-6" 
                             style={{ 
-                              borderColor: brandColors.lime
+                              backgroundColor: '#FEF2EB'
                             }}>
                             <div className="flex items-start space-x-4 mb-4">
                               <div className="w-12 h-12 rounded-full flex items-center justify-center font-bold text-white text-lg" 
@@ -789,7 +775,7 @@ export default function SquadContent({ selectedChatFromSidebar, setSelectedChatF
                             </div>
                             
                             {/* Reactions */}
-                            <div className="flex items-center space-x-4">
+                            <div className="flex items-center space-x-4 pb-4">
                               <button 
                                 onClick={() => handleReaction(item.id, 'likes')}
                                 className="flex items-center space-x-1 text-gray-700 hover:text-gray-900"
@@ -805,20 +791,58 @@ export default function SquadContent({ selectedChatFromSidebar, setSelectedChatF
                                 <span className="text-sm font-medium">{item.reactions.fire}</span>
                               </button>
                               <button 
-                                onClick={() => handleReaction(item.id, 'comments')}
-                                className="flex items-center space-x-1 text-gray-700 hover:text-gray-900"
-                              >
-                                <span className="text-lg">💬</span>
-                                <span className="text-sm font-medium">{item.reactions.comments}</span>
-                              </button>
-                              <button 
                                 onClick={() => handleReaction(item.id, 'congrats')}
                                 className="flex items-center space-x-1 text-gray-700 hover:text-gray-900"
                               >
                                 <span className="text-lg">🎉</span>
                                 <span className="text-sm font-medium">{item.reactions.congrats}</span>
                               </button>
+                              <button 
+                                className="flex items-center space-x-1 text-gray-700 hover:text-gray-900"
+                              >
+                                <span className="text-lg">💬</span>
+                                <span className="text-sm font-medium">{item.comments ? item.comments.length : 0}</span>
+                              </button>
                             </div>
+
+                            {/* Nested Comments */}
+                            {item.comments && item.comments.length > 0 && (
+                              <div className="border-t border-gray-200 pt-4 space-y-4">
+                                {item.comments.map((comment) => (
+                                  <div key={comment.id} className="flex items-start space-x-3 pl-4">
+                                    <div className="w-8 h-8 rounded-full flex items-center justify-center font-bold text-white text-sm flex-shrink-0" 
+                                         style={{ backgroundColor: brandColors.rose }}>
+                                      {comment.user.charAt(0)}
+                                    </div>
+                                    <div className="flex-1 min-w-0">
+                                      <div className="flex items-center space-x-2 mb-1">
+                                        <span className="font-semibold text-sm text-gray-900">{comment.user}</span>
+                                        <span className="text-xs text-gray-500">{comment.time}</span>
+                                      </div>
+                                      <div className="text-sm text-gray-800 mb-2">{comment.message}</div>
+                                      
+                                      {/* Comment Reactions - smaller */}
+                                      <div className="flex items-center space-x-2">
+                                        <button 
+                                          onClick={() => handleReaction(comment.id, 'likes')}
+                                          className="flex items-center space-x-1 text-gray-500 hover:text-gray-700 text-xs"
+                                        >
+                                          <span>👍</span>
+                                          {comment.reactions.likes > 0 && <span>{comment.reactions.likes}</span>}
+                                        </button>
+                                        <button 
+                                          onClick={() => handleReaction(comment.id, 'fire')}
+                                          className="flex items-center space-x-1 text-gray-500 hover:text-gray-700 text-xs"
+                                        >
+                                          <span>🔥</span>
+                                          {comment.reactions.fire > 0 && <span>{comment.reactions.fire}</span>}
+                                        </button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
                           </div>
                         ) : (
                           /* Regular Message - No container */
@@ -849,13 +873,6 @@ export default function SquadContent({ selectedChatFromSidebar, setSelectedChatF
                                 >
                                   <span>🔥</span>
                                   {item.reactions.fire > 0 && <span className="text-sm">{item.reactions.fire}</span>}
-                                </button>
-                                <button 
-                                  onClick={() => handleReaction(item.id, 'comments')}
-                                  className="flex items-center space-x-1 text-gray-600 hover:text-gray-900"
-                                >
-                                  <span>💬</span>
-                                  {item.reactions.comments > 0 && <span className="text-sm">{item.reactions.comments}</span>}
                                 </button>
                                 <button 
                                   onClick={() => handleReaction(item.id, 'heart')}
