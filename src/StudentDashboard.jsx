@@ -18,6 +18,7 @@ export default function StudentDashboard() {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [selectedChatFromSidebar, setSelectedChatFromSidebar] = useState(null);
   const [triggerSidebarChat, setTriggerSidebarChat] = useState(null);
+  const [hyperCredits, setHyperCredits] = useState(240);
   const [dailyGoals, setDailyGoals] = useState({
     think: { current: 1, target: 5, completed: false },
     move: { current: 6000, target: 5000, completed: true },
@@ -309,7 +310,8 @@ export default function StudentDashboard() {
               }
             }} 
             activeTab={activeTab} 
-            setActiveTab={setActiveTab} 
+            setActiveTab={setActiveTab}
+            hyperCredits={hyperCredits}
           />
         </div>
         
@@ -321,6 +323,7 @@ export default function StudentDashboard() {
               setActiveTab={setActiveTab}
               activePage={activePage}
               setActivePage={setActivePage}
+              setHyperCredits={setHyperCredits}
             />
           ) : (
             <div className="p-6">

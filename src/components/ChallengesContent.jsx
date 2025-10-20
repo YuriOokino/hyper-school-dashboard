@@ -131,28 +131,13 @@ export default function ChallengesContent({ onStartLesson, setTriggerSidebarChat
                       <span className="px-2 py-1 border border-gray-300 text-sm">{item.difficulty}</span>
                     </div>
 
-                    <div>
-                      <div className="flex items-center justify-between mb-1">
-                        <div className="flex items-center space-x-2 text-base">
-                          <span className="text-gray-600">Mastery:</span>
-                          <span className="font-bold text-gray-900">{item.mastery}%</span>
-                        </div>
-                        <div className="flex items-center space-x-1 text-base">
-                          <img 
-                            src="/assets/icons/Hyper credits.png" 
-                            alt="Credits" 
-                            className="w-5 h-5"
-                          />
-                          <span className="font-bold text-gray-900">{item.points}/{item.maxPoints}</span>
-                        </div>
-                      </div>
-                      
-                      <div className="w-full bg-gray-300 h-2">
-                        <div 
-                          className="h-2 bg-blue-500 transition-all duration-300" 
-                          style={{ width: `${item.mastery}%` }}
-                        ></div>
-                      </div>
+                    <div className="flex items-center space-x-1 text-base">
+                      <img 
+                        src="/assets/icons/Hyper credits.png" 
+                        alt="Credits" 
+                        className="w-5 h-5"
+                      />
+                      <span className="font-bold text-gray-900">{item.points}</span>
                     </div>
                   </div>
 
@@ -189,28 +174,13 @@ export default function ChallengesContent({ onStartLesson, setTriggerSidebarChat
                   <div className="flex-1 flex flex-col gap-2">
                     <h4 className="font-bold text-lg text-gray-900">{skill.title}</h4>
 
-                    <div>
-                      <div className="flex items-center justify-between mb-1">
-                        <div className="flex items-center space-x-2 text-base">
-                          <span className="text-gray-600">Progress:</span>
-                          <span className="font-bold text-gray-900">{skill.progress}%</span>
-                        </div>
-                        <div className="flex items-center space-x-1 text-base">
-                          <img 
-                            src="/assets/icons/Hyper credits.png" 
-                            alt="Credits" 
-                            className="w-5 h-5"
-                          />
-                          <span className="font-bold text-gray-900">{skill.points}/{skill.maxPoints}</span>
-                        </div>
-                      </div>
-                      
-                      <div className="w-full bg-gray-300 h-2">
-                        <div 
-                          className="h-2 bg-blue-500 transition-all duration-300" 
-                          style={{ width: `${skill.progress}%` }}
-                        ></div>
-                      </div>
+                    <div className="flex items-center space-x-1 text-base">
+                      <img 
+                        src="/assets/icons/Hyper credits.png" 
+                        alt="Credits" 
+                        className="w-5 h-5"
+                      />
+                      <span className="font-bold text-gray-900">{skill.points}</span>
                     </div>
                   </div>
 

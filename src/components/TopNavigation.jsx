@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
-export default function TopNavigation({ activePage, setActivePage, activeTab, setActiveTab }) {
+export default function TopNavigation({ activePage, setActivePage, activeTab, setActiveTab, hyperCredits }) {
   const [showNotifications, setShowNotifications] = useState(false);
   const [showFullNotifications, setShowFullNotifications] = useState(false);
   const [showUnreadOnly, setShowUnreadOnly] = useState(false);
+  const [showCelebration, setShowCelebration] = useState(false);
+  const [prevCredits, setPrevCredits] = useState(hyperCredits);
   const [notificationsList, setNotificationsList] = useState([
     {
       id: 1,
@@ -86,6 +88,16 @@ export default function TopNavigation({ activePage, setActivePage, activeTab, se
     setShowFullNotifications(false);
     setShowUnreadOnly(false);
   };
+  
+  // Watch for credits increase and trigger animation
+  useEffect(() => {
+    if (hyperCredits > prevCredits) {
+      setShowCelebration(true);
+      setTimeout(() => setShowCelebration(false), 1500);
+    }
+    setPrevCredits(hyperCredits);
+  }, [hyperCredits]);
+  
   return (
     <nav className="bg-black">
       <div className="px-6">
@@ -154,9 +166,54 @@ export default function TopNavigation({ activePage, setActivePage, activeTab, se
             </button>
           </div>
           <div className="col-span-4 flex items-center justify-end space-x-4">
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2 relative">
               <img src="/assets/icons/Hyper credits.png" alt="Hyper Credits" className="w-5 h-5" />
-              <span className="font-semibold text-white">240</span>
+              <span className={`font-semibold text-white transition-transform duration-300 ${showCelebration ? 'scale-125' : ''}`}>
+                {hyperCredits || 240}
+              </span>
+              
+              {/* Celebration Stars */}
+              {showCelebration && (
+                <>
+                  {[
+                    { x: -50, y: -80 },
+                    { x: 30, y: -60 },
+                    { x: 50, y: -20 },
+                    { x: 40, y: 30 },
+                    { x: -50, y: 60 },
+                    { x: -80, y: 40 },
+                    { x: -90, y: -10 },
+                    { x: -70, y: -50 }
+                  ].map((pos, i) => (
+                    <div
+                      key={i}
+                      className="absolute pointer-events-none"
+                      style={{
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                        animation: `sparkleOut${i} 1.5s ease-out forwards`,
+                      }}
+                    >
+                      <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="#F59E0B" stroke="#F59E0B" strokeWidth="2"/>
+                      </svg>
+                      <style>{`
+                        @keyframes sparkleOut${i} {
+                          0% { 
+                            transform: translate(-50%, -50%) scale(0); 
+                            opacity: 1; 
+                          }
+                          100% { 
+                            transform: translate(calc(-50% + ${pos.x}px), calc(-50% + ${pos.y}px)) scale(1); 
+                            opacity: 0; 
+                          }
+                        }
+                      `}</style>
+                    </div>
+                  ))}
+                </>
+              )}
             </div>
             <div className="relative">
               <button 

@@ -1,12 +1,10 @@
 import { useState } from 'react';
 
-export default function LessonContent({ onBackToLearning }) {
+export default function LessonContent({ onBackToLearning, setHyperCredits }) {
   const [activeTab, setActiveTab] = useState('knowledge');
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [isAnswerChecked, setIsAnswerChecked] = useState(false);
-  const [masteryPoints, setMasteryPoints] = useState(120);
   const [masteryProgress, setMasteryProgress] = useState(30); // percentage
-  const [showCelebration, setShowCelebration] = useState(false);
 
   const handleCheckAnswer = () => {
     if (selectedAnswer && !isAnswerChecked) {
@@ -14,15 +12,13 @@ export default function LessonContent({ onBackToLearning }) {
       
       // Check if answer is correct (lava is the correct answer)
       if (selectedAnswer === 'lava') {
-        // Correct answer: increase both points and progress
-        setMasteryPoints(prev => Math.min(prev + 20, 400)); // Add 20 points, max 400
+        // Correct answer: increase both credits and progress
+        if (setHyperCredits) {
+          setHyperCredits(prev => prev + 20); // Add 20 credits
+        }
         setMasteryProgress(prev => Math.min(prev + 5, 100)); // Add 5%, max 100%
-        
-        // Trigger celebration animation
-        setShowCelebration(true);
-        setTimeout(() => setShowCelebration(false), 1500);
       } else {
-        // Wrong answer: decrease progress but keep points unchanged
+        // Wrong answer: decrease progress but keep credits unchanged
         setMasteryProgress(prev => Math.max(prev - 5, 0)); // Decrease 5%, min 0%
       }
     }
@@ -36,8 +32,8 @@ export default function LessonContent({ onBackToLearning }) {
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#E8EBFB' }}>
-      {/* Back Button */}
-      <div className="p-6">
+      {/* Top Navigation Bar */}
+      <div className="p-6 flex items-center justify-between">
         <button 
           onClick={onBackToLearning}
           className="flex items-center space-x-2 text-gray-900 hover:text-gray-700"
@@ -77,23 +73,23 @@ export default function LessonContent({ onBackToLearning }) {
         </div>
       </div>
 
-      {/* Main Content Container */}
+      {/* Title Section - Full Width */}
+      <div className="px-6 pb-6">
+        <h1 className="text-4xl font-bold text-gray-900 uppercase mb-3">
+          INTRODUCTION TO VOLCANOES
+        </h1>
+        <p className="text-gray-700 text-lg">
+          Explore the exciting world of volcanoes and understand how eruptions happen.
+        </p>
+      </div>
+
+      {/* Main Content Container - Two Columns */}
       <div className="px-6 pb-6">
         <div className="grid grid-cols-5 gap-6">
           {/* Left Column - Lesson Content (3 columns width) */}
-          <div className="col-span-3 flex flex-col">
-            {/* Title Section */}
-            <div className="mb-6">
-              <h1 className="text-4xl font-bold text-gray-900 uppercase mb-3">
-                INTRODUCTION TO VOLCANOES
-              </h1>
-              <p className="text-gray-700 text-lg">
-                Explore the exciting world of volcanoes and understand how eruptions happen.
-              </p>
-            </div>
-
+          <div className="col-span-3">
             {/* Lesson Content */}
-            <div className="bg-white p-8 space-y-8 flex-1 overflow-y-auto">
+            <div className="bg-white p-8 space-y-8">
               {/* Section 1 */}
               <div>
                 <h2 className="text-2xl font-bold text-gray-900 mb-4">1. What is a volcano?</h2>
@@ -111,81 +107,59 @@ export default function LessonContent({ onBackToLearning }) {
               {/* Section 2 */}
               <div>
                 <h2 className="text-2xl font-bold text-gray-900 mb-4">2. Why do volcanoes erupt?</h2>
-                <p className="text-gray-700 leading-relaxed">
+                <p className="text-gray-700 leading-relaxed mb-4">
                   Deep under the ground, the Earth is made of layers. One of these layers, the mantle, is very hot and partly melted. When pressure builds up underground, the magma finds weak spots in the crust and pushes its way out — that's how an eruption happens! Some eruptions are gentle, with slow-moving lava, while others are explosive and fast. Scientists who study volcanoes work to understand these eruptions so people nearby can stay safe.
+                </p>
+                <div className="w-full h-64 bg-gray-200 flex items-center justify-center">
+                  <svg className="w-16 h-16 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clipRule="evenodd" />
+                  </svg>
+                </div>
+              </div>
+
+              {/* Section 3 */}
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">3. Parts of a volcano</h2>
+                <p className="text-gray-700 leading-relaxed mb-4">
+                  Volcanoes have several important parts. The crater is the opening at the top where lava, ash, and gases come out. Inside the volcano is a channel called the vent, which connects the crater to the magma chamber below. The magma chamber is a large underground pool of molten rock. When pressure builds up in the magma chamber, it forces the magma up through the vent and out of the crater!
+                </p>
+              </div>
+
+              {/* Section 4 */}
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">4. Types of volcanoes</h2>
+                <p className="text-gray-700 leading-relaxed mb-4">
+                  There are three main types of volcanoes. Shield volcanoes are wide and flat, formed by layers of thin, runny lava. Composite volcanoes (also called stratovolcanoes) are tall and cone-shaped, built from layers of lava and ash. Cinder cone volcanoes are the smallest type, made from pieces of lava that cool and fall around the vent. Each type forms differently based on the kind of lava and how explosive the eruptions are.
+                </p>
+                <div className="w-full h-64 bg-gray-200 flex items-center justify-center">
+                  <svg className="w-16 h-16 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clipRule="evenodd" />
+                  </svg>
+                </div>
+              </div>
+
+              {/* Section 5 */}
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">5. Where are volcanoes found?</h2>
+                <p className="text-gray-700 leading-relaxed mb-4">
+                  Most volcanoes are found along the edges of tectonic plates, which are huge pieces of Earth's crust that move slowly. The Pacific Ring of Fire is a famous area with many active volcanoes because several tectonic plates meet there. Volcanoes can also form over hot spots, which are places where hot magma rises from deep in the Earth. The Hawaiian Islands were formed by a hot spot volcano!
+                </p>
+              </div>
+
+              {/* Section 6 */}
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">6. Living with volcanoes</h2>
+                <p className="text-gray-700 leading-relaxed">
+                  Even though volcanoes can be dangerous, millions of people live near them. Volcanic soil is very fertile and great for farming. Volcanoes also create beautiful landscapes and tourist attractions. Scientists called volcanologists study volcanoes to predict eruptions and keep people safe. They use special tools to measure earthquakes, gas emissions, and changes in the volcano's shape to give early warnings before an eruption.
                 </p>
               </div>
             </div>
           </div>
 
           {/* Right Column - Sidebar */}
-          <div className="col-span-2 flex flex-col space-y-6">
-            {/* Mastery Progress */}
-            <div className="bg-white p-6">
-              <div className="flex items-center justify-between mb-3">
-                <h3 className="text-lg font-bold text-gray-900 uppercase">Mastery</h3>
-                <div className="flex items-center space-x-2 relative">
-                  <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="#F59E0B" stroke="#F59E0B" strokeWidth="2"/>
-                  </svg>
-                  <span className={`text-xl font-bold text-gray-900 transition-transform duration-300 ${showCelebration ? 'scale-125' : ''}`}>
-                    {masteryPoints}/400
-                  </span>
-                  
-                  {/* Celebration Stars */}
-                  {showCelebration && (
-                    <>
-                      {[
-                        { x: -50, y: -80 },
-                        { x: 30, y: -60 },
-                        { x: 50, y: -20 },
-                        { x: 40, y: 30 },
-                        { x: -50, y: 60 },
-                        { x: -80, y: 40 },
-                        { x: -90, y: -10 },
-                        { x: -70, y: -50 }
-                      ].map((pos, i) => (
-                        <div
-                          key={i}
-                          className="absolute pointer-events-none"
-                          style={{
-                            top: '50%',
-                            left: '50%',
-                            transform: 'translate(-50%, -50%)',
-                            animation: `sparkleOut${i} 1.5s ease-out forwards`,
-                          }}
-                        >
-                          <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="#F59E0B" stroke="#F59E0B" strokeWidth="2"/>
-                          </svg>
-                          <style>{`
-                            @keyframes sparkleOut${i} {
-                              0% { 
-                                transform: translate(-50%, -50%) scale(0); 
-                                opacity: 1; 
-                              }
-                              100% { 
-                                transform: translate(calc(-50% + ${pos.x}px), calc(-50% + ${pos.y}px)) scale(1); 
-                                opacity: 0; 
-                              }
-                            }
-                          `}</style>
-                        </div>
-                      ))}
-                    </>
-                  )}
-                </div>
-              </div>
-              <div className="w-full bg-gray-200 h-4">
-                <div 
-                  className="h-4 bg-pink-500 transition-all duration-500 ease-in-out" 
-                  style={{ width: `${masteryProgress}%` }}
-                ></div>
-              </div>
-            </div>
-
+          <div className="col-span-2 flex flex-col space-y-6 sticky top-6 self-start" style={{ maxHeight: 'calc(100vh - 3rem)' }}>
             {/* Progress Stepper */}
-            <div className="bg-white p-6">
+            <div className="bg-white p-6 flex-shrink-0">
               <div className="flex items-center mb-4">
                 {[1, 2, 3, 4].map((step, index) => (
                   <div key={step} className="flex items-center flex-1">
@@ -313,7 +287,10 @@ export default function LessonContent({ onBackToLearning }) {
             </div>
 
             {/* Help Section */}
-            <div className="bg-white p-6 flex-1 flex flex-col" style={{ backgroundColor: '#C4CEFF' }}>
+            <div 
+              className="bg-white flex-1 p-6 flex flex-col overflow-hidden"
+              style={{ backgroundColor: '#C4CEFF' }}
+            >
               <div className="flex items-center space-x-2 mb-4">
                 <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ backgroundColor: '#6279E5' }}>
                   <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
@@ -325,24 +302,41 @@ export default function LessonContent({ onBackToLearning }) {
               </div>
               
               {/* Messages Area - grows to fill space */}
-              <div className="flex-1 mb-4">
-                {/* Chat messages would go here */}
+              <div className="flex-1 mb-4 overflow-y-auto space-y-3">
+                {/* User Message */}
+                <div className="flex justify-end">
+                  <div className="bg-black text-white p-4 max-w-[85%]">
+                    <p className="text-base leading-relaxed">I learned that magma comes from inside the Earth, but why does it sometimes explode out so fast during a volcanic eruption?</p>
+                  </div>
+                </div>
+
+                {/* Bot Message */}
+                <div className="flex justify-start">
+                  <div className="bg-white p-4 max-w-[85%]">
+                    <p className="text-base text-gray-900 leading-relaxed">Great question! Magma explodes out quickly when there is a lot of pressure built up underground from gases trapped inside the molten rock. When this pressure becomes too strong, it forces the magma to burst out rapidly through the volcano's opening!</p>
+                  </div>
+                </div>
               </div>
               
               {/* Text Input - pinned to bottom */}
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-3 px-4 py-3 border border-gray-300 bg-white">
                 <input
                   type="text"
                   placeholder="Ask any question"
-                  className="flex-1 px-4 py-2 border-2 border-gray-300 focus:outline-none focus:border-gray-900"
+                  className="flex-1 text-sm text-gray-600 focus:outline-none placeholder-gray-400"
                 />
-                <button className="p-2 bg-white border-2 border-gray-900 hover:bg-gray-50 transition-colors">
-                  <svg className="w-5 h-5 text-gray-900" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"/>
+                <button className="p-1 hover:bg-gray-100 transition-colors" title="Attach file">
+                  <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                   </svg>
                 </button>
-                <button className="p-2 bg-gray-900 text-white hover:bg-gray-800 transition-colors">
-                  <svg className="w-5 h-5 transform rotate-45" fill="currentColor" viewBox="0 0 20 20">
+                <button className="p-1 hover:bg-gray-100 transition-colors" title="Emoji">
+                  <svg className="w-5 h-5 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 100-2 1 1 0 000 2zm7-1a1 1 0 11-2 0 1 1 0 012 0zm-.464 5.535a1 1 0 10-1.415-1.414 3 3 0 01-4.242 0 1 1 0 00-1.415 1.414 5 5 0 007.072 0z" clipRule="evenodd" />
+                  </svg>
+                </button>
+                <button className="p-2 bg-gray-900 hover:bg-gray-800 transition-colors" title="Send">
+                  <svg className="w-5 h-5 text-white transform rotate-45" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"/>
                   </svg>
                 </button>
