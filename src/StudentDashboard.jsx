@@ -17,6 +17,7 @@ export default function StudentDashboard() {
   const [showLesson, setShowLesson] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [selectedChatFromSidebar, setSelectedChatFromSidebar] = useState(null);
+  const [triggerSidebarChat, setTriggerSidebarChat] = useState(null);
   const [dailyGoals, setDailyGoals] = useState({
     think: { current: 1, target: 5, completed: false },
     move: { current: 6000, target: 5000, completed: true },
@@ -292,6 +293,8 @@ export default function StudentDashboard() {
           setActivePage={setActivePage} 
           onCollapseChange={setIsSidebarCollapsed}
           setSelectedChatFromSidebar={setSelectedChatFromSidebar}
+          triggerSidebarChat={triggerSidebarChat}
+          setTriggerSidebarChat={setTriggerSidebarChat}
         />
       </div>
       
@@ -324,7 +327,10 @@ export default function StudentDashboard() {
               {activePage === 'overview' ? (
                 <OverviewContent />
               ) : activePage === 'challenges' ? (
-                <ChallengesContent onStartLesson={() => setShowLesson(true)} />
+                <ChallengesContent 
+                  onStartLesson={() => setShowLesson(true)} 
+                  setTriggerSidebarChat={setTriggerSidebarChat}
+                />
               ) : (
               <>
                 {/* Daily Goals - Only on Dashboard */}

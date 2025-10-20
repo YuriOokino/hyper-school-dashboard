@@ -1,12 +1,23 @@
 import { useState } from 'react';
 
-export default function ChallengesContent({ onStartLesson }) {
+export default function ChallengesContent({ onStartLesson, setTriggerSidebarChat }) {
   const [isUpdatingMood, setIsUpdatingMood] = useState(false);
   const [currentMood, setCurrentMood] = useState(4);
 
   const handleMoodSelect = (moodValue) => {
     setCurrentMood(moodValue);
     setIsUpdatingMood(false);
+  };
+
+  const handleWhatIsMastery = () => {
+    // Trigger sidebar to open AI Tutor chat with mastery explanation
+    if (setTriggerSidebarChat) {
+      setTriggerSidebarChat({
+        id: 3,
+        masteryQuestion: true,
+        timestamp: Date.now()
+      });
+    }
   };
 
   // Sample challenges data
@@ -126,7 +137,12 @@ export default function ChallengesContent({ onStartLesson }) {
                           <span className="text-gray-600">Mastery:</span>
                           <span className="font-bold text-gray-900">{item.mastery}%</span>
                         </div>
-                        <div className="flex items-center text-base">
+                        <div className="flex items-center space-x-1 text-base">
+                          <img 
+                            src="/assets/icons/Hyper credits.png" 
+                            alt="Credits" 
+                            className="w-5 h-5"
+                          />
                           <span className="font-bold text-gray-900">{item.points}/{item.maxPoints}</span>
                         </div>
                       </div>
@@ -179,7 +195,12 @@ export default function ChallengesContent({ onStartLesson }) {
                           <span className="text-gray-600">Progress:</span>
                           <span className="font-bold text-gray-900">{skill.progress}%</span>
                         </div>
-                        <div className="flex items-center text-base">
+                        <div className="flex items-center space-x-1 text-base">
+                          <img 
+                            src="/assets/icons/Hyper credits.png" 
+                            alt="Credits" 
+                            className="w-5 h-5"
+                          />
                           <span className="font-bold text-gray-900">{skill.points}/{skill.maxPoints}</span>
                         </div>
                       </div>
@@ -206,12 +227,16 @@ export default function ChallengesContent({ onStartLesson }) {
 
           {/* Right: Mastery Section */}
           <div className="flex-1">
-            <div className="bg-gray-100 p-4 h-full">
+            <div className="bg-gray-100 p-4 h-full flex flex-col">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-2xl font-bold text-gray-900 uppercase">
                   MASTERY
                 </h3>
-                <button className="flex items-center space-x-2 text-sm font-medium text-gray-900 hover:text-gray-700 transition-colors">
+                <button 
+                  onClick={handleWhatIsMastery}
+                  className="flex items-center space-x-2 text-sm font-medium text-gray-900 px-3 py-2" 
+                  style={{ backgroundColor: '#C4CEFF' }}
+                >
                   <span>What is Mastery?</span>
                   <img 
                     src="/assets/icons/AI chat icon.png" 
@@ -221,7 +246,7 @@ export default function ChallengesContent({ onStartLesson }) {
                 </button>
               </div>
 
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-3 gap-4 mb-4 flex-1">
                 {masterySubjects.map((subject, index) => {
                   const percentage = subject.percentage;
                   const radius = 40;
@@ -265,6 +290,15 @@ export default function ChallengesContent({ onStartLesson }) {
                     </div>
                   );
                 })}
+              </div>
+              
+              <div className="flex justify-center mt-auto">
+                <button className="px-4 py-2 border-2 border-black text-sm font-medium text-gray-900 flex items-center space-x-1">
+                  <span>View all topics</span>
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"/>
+                  </svg>
+                </button>
               </div>
             </div>
           </div>

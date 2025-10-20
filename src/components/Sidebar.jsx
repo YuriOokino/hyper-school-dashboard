@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-export default function Sidebar({ setActivePage, onCollapseChange, setSelectedChatFromSidebar }) {
+export default function Sidebar({ setActivePage, onCollapseChange, setSelectedChatFromSidebar, triggerSidebarChat, setTriggerSidebarChat }) {
   const [isAccountOpen, setIsAccountOpen] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [selectedChat, setSelectedChat] = useState(null);
@@ -13,6 +13,25 @@ export default function Sidebar({ setActivePage, onCollapseChange, setSelectedCh
       onCollapseChange(isCollapsed);
     }
   }, [isCollapsed, onCollapseChange]);
+
+  // Handle external trigger to open specific chat
+  useEffect(() => {
+    if (triggerSidebarChat) {
+      const chat = chats.find(c => c.id === triggerSidebarChat.id);
+      if (chat) {
+        setSelectedChat({
+          ...chat,
+          masteryQuestion: triggerSidebarChat.masteryQuestion
+        });
+        setIsChatOpen(true);
+        setIsAccountOpen(false);
+        // Clear the trigger
+        if (setTriggerSidebarChat) {
+          setTriggerSidebarChat(null);
+        }
+      }
+    }
+  }, [triggerSidebarChat]);
 
   // Tutor chats
   const chats = [
@@ -439,7 +458,7 @@ export default function Sidebar({ setActivePage, onCollapseChange, setSelectedCh
           }}
         >
           {/* Chat Header */}
-          <div className="flex items-center justify-between px-6 py-4 border-b bg-white">
+          <div className="flex items-center justify-between px-6 py-2 border-b bg-gray-100">
             <div className="flex items-center space-x-3">
               <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm text-white font-semibold ${
                 selectedChat.id === 1 ? 'bg-orange-500' : 
@@ -487,10 +506,36 @@ export default function Sidebar({ setActivePage, onCollapseChange, setSelectedCh
           
           {/* Messages Area */}
           <div className="flex-1 overflow-y-auto bg-white">
-            <div className="space-y-6">
-              {chatMessages[selectedChat.id]?.map((message, index) => {
-                const messages = chatMessages[selectedChat.id];
-                const showNewDivider = index > 0 && !messages[index - 1].isNew && message.isNew;
+            <div className="space-y-6 pt-6">
+              {(() => {
+                let messages;
+                
+                // Show mastery conversation if flag is set
+                if (selectedChat.masteryQuestion && selectedChat.id === 3) {
+                  messages = [
+                    { 
+                      id: 1, 
+                      sender: "Jennifer", 
+                      message: "What is mastery?", 
+                      time: "Just now", 
+                      isCurrentUser: true, 
+                      isNew: false 
+                    },
+                    { 
+                      id: 2, 
+                      sender: "AI Tutor", 
+                      message: "Great question! Mastery is all about truly understanding a topic.\n\nThere are two types of mastery we track:\n\n1. Topic Mastery: You need to answer a certain number of questions correctly in a row to show you've mastered a single topic. This proves you really understand it!\n\n2. Curriculum Mastery: This tracks how many topics you've mastered out of all the topics in your curriculum. It's like a completion percentage for your whole learning journey.\n\nAs you progress and master more topics, you'll see your overall curriculum mastery increase. The dashboard shows you both your progress toward mastering individual topics and your overall curriculum completion!", 
+                      time: "Just now", 
+                      isCurrentUser: false, 
+                      isNew: false 
+                    }
+                  ];
+                } else {
+                  messages = chatMessages[selectedChat.id] || [];
+                }
+                
+                return messages.map((message, index) => {
+                  const showNewDivider = index > 0 && !messages[index - 1].isNew && message.isNew;
                 
                 return (
                   <div key={message.id}>
@@ -516,13 +561,14 @@ export default function Sidebar({ setActivePage, onCollapseChange, setSelectedCh
                             <span className="text-base font-bold text-gray-900">{message.sender}</span>
                             <span className="text-sm text-gray-500">{message.time}</span>
                           </div>
-                          <p className="text-sm text-gray-900 leading-relaxed">{message.message}</p>
+                          <p className="text-sm text-gray-900 leading-relaxed whitespace-pre-line">{message.message}</p>
                         </div>
                       </div>
                     </div>
                   </div>
                 );
-              })}
+                });
+              })()}
             </div>
           </div>
           
