@@ -348,9 +348,10 @@ export default function OverviewContent() {
                     <div className="text-5xl font-bold text-gray-900">{totalTopicsMastered}/{totalTopics}</div>
                   </div>
                 </div>
-                <div className="text-lg text-gray-600 font-bold">
-                  <div>Topics Mastered</div>
-                </div>
+           
+                  <div className="text-lg text-gray-600 font-bold">Topics Mastered</div>
+                  <div className="text-md font-normal">Level 6</div>
+            
               </div>
             </div>
             <div className="flex justify-center pb-4">
