@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export default function ChallengesContent() {
+export default function ChallengesContent({ onStartLesson }) {
   const [isUpdatingMood, setIsUpdatingMood] = useState(false);
   const [currentMood, setCurrentMood] = useState(4);
 
@@ -142,6 +142,7 @@ export default function ChallengesContent() {
 
                   {/* Action Button */}
                   <button 
+                    onClick={() => onStartLesson && onStartLesson()}
                     className={`py-2 px-6 text-base font-bold transition-colors flex-shrink-0 w-36 ${
                       item.status === 'completed' 
                         ? 'text-gray-900' 
@@ -192,7 +193,10 @@ export default function ChallengesContent() {
                     </div>
                   </div>
 
-                  <button className="py-2 px-6 text-base font-bold transition-colors flex-shrink-0 w-36 bg-gray-900 text-white hover:bg-gray-800">
+                  <button 
+                    onClick={() => onStartLesson && onStartLesson()}
+                    className="py-2 px-6 text-base font-bold transition-colors flex-shrink-0 w-36 bg-gray-900 text-white hover:bg-gray-800"
+                  >
                     {skill.status === 'continue' ? 'CONTINUE' : 'START'}
                   </button>
                 </div>

@@ -324,7 +324,7 @@ export default function StudentDashboard() {
               {activePage === 'overview' ? (
                 <OverviewContent />
               ) : activePage === 'challenges' ? (
-                <ChallengesContent />
+                <ChallengesContent onStartLesson={() => setShowLesson(true)} />
               ) : (
               <>
                 {/* Daily Goals - Only on Dashboard */}
