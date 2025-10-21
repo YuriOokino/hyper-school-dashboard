@@ -216,8 +216,16 @@ export default function SquadContent({ selectedChatFromSidebar, setSelectedChatF
   };
 
   return (
-    <div className="flex flex-col">
-      {/* Thunderbolts Banner - Top of entire Squad tab */}
+    <>
+      <style>
+        {`
+          .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+          }
+        `}
+      </style>
+      <div className="flex flex-col scrollbar-hide" style={{ overflowY: 'auto', height: '100vh', scrollbarWidth: 'none', msOverflowStyle: 'none', paddingTop: 0, marginTop: 0 }}>
+        {/* Thunderbolts Banner - Top of entire Squad tab */}
       <div 
         className="relative bg-cover bg-center flex items-center justify-between px-8 py-6 flex-shrink-0"
         style={{ backgroundImage: "url('/assets/Images/thunderbolts banner.jpg')", height: '128px' }}
@@ -235,7 +243,7 @@ export default function SquadContent({ selectedChatFromSidebar, setSelectedChatF
         </div>
       </div>
 
-      <div className="flex mt-6" style={{ height: 'calc(100vh - 64px - 24px)' }}>
+      <div className="flex mt-6" style={{ height: 'calc(100vh - 64px - 128px - 24px - 48px)' }}>
         {/* Left Sidebar - Chat List */}
         <div className="w-64 bg-gray-50 flex flex-col border-r border-gray-200 overflow-hidden">
         {/* Sidebar Header */}
@@ -244,7 +252,7 @@ export default function SquadContent({ selectedChatFromSidebar, setSelectedChatF
         </div>
 
         {/* Chat List */}
-        <div className="flex-1 overflow-y-auto">
+        <div className="flex-1 overflow-y-auto scrollbar-hide" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
           {/* Main Hall Section */}
           <div className="px-4 pt-4 pb-2">
             <div className="text-xs font-bold text-gray-500 uppercase mb-2">Main Hall</div>
@@ -374,7 +382,7 @@ export default function SquadContent({ selectedChatFromSidebar, setSelectedChatF
         </div>
 
         {/* Messages Area */}
-        <div className="flex-1 overflow-y-auto bg-white p-6">
+        <div className="flex-1 overflow-y-auto bg-white p-6 scrollbar-hide" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
           <div className="space-y-6">
             {getCurrentMessages().map((message, index) => {
               // For tutor/leader messages (different structure)
@@ -549,7 +557,7 @@ export default function SquadContent({ selectedChatFromSidebar, setSelectedChatF
         <div className="bg-white border-t border-gray-200 p-3 flex-shrink-0">
           <div className="border border-gray-300 rounded-lg">
             {/* Formatting Toolbar */}
-            <div className="flex items-center space-x-1 px-3 py-2 text-gray-600">
+            <div className="flex items-center space-x-1 px-3 py-2 text-gray-600 hidden">
               <button className="p-1 hover:bg-gray-100 rounded" title="Bold">
                 <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                   <path d="M12.5 4H7v12h5.5c1.93 0 3.5-1.57 3.5-3.5 0-1.07-.48-2.02-1.23-2.66.53-.66.83-1.48.83-2.34C15.1 5.57 14.43 4 12.5 4z"/>
@@ -645,6 +653,100 @@ export default function SquadContent({ selectedChatFromSidebar, setSelectedChatF
         </div>
       </div>
       </div>
+
+      {/* Squad Leader and Leaderboard Section */}
+      <div className="flex gap-4 mt-6">
+        {/* Squad Leader */}
+        <div className="bg-white p-6" style={{ flex: '0 0 35%' }}>
+          <h3 className="text-xl font-bold text-gray-900 mb-4 uppercase">Squad Leader</h3>
+          <div className="flex items-start space-x-4 mb-4">
+            <div className="w-32 h-32 rounded-full bg-gray-300 flex-shrink-0 overflow-hidden">
+              <img 
+                src="https://i.pravatar.cc/" 
+                alt="Ms Ramirez"
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div className="flex-1">
+              <h4 className="text-lg font-bold text-gray-900">Ms Ramirez</h4>
+              <span className="text-xs text-green-600 block mt-1 mb-2">Online</span>
+              <p className="text-sm text-gray-600">Write a short bio to introduce yourself to the students.</p>
+            </div>
+          </div>
+          <div className="mb-3">
+            <p className="text-sm text-gray-600">Next check in: <span className="font-bold text-pink-500">TOMORROW</span></p>
+          </div>
+          <button className="w-full text-white py-2 font-medium" style={{ backgroundColor: '#6279E5' }}>
+            CHAT NOW
+          </button>
+        </div>
+
+        {/* Leaderboard */}
+        <div className="flex-1 bg-white p-6">
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-xl font-bold text-gray-900 uppercase">Leaderboard</h3>
+            <button className="text-sm text-gray-600 hover:text-gray-900">View all &gt;</button>
+          </div>
+          <div className="grid grid-cols-2 gap-8 items-start">
+            {/* Top Students */}
+            <div>
+              <h4 className="text-base font-bold text-gray-900 mb-4">Top students</h4>
+              <div className="space-y-3">
+                <div className="flex items-start space-x-2 py-2 px-3">
+                  <span className="text-2xl font-bold text-gray-900">#1</span>
+                  <div>
+                    <p className="font-bold text-gray-900">Jonathan</p>
+                    <p className="text-sm text-gray-500">4,228 | Lv. 7</p>
+                  </div>
+                </div>
+                <div className="flex items-start space-x-2 py-2 px-3">
+                  <span className="text-2xl font-bold text-gray-900">#2</span>
+                  <div>
+                    <p className="font-bold text-gray-900">Sebastian</p>
+                    <p className="text-sm text-gray-500">3,834 | Lv. 6</p>
+                  </div>
+                </div>
+                <div className="flex items-start space-x-2 py-2 px-3" style={{ backgroundColor: '#DBFF4D' }}>
+                  <span className="text-2xl font-bold text-gray-900">#3</span>
+                  <div>
+                    <p className="font-bold text-gray-900">Jennifer</p>
+                    <p className="text-sm text-gray-900">3,456 | Lv. 6</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Top Squads */}
+            <div>
+              <h4 className="text-base font-bold text-gray-900 mb-4">Top squads</h4>
+              <div className="space-y-3">
+                <div className="flex items-start space-x-2 py-2 px-3">
+                  <span className="text-2xl font-bold text-gray-900">#1</span>
+                  <div>
+                    <p className="font-bold text-gray-900">Lightning Hawks</p>
+                    <p className="text-sm text-gray-500">183,900</p>
+                  </div>
+                </div>
+                <div className="flex items-start space-x-2 py-2 px-3" style={{ backgroundColor: '#DBFF4D' }}>
+                  <span className="text-2xl font-bold text-gray-900">#2</span>
+                  <div>
+                    <p className="font-bold text-gray-900">Thunderbolts</p>
+                    <p className="text-sm text-gray-900">123,280</p>
+                  </div>
+                </div>
+                <div className="flex items-start space-x-2 py-2 px-3">
+                  <span className="text-2xl font-bold text-gray-900">#3</span>
+                  <div>
+                    <p className="font-bold text-gray-900">Storm riders</p>
+                    <p className="text-sm text-gray-500">100,450</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+    </>
   );
 }
