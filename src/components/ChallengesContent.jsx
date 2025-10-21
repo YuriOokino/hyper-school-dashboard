@@ -28,9 +28,9 @@ export default function ChallengesContent({ onStartLesson, setTriggerSidebarChat
       subject: 'Math',
       mastery: 100,
       points: 90,
-      maxPoints: 90,
       status: 'completed',
-      difficulty: 'Fast Quiz'
+      difficulty: 'Fast Quiz',
+      image: '/assets/Images/placeholder-math.jpg' // Placeholder - will be replaced
     },
     {
       id: 2,
@@ -38,19 +38,19 @@ export default function ChallengesContent({ onStartLesson, setTriggerSidebarChat
       subject: 'Biology',
       mastery: 50,
       points: 25,
-      maxPoints: 50,
       status: 'continue',
-      difficulty: 'Review'
+      difficulty: 'Review',
+      image: '/assets/Images/placeholder-biology.jpg' // Placeholder - will be replaced
     },
     {
       id: 3,
       title: 'AMERICAN HISTORY 1900S',
       subject: 'History',
       mastery: 0,
-      points: 0,
-      maxPoints: 130,
+      points: 100,
       status: 'start',
-      difficulty: 'Test'
+      difficulty: 'Test',
+      image: '/assets/Images/placeholder-history.jpg' // Placeholder - will be replaced
     }
   ];
 
@@ -59,28 +59,28 @@ export default function ChallengesContent({ onStartLesson, setTriggerSidebarChat
       id: 1,
       title: 'BUDGETING 101',
       subject: 'Finance',
-      progress: 90,
       points: 60,
-      maxPoints: 80,
-      status: 'continue'
+      status: 'continue',
+      difficulty: 'Practice',
+      image: '/assets/Images/placeholder-finance.jpg' // Placeholder - will be replaced
     },
     {
       id: 2,
       title: 'INTERVIEW PREPARATION',
       subject: 'Career Development',
-      progress: 50,
       points: 50,
-      maxPoints: 100,
-      status: 'continue'
+      status: 'continue',
+      difficulty: 'Workshop',
+      image: '/assets/Images/placeholder-career.jpg' // Placeholder - will be replaced
     },
     {
       id: 3,
       title: 'LEADERSHIP FUNDAMENTALS',
       subject: 'Leadership',
-      progress: 50,
       points: 50,
-      maxPoints: 100,
-      status: 'start'
+      status: 'start',
+      difficulty: 'Quiz',
+      image: '/assets/Images/placeholder-leadership.jpg' // Placeholder - will be replaced
     }
   ];
 
@@ -103,90 +103,126 @@ export default function ChallengesContent({ onStartLesson, setTriggerSidebarChat
   return (
     <div className="space-y-6">
       {/* TODAY'S CHALLENGES Header */}
-      <h2 className="text-3xl font-bold text-gray-900 uppercase">
-        TODAY'S CHALLENGES
-      </h2>
+      <div>
+        <h2 className="text-3xl font-bold text-gray-900 uppercase mb-2">
+          TODAY'S CHALLENGES
+        </h2>
+        <p className="text-gray-600 text-base">
+          Complete all of today's challenges to reach your daily learning goals and earn rewards.
+        </p>
+      </div>
 
-      {/* Main Container */}
-      <div className="bg-white border-2 border-gray-200 p-6">
-        <div className="flex gap-6">
-          {/* Left: Knowledge Section */}
-          <div className="flex-[2]">
+      {/* Main Container - 2 columns */}
+      <div className="flex gap-6">
+        {/* Left Column: Knowledge & Life Skills */}
+        <div className="flex-[2] flex flex-col gap-6">
+          {/* Knowledge Section */}
+          <div className="bg-white p-6 flex-1 flex flex-col">
             <h3 className="text-2xl font-bold text-gray-900 uppercase mb-4">
               KNOWLEDGE
             </h3>
             
-            <div className="space-y-4">
+            <div className="space-y-4 mt-auto">
               {knowledgeChallenges.map((item) => (
-                <div key={item.id} className="flex items-center gap-4 border-b border-gray-200 pb-4 last:border-0">
-                  {/* Subject Badge */}
-                  <div className="w-24 h-16 flex-shrink-0 bg-gray-200 flex items-center justify-center">
-                    <span className="font-bold text-base text-gray-700">{item.subject}</span>
-                  </div>
+                <div key={item.id} className="flex items-center gap-4">
+                  {/* Category Icon */}
+                  <img 
+                    src="/assets/pillars/knonwledge icon.png" 
+                    alt="Knowledge"
+                    className="w-[172px] h-28 flex-shrink-0 object-contain"
+                  />
                   
                   {/* Challenge Info */}
                   <div className="flex-1 flex flex-col gap-2">
-                    <div className="flex items-center gap-2">
-                      <h4 className="font-bold text-lg text-gray-900">{item.title}</h4>
-                      <span className="px-2 py-1 border border-gray-300 text-sm">{item.difficulty}</span>
-                    </div>
-
-                    <div className="flex items-center space-x-1 text-base">
-                      <img 
-                        src="/assets/icons/Hyper credits.png" 
-                        alt="Credits" 
-                        className="w-5 h-5"
-                      />
-                      <span className="font-bold text-gray-900">{item.points}</span>
+                    <h4 className="font-bold text-xl text-gray-900">{item.title}</h4>
+                    
+                    <div className="flex items-center gap-3">
+                      <span className="px-3 py-1 text-sm font-medium text-white" style={{ backgroundColor: '#FE55A4' }}>
+                        {item.subject}
+                      </span>
+                      <span className="px-3 py-1 text-sm font-medium text-gray-900" style={{ backgroundColor: '#F3F4F6' }}>
+                        {item.difficulty}
+                      </span>
+                      <div className="flex items-center gap-2">
+                        <img 
+                          src="/assets/icons/Hyper credits.png" 
+                          alt="Credits" 
+                          className="w-5 h-5"
+                        />
+                        <span className="font-bold text-gray-900 text-base">{item.points}</span>
+                      </div>
                     </div>
                   </div>
 
                   {/* Action Button */}
                   <button 
                     onClick={() => onStartLesson && onStartLesson()}
-                    className={`py-2 px-6 text-base font-bold transition-colors flex-shrink-0 w-36 ${
+                    className={`py-2 px-6 text-base font-medium transition-colors flex-shrink-0 w-36 flex items-center justify-center gap-2 ${
                       item.status === 'completed' 
                         ? 'text-gray-900' 
                         : item.status === 'continue' 
                         ? 'bg-gray-900 text-white hover:bg-gray-800' 
-                        : 'bg-white text-gray-900 border-2 border-gray-300 hover:bg-gray-50'
+                        : 'bg-white text-gray-900 border-2 border-black hover:bg-gray-50'
                     }`}
                     style={item.status === 'completed' ? { backgroundColor: '#DBFF4D' } : {}}
                   >
+                    {item.status === 'completed' && (
+                      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
+                      </svg>
+                    )}
                     {item.status === 'completed' ? 'COMPLETED' : item.status === 'continue' ? 'CONTINUE' : 'START'}
                   </button>
                 </div>
               ))}
             </div>
+          </div>
 
-            {/* Life Skills Section */}
-            <h3 className="text-2xl font-bold text-gray-900 uppercase mb-4 mt-8">
+          {/* Life Skills Section */}
+          <div className="bg-white p-6 flex-1 flex flex-col">
+            <h3 className="text-2xl font-bold text-gray-900 uppercase mb-4">
               LIFE SKILLS
             </h3>
             
-            <div className="space-y-4">
+            <div className="space-y-4 mt-auto">
               {lifeSkillsChallenges.map((skill) => (
-                <div key={skill.id} className="flex items-center gap-4 border-b border-gray-200 pb-4 last:border-0">
-                  <div className="w-24 h-16 flex-shrink-0 bg-gray-200 flex items-center justify-center">
-                    <span className="font-bold text-sm text-center text-gray-700">{skill.subject}</span>
-                  </div>
+                <div key={skill.id} className="flex items-center gap-4">
+                  {/* Category Icon */}
+                  <img 
+                    src="/assets/pillars/life skills icon.png" 
+                    alt="Life Skills"
+                    className="w-[172px] h-28 flex-shrink-0 object-contain"
+                  />
                   
+                  {/* Challenge Info */}
                   <div className="flex-1 flex flex-col gap-2">
-                    <h4 className="font-bold text-lg text-gray-900">{skill.title}</h4>
-
-                    <div className="flex items-center space-x-1 text-base">
-                      <img 
-                        src="/assets/icons/Hyper credits.png" 
-                        alt="Credits" 
-                        className="w-5 h-5"
-                      />
-                      <span className="font-bold text-gray-900">{skill.points}</span>
+                    <h4 className="font-bold text-xl text-gray-900">{skill.title}</h4>
+                    
+                    <div className="flex items-center gap-3">
+                      <span className="px-3 py-1 text-sm font-medium text-white" style={{ backgroundColor: '#FF8C42' }}>
+                        {skill.subject}
+                      </span>
+                      <span className="px-3 py-1 text-sm font-medium text-gray-900" style={{ backgroundColor: '#F3F4F6' }}>
+                        {skill.difficulty}
+                      </span>
+                      <div className="flex items-center gap-2">
+                        <img 
+                          src="/assets/icons/Hyper credits.png" 
+                          alt="Credits" 
+                          className="w-5 h-5"
+                        />
+                        <span className="font-bold text-gray-900 text-base">{skill.points}</span>
+                      </div>
                     </div>
                   </div>
 
                   <button 
                     onClick={() => onStartLesson && onStartLesson()}
-                    className="py-2 px-6 text-base font-bold transition-colors flex-shrink-0 w-36 bg-gray-900 text-white hover:bg-gray-800"
+                    className={`py-2 px-6 text-base font-medium transition-colors flex-shrink-0 w-36 ${
+                      skill.status === 'continue' 
+                        ? 'bg-gray-900 text-white hover:bg-gray-800' 
+                        : 'bg-white text-gray-900 border-2 border-black hover:bg-gray-50'
+                    }`}
                   >
                     {skill.status === 'continue' ? 'CONTINUE' : 'START'}
                   </button>
@@ -194,82 +230,83 @@ export default function ChallengesContent({ onStartLesson, setTriggerSidebarChat
               ))}
             </div>
           </div>
+        </div>
 
-          {/* Right: Mastery Section */}
-          <div className="flex-1">
-            <div className="bg-gray-100 p-4 h-full flex flex-col">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-2xl font-bold text-gray-900 uppercase">
-                  MASTERY
-                </h3>
-                <button 
-                  onClick={handleWhatIsMastery}
-                  className="flex items-center space-x-2 text-sm font-medium text-gray-900 px-3 py-2" 
-                  style={{ backgroundColor: '#C4CEFF' }}
-                >
-                  <span>What is Mastery?</span>
-                  <img 
-                    src="/assets/icons/AI chat icon.png" 
-                    alt="Ask AI" 
-                    className="w-5 h-5"
-                  />
-                </button>
-              </div>
+        {/* Right Column: Mastery */}
+        <div className="flex-1">
+          {/* Mastery Section */}
+          <div className="bg-white p-6 h-full flex flex-col">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-2xl font-bold text-gray-900 uppercase">
+                MASTERY
+              </h3>
+              <button 
+                onClick={handleWhatIsMastery}
+                className="flex items-center space-x-2 text-sm font-medium text-gray-900 px-3 py-2" 
+                style={{ backgroundColor: '#C4CEFF' }}
+              >
+                <span>What is Mastery?</span>
+                <img 
+                  src="/assets/icons/AI chat icon.png" 
+                  alt="Ask AI" 
+                  className="w-5 h-5"
+                />
+              </button>
+            </div>
 
-              <div className="grid grid-cols-3 gap-4 mb-4 flex-1">
-                {masterySubjects.map((subject, index) => {
-                  const percentage = subject.percentage;
-                  const radius = 40;
-                  const circumference = 2 * Math.PI * radius;
-                  const strokeDashoffset = circumference - (circumference * percentage / 100);
-                  const isComplete = percentage === 100;
+            <div className="grid grid-cols-3 gap-4 mb-4 flex-1">
+              {masterySubjects.map((subject, index) => {
+                const percentage = subject.percentage;
+                const radius = 40;
+                const circumference = 2 * Math.PI * radius;
+                const strokeDashoffset = circumference - (circumference * percentage / 100);
+                const isComplete = percentage === 100;
 
-                  return (
-                    <div key={index} className="text-center">
-                      <div className="relative w-24 h-24 mx-auto mb-2">
-                        <svg className="w-24 h-24 transform -rotate-90">
-                          <circle
-                            cx="48"
-                            cy="48"
-                            r={radius}
-                            fill="none"
-                            stroke="#E5E7EB"
-                            strokeWidth="8"
-                          />
-                          <circle
-                            cx="48"
-                            cy="48"
-                            r={radius}
-                            fill="none"
-                            stroke="#3FC7FF"
-                            strokeWidth="8"
-                            strokeDasharray={circumference}
-                            strokeDashoffset={strokeDashoffset}
-                            className="transition-all duration-1000"
-                          />
-                        </svg>
-                        {isComplete && (
-                          <div className="absolute inset-0 flex items-center justify-center">
-                            <svg className="w-12 h-12 text-black" fill="currentColor" viewBox="0 0 20 20">
-                              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
-                            </svg>
-                          </div>
-                        )}
-                      </div>
-                      <div className="text-sm font-bold text-gray-900">{subject.subject}</div>
+                return (
+                  <div key={index} className="text-center">
+                    <div className="relative w-24 h-24 mx-auto mb-2">
+                      <svg className="w-24 h-24 transform -rotate-90">
+                        <circle
+                          cx="48"
+                          cy="48"
+                          r={radius}
+                          fill="none"
+                          stroke="#E5E7EB"
+                          strokeWidth="8"
+                        />
+                        <circle
+                          cx="48"
+                          cy="48"
+                          r={radius}
+                          fill="none"
+                          stroke="#3FC7FF"
+                          strokeWidth="8"
+                          strokeDasharray={circumference}
+                          strokeDashoffset={strokeDashoffset}
+                          className="transition-all duration-1000"
+                        />
+                      </svg>
+                      {isComplete && (
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <svg className="w-12 h-12 text-black" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
+                          </svg>
+                        </div>
+                      )}
                     </div>
-                  );
-                })}
-              </div>
-              
-              <div className="flex justify-center mt-auto">
-                <button className="px-4 py-2 border-2 border-black text-sm font-medium text-gray-900 flex items-center space-x-1">
-                  <span>View all topics</span>
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"/>
-                  </svg>
-                </button>
-              </div>
+                    <div className="text-sm font-bold text-gray-900">{subject.subject}</div>
+                  </div>
+                );
+              })}
+            </div>
+            
+            <div className="flex justify-center mt-auto">
+              <button className="px-4 py-2 border-2 border-black text-sm font-medium text-gray-900 flex items-center space-x-1">
+                <span>View all topics</span>
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"/>
+                </svg>
+              </button>
             </div>
           </div>
         </div>
@@ -398,7 +435,10 @@ export default function ChallengesContent({ onStartLesson, setTriggerSidebarChat
               </div>
               <div className="font-bold text-base text-gray-900 mb-2">Like 10 posts</div>
               <div className="text-sm text-gray-600 mb-2">12/10</div>
-              <button className="w-full py-2 text-sm font-bold text-black" style={{ backgroundColor: '#DBFF4D' }}>
+              <button className="w-full py-2 text-sm font-medium text-black flex items-center justify-center gap-2" style={{ backgroundColor: '#DBFF4D' }}>
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
+                </svg>
                 Completed!
               </button>
             </div>
@@ -419,7 +459,7 @@ export default function ChallengesContent({ onStartLesson, setTriggerSidebarChat
               </div>
               <div className="font-bold text-base text-gray-900 mb-2">Leave 10 comments</div>
               <div className="text-sm text-gray-600 mb-2">6/10</div>
-              <button className="w-full bg-black text-white py-2 text-sm font-bold hover:bg-gray-800 transition-colors">
+              <button className="w-full bg-black text-white py-2 text-sm font-medium hover:bg-gray-800 transition-colors">
                 Connect
               </button>
             </div>
@@ -438,7 +478,7 @@ export default function ChallengesContent({ onStartLesson, setTriggerSidebarChat
               </div>
               <div className="font-bold text-base text-gray-900 mb-2">Check in</div>
               <div className="text-sm text-gray-600 mb-2">Pending</div>
-              <button className="w-full text-white py-2 text-sm font-bold hover:bg-blue-600 transition-colors" style={{ backgroundColor: '#6279E5' }}>
+              <button className="w-full text-white py-2 text-sm font-medium hover:bg-blue-600 transition-colors" style={{ backgroundColor: '#6279E5' }}>
                 Chat with Ms Ramirez
               </button>
             </div>
