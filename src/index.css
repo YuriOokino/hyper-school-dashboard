@@ -5,9 +5,52 @@
 @layer base {
   body {
     font-family: 'Outfit', sans-serif;
+    color: #121214;
   }
   
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Oswald', sans-serif;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+  
+  h1 {
+    font-size: 72px;
+    line-height: 100%;
+  }
+  
+  h2 {
+    font-size: 60px;
+    line-height: 120%;
+  }
+  
+  h3 {
+    font-size: 44px;
+    line-height: 120%;
+  }
+  
+  h4 {
+    font-size: 36px;
+    line-height: 120%;
+  }
+  
+  h5 {
+    font-size: 28px;
+    line-height: 110%;
+  }
+  
+  h6 {
+    font-size: 22px;
+    line-height: 110%;
+  }
+}
+
+@layer components {
+  .tagline {
+    font-family: 'Oswald', sans-serif;
+    font-size: 16px;
+    line-height: 150%;
+    text-transform: uppercase;
+    font-weight: 700;
   }
 }

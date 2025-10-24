@@ -1,39 +1,43 @@
 import { useState } from 'react';
+import { Tab } from './ui';
 
 export default function OverviewContent() {
   const [timeView, setTimeView] = useState('year');
 
   // Sample data for curriculum mastery
+  // 800 total topics in school year / 12 months = ~67 topics per month
+  const topicsPerMonth = 800 / 12;
+  
   const yearlyData = [
-    { month: 'Jan', topicsMastered: 12, percentage: 45 },
-    { month: 'Feb', topicsMastered: 15, percentage: 50 },
-    { month: 'Mar', topicsMastered: 18, percentage: 55 },
-    { month: 'Apr', topicsMastered: 14, percentage: 58 },
-    { month: 'May', topicsMastered: 20, percentage: 65 },
-    { month: 'Jun', topicsMastered: 16, percentage: 68 },
-    { month: 'Jul', topicsMastered: 17, percentage: 72 },
-    { month: 'Aug', topicsMastered: 19, percentage: 76 },
-    { month: 'Sep', topicsMastered: 21, percentage: 79 },
-    { month: 'Oct', topicsMastered: 18, percentage: 82 },
-    { month: 'Nov', topicsMastered: 16, percentage: 85 },
-    { month: 'Dec', topicsMastered: 14, percentage: 87 }
+    { month: 'Sep', topicsMastered: 45, percentage: 20 },
+    { month: 'Oct', topicsMastered: 62, percentage: 28 },
+    { month: 'Nov', topicsMastered: 48, percentage: 35 },
+    { month: 'Dec', topicsMastered: 38, percentage: 40 },
+    { month: 'Jan', topicsMastered: 66, percentage: 50 },
+    { month: 'Feb', topicsMastered: 55, percentage: 57 },
+    { month: 'Mar', topicsMastered: 43, percentage: 63 },
+    { month: 'Apr', topicsMastered: 60, percentage: 71 },
+    { month: 'May', topicsMastered: 59, percentage: 78 },
+    { month: 'Jun', topicsMastered: 52, percentage: 84 },
+    { month: 'Jul', topicsMastered: 41, percentage: 89 },
+    { month: 'Aug', topicsMastered: 36, percentage: 93 }
   ];
 
   const weeklyData = [
-    { day: 'Mon', topicsMastered: 3, percentage: 79 },
-    { day: 'Tue', topicsMastered: 2, percentage: 80 },
-    { day: 'Wed', topicsMastered: 4, percentage: 82 },
-    { day: 'Thu', topicsMastered: 1, percentage: 83 },
-    { day: 'Fri', topicsMastered: 3, percentage: 84 },
-    { day: 'Sat', topicsMastered: 2, percentage: 85 },
-    { day: 'Sun', topicsMastered: 1, percentage: 86 }
+    { day: 'Mon', topicsMastered: 8, percentage: 79 },
+    { day: 'Tue', topicsMastered: 12, percentage: 80 },
+    { day: 'Wed', topicsMastered: 6, percentage: 82 },
+    { day: 'Thu', topicsMastered: 14, percentage: 83 },
+    { day: 'Fri', topicsMastered: 10, percentage: 84 },
+    { day: 'Sat', topicsMastered: 4, percentage: 84 },
+    { day: 'Sun', topicsMastered: 7, percentage: 85 }
   ];
 
   const monthlyData = [
-    { week: 'Week 1', topicsMastered: 8, percentage: 75 },
-    { week: 'Week 2', topicsMastered: 10, percentage: 78 },
-    { week: 'Week 3', topicsMastered: 12, percentage: 82 },
-    { week: 'Week 4', topicsMastered: 9, percentage: 85 }
+    { week: 'Week 1', topicsMastered: 12, percentage: 75 },
+    { week: 'Week 2', topicsMastered: 15, percentage: 78 },
+    { week: 'Week 3', topicsMastered: 14, percentage: 82 },
+    { week: 'Week 4', topicsMastered: 13, percentage: 85 }
   ];
 
   const getCurrentData = () => {
@@ -50,7 +54,12 @@ export default function OverviewContent() {
   };
 
   const currentData = getCurrentData();
-  const maxTopics = Math.max(...currentData.map(d => d.topicsMastered));
+  
+  // For weekly data: assume 800 topics / 52 weeks = ~15.4 topics per week
+  const topicsPerWeek = 800 / 52;
+  
+  // For monthly data (4 weeks): assume 800 topics / 12 months / 4 weeks = ~16.7 topics per week
+  const topicsPerWeekInMonth = topicsPerMonth / 4;
   const totalTopicsMastered = 31;
   const totalTopics = 50;
   const percentageComplete = 79; // Should match Level 6 progress
@@ -172,33 +181,24 @@ export default function OverviewContent() {
             {/* Time View Selector */}
             <div className="flex items-center justify-between mb-6">
               <div className="flex space-x-2">
-                <button
+                <Tab
+                  active={timeView === 'year'}
                   onClick={() => setTimeView('year')}
-                  className={`px-4 py-2 text-base font-medium ${
-                    timeView === 'year' ? 'text-white' : 'bg-white text-gray-700 border-2 border-gray-200'
-                  }`}
-                  style={timeView === 'year' ? { backgroundColor: '#FE55A4' } : {}}
                 >
                   Year
-                </button>
-                <button
+                </Tab>
+                <Tab
+                  active={timeView === 'month'}
                   onClick={() => setTimeView('month')}
-                  className={`px-4 py-2 text-base font-medium ${
-                    timeView === 'month' ? 'text-white' : 'bg-white text-gray-700 border-2 border-gray-200'
-                  }`}
-                  style={timeView === 'month' ? { backgroundColor: '#FE55A4' } : {}}
                 >
                   Month
-                </button>
-                <button
+                </Tab>
+                <Tab
+                  active={timeView === 'week'}
                   onClick={() => setTimeView('week')}
-                  className={`px-4 py-2 text-base font-medium ${
-                    timeView === 'week' ? 'text-white' : 'bg-white text-gray-700 border-2 border-gray-200'
-                  }`}
-                  style={timeView === 'week' ? { backgroundColor: '#FE55A4' } : {}}
                 >
                   Week
-                </button>
+                </Tab>
               </div>
               
               {/* Time Period Navigator */}
@@ -223,68 +223,67 @@ export default function OverviewContent() {
 
             {/* Combined Chart */}
             <div className="relative">
-              {/* Y-axis for bars (left) */}
-              <div className="absolute left-0 top-0 bottom-8 w-12 flex flex-col justify-between text-sm text-gray-500">
-                <span>{maxTopics}</span>
-                <span>{Math.round(maxTopics * 0.75)}</span>
-                <span>{Math.round(maxTopics * 0.5)}</span>
-                <span>{Math.round(maxTopics * 0.25)}</span>
-                <span>0</span>
-              </div>
-
-              {/* Y-axis for line (right) */}
-              <div className="absolute right-0 top-0 bottom-8 w-12 flex flex-col justify-between text-sm text-gray-500 text-right">
+              {/* Y-axis for percentages (left) */}
+              <div className="absolute left-0 top-0 w-12 h-[360px] flex flex-col justify-between text-sm text-gray-500">
                 <span>100%</span>
-                <span>75%</span>
-                <span>50%</span>
-                <span>25%</span>
+                <span>80%</span>
+                <span>60%</span>
+                <span>40%</span>
+                <span>20%</span>
                 <span>0%</span>
               </div>
 
               {/* Chart area */}
-              <div className="mx-12 relative h-96">
-                {/* Grid lines */}
-                <div className="absolute inset-0 flex flex-col justify-between pointer-events-none">
-                  <div className="border-t border-gray-200"></div>
-                  <div className="border-t border-gray-200"></div>
-                  <div className="border-t border-gray-200"></div>
-                  <div className="border-t border-gray-200"></div>
-                  <div className="border-t border-gray-200"></div>
+              <div className="ml-12 relative" style={{ height: '360px' }}>
+                {/* Grid lines - aligned with Y-axis labels at 100%, 80%, 60%, 40%, 20%, 0% */}
+                <div className="absolute inset-0 pointer-events-none">
+                  <div className="border-t border-gray-200" style={{ position: 'absolute', top: '0%', left: 0, right: 0 }}></div>
+                  <div className="border-t border-gray-200" style={{ position: 'absolute', top: '20%', left: 0, right: 0 }}></div>
+                  <div className="border-t border-gray-200" style={{ position: 'absolute', top: '40%', left: 0, right: 0 }}></div>
+                  <div className="border-t border-gray-200" style={{ position: 'absolute', top: '60%', left: 0, right: 0 }}></div>
+                  <div className="border-t border-gray-200" style={{ position: 'absolute', top: '80%', left: 0, right: 0 }}></div>
+                  <div className="border-t border-gray-200" style={{ position: 'absolute', top: '100%', left: 0, right: 0 }}></div>
                 </div>
 
                 {/* Bars */}
-                <div className="relative h-full flex items-end space-x-2 px-4">
+                <div className="relative w-full h-full flex items-end space-x-2 px-4">
                   {currentData.map((data, index) => {
-                    const barHeight = (data.topicsMastered / maxTopics) * 360;
+                    // Calculate percentage based on expected topics for the period
+                    let expectedTopics;
+                    if (timeView === 'year') {
+                      expectedTopics = topicsPerMonth;
+                    } else if (timeView === 'week') {
+                      expectedTopics = topicsPerWeek;
+                    } else {
+                      expectedTopics = topicsPerWeekInMonth;
+                    }
+                    
+                    // Topics mastered as percentage of expected topics for that period
+                    const topicsAsPercentage = (data.topicsMastered / expectedTopics) * 100;
+                    // Chart height is 360px - cap at 100% for visual display
+                    const barHeight = Math.min((topicsAsPercentage / 100) * 360, 360);
 
                     return (
                       <div key={index} className="flex-1 flex flex-col items-center group relative">
                         {/* Bar */}
                         <div
-                          className="w-full bg-gray-300 hover:bg-gray-400 transition-colors cursor-pointer mb-2"
+                          className="w-full bg-brand-blue-light hover:bg-brand-blue transition-colors cursor-pointer relative"
                           style={{ height: `${barHeight}px` }}
                         >
-                          <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-900 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10">
-                            Topics: {data.topicsMastered} | Overall: {data.percentage}%
+                          <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-900 text-white text-xs opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10">
+                            Topics: {data.topicsMastered} | Curriculum: {data.percentage}%
                           </div>
                         </div>
-
-                        {/* X-axis label */}
-                        <span className="text-sm text-gray-600 font-medium mt-2">
-                          {data.month || data.week || data.day}
-                        </span>
                       </div>
                     );
                   })}
                   
                   {/* Line overlay - using path for better control */}
                   <svg 
-                    className="absolute pointer-events-none" 
+                    className="absolute pointer-events-none inset-0" 
                     style={{ 
                       left: '16px',
                       right: '16px',
-                      top: 0,
-                      bottom: '32px',
                       width: 'calc(100% - 32px)',
                       height: '360px'
                     }}
@@ -298,22 +297,33 @@ export default function OverviewContent() {
                         return `${x},${y}`;
                       }).join(' ')}
                       fill="none"
-                      stroke="#FE55A4"
+                      stroke="#FC7E3A"
                       strokeWidth="2"
                       vectorEffect="non-scaling-stroke"
                     />
                   </svg>
                 </div>
+                
+                {/* X-axis labels */}
+                <div className="relative w-full h-8 flex items-start px-4 mt-2">
+                  {currentData.map((data, index) => (
+                    <div key={index} className="flex-1 text-center">
+                      <span className="text-sm text-gray-600 font-medium">
+                        {data.month || data.week || data.day}
+                      </span>
+                    </div>
+                  ))}
+                </div>
               </div>
 
               {/* Legend */}
-              <div className="flex items-center justify-center space-x-6 mt-4">
+              <div className="flex items-center justify-center space-x-6 mt-8">
                 <div className="flex items-center space-x-2">
-                  <div className="w-4 h-4 bg-gray-300"></div>
+                  <div className="w-4 h-4 bg-brand-blue-light"></div>
                   <span className="text-base text-gray-600">Topics Mastered per Period</span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <div className="w-4 h-1 bg-pink-500"></div>
+                  <div className="w-4 h-1 bg-brand-orange"></div>
                   <span className="text-base text-gray-600">Overall Curriculum Completion (%)</span>
                 </div>
               </div>

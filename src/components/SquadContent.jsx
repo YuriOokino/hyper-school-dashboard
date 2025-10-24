@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { brandColors } from '../styles/branding';
 
 export default function SquadContent({ selectedChatFromSidebar, setSelectedChatFromSidebar }) {
   const [selectedChat, setSelectedChat] = useState('main-hall');

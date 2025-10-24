@@ -150,12 +150,12 @@ export default function Sidebar({ setActivePage, onCollapseChange, setSelectedCh
             console.log('Clicked! Current state:', isAccountOpen);
             setIsAccountOpen(!isAccountOpen);
           }}>
-            <h2 className="text-xl font-bold text-white">Jennifer Roswell</h2>
+            <p className="text-xl font-semibold text-white">Jennifer Roswell</p>
             <svg className="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clipRule="evenodd"/>
             </svg>
           </div>
-          <div className="text-sm text-gray-400 mt-1">Level 6</div>
+          <div className="bg-brand-lilac-medium text-brand-black px-3 py-1 text-sm font-medium mt-2 inline-block">Level 6</div>
         </div>
       )}
       
@@ -170,11 +170,28 @@ export default function Sidebar({ setActivePage, onCollapseChange, setSelectedCh
       {!isCollapsed && (
         <div className="px-4 mb-4 mt-6">
           <div className="flex justify-between items-center mb-2">
-            <span className="text-sm font-bold text-white">PROGRESS</span>
+            <h6 className="text-white">Progress</h6>
             <span className="text-sm font-bold text-white">79%</span>
           </div>
-          <div className="w-full bg-gray-700 h-2 overflow-hidden">
+          <div className="relative w-full bg-gray-700 h-2 overflow-visible">
             <div className="h-full" style={{ width: '79%', backgroundColor: '#DBFF4D' }}></div>
+            <svg 
+              className="absolute top-1/2 w-4 h-6"
+              style={{ 
+                left: '79%', 
+                transform: 'translate(-50%, -50%)'
+              }}
+              viewBox="0 0 16 25"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path 
+                d="M15.3638 0L5.93874 2.12532L0 14.9686L5.11231 13.7012L1.94401 25L16 6.94156L10.6911 8.12894L15.3638 0Z" 
+                fill="#FE55A4"
+                stroke="white"
+                strokeWidth="1"
+              />
+            </svg>
           </div>
           <div className="flex justify-between text-xs text-gray-400 mt-1">
             <span>Level 6</span>
@@ -186,7 +203,7 @@ export default function Sidebar({ setActivePage, onCollapseChange, setSelectedCh
       {/* Achievements Section */}
       {!isCollapsed && (
         <div className="px-4 mb-4">
-          <h3 className="text-sm font-bold text-white mb-3">ACHIEVEMENTS</h3>
+          <h6 className="text-white mb-3">Achievements</h6>
           <div className="flex space-x-2 mb-2">
             <div className="relative group">
               <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center cursor-pointer">
@@ -223,9 +240,7 @@ export default function Sidebar({ setActivePage, onCollapseChange, setSelectedCh
           </div>
           <div className="flex items-center cursor-pointer mt-2">
             <span className="text-sm text-gray-400">View all</span>
-            <svg className="w-4 h-4 text-gray-400 ml-1" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd"/>
-            </svg>
+            <img src="/assets/icons/chevron.svg" alt="" className="w-3 h-3 ml-1" />
           </div>
         </div>
       )}
@@ -246,7 +261,7 @@ export default function Sidebar({ setActivePage, onCollapseChange, setSelectedCh
         {!isCollapsed && (
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center space-x-2 cursor-pointer" onClick={() => setIsChatsExpanded(!isChatsExpanded)}>
-              <h3 className="text-sm font-bold text-white">CONVERSATIONS</h3>
+              <h6 className="text-white">Conversations</h6>
               <svg 
                 className={`w-4 h-4 text-gray-400 transition-transform duration-200 ${isChatsExpanded ? 'rotate-180' : ''}`} 
                 fill="currentColor" 
@@ -307,9 +322,7 @@ export default function Sidebar({ setActivePage, onCollapseChange, setSelectedCh
         {!isCollapsed && (
           <div className="flex items-center cursor-pointer mt-2" onClick={() => setActivePage('squad')}>
             <span className="text-sm text-gray-400">View all</span>
-            <svg className="w-4 h-4 text-gray-400 ml-1" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd"/>
-            </svg>
+            <img src="/assets/icons/chevron.svg" alt="" className="w-3 h-3 ml-1" />
           </div>
         )}
       </div>
