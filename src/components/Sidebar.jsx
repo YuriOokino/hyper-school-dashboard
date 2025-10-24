@@ -96,7 +96,7 @@ export default function Sidebar({ setActivePage, onCollapseChange, setSelectedCh
   const getStatusDisplay = (status) => {
     switch (status) {
       case 'online':
-        return { text: 'Online', color: 'text-green-500' };
+        return { text: 'Online', color: 'text-brand-lime' };
       case 'idle':
         return { text: 'Idle', color: 'text-yellow-500' };
       case 'inactive':
@@ -155,7 +155,7 @@ export default function Sidebar({ setActivePage, onCollapseChange, setSelectedCh
             <p className="text-xl font-semibold text-white">Jennifer Roswell</p>
             <img src="/assets/icons/settings-icon.svg" alt="Settings" className="w-4 h-4" />
           </div>
-          <div className="bg-brand-lilac-medium text-brand-black px-3 py-1 text-sm font-medium mt-2 inline-block">Level 6</div>
+          <div className="bg-brand-lilac-medium text-brand-black px-3 py-1 text-sm mt-2 inline-block">Level 6</div>
         </div>
       )}
       
@@ -193,7 +193,7 @@ export default function Sidebar({ setActivePage, onCollapseChange, setSelectedCh
               />
             </svg>
           </div>
-          <div className="flex justify-between text-xs text-gray-400 mt-1">
+          <div className="flex justify-between text-xs text-white mt-1">
             <span>Level 6</span>
             <span>Level 7</span>
           </div>
@@ -294,7 +294,7 @@ export default function Sidebar({ setActivePage, onCollapseChange, setSelectedCh
               <div className="text-white" style={{ fontFamily: 'Outfit', fontSize: '20px', fontWeight: 400 }}>Conversations</div>
             </div>
             <div className="flex items-center space-x-1 opacity-0 group-hover:opacity-100 transition-opacity">
-              <button className="p-1 hover:bg-gray-800">
+              <button className="p-1 hover:bg-gray-800" onClick={() => setActivePage('squad')}>
                 <img 
                   src="/assets/icons/open_in_new.svg" 
                   alt="Open" 
@@ -317,28 +317,28 @@ export default function Sidebar({ setActivePage, onCollapseChange, setSelectedCh
             {!isCollapsed ? (
               <>
                 {/* Tutor Chats */}
-                {chats.map((chat) => (
-                  <div key={chat.id} className="group flex items-center space-x-3 p-2 hover:bg-gray-800 cursor-pointer relative" onClick={() => handleChatClick(chat)}>
-                    <div className="relative">
-                      <div className="w-8 h-8 rounded-full bg-gray-600 flex items-center justify-center text-sm text-white font-semibold">
-                        {chat.name.charAt(0)}
+                {chats.map((chat) => {
+                  const chatColors = {
+                    1: 'bg-blue-500',
+                    2: 'bg-orange-500'
+                  };
+                  
+                  return (
+                    <div key={chat.id} className="flex items-center space-x-3 p-2 hover:bg-gray-800 cursor-pointer" onClick={() => handleChatClick(chat)}>
+                      {chat.id === 3 ? (
+                        <img src="/assets/icons/AI chat icon.png" alt="AI" className="w-8 h-8" />
+                      ) : (
+                        <div className={`w-8 h-8 rounded-full ${chatColors[chat.id]}`}></div>
+                      )}
+                      <div className="flex-1">
+                        <div className="text-sm text-white">{chat.name}</div>
                       </div>
-                      <div className="absolute -bottom-0.5 -right-0.5">
-                        <div className={`w-3 h-3 border-2 border-black rounded-full ${
-                          chat.status === 'online' ? 'bg-green-500' : 
-                          chat.status === 'idle' ? 'bg-yellow-500' : 
-                          'bg-gray-500'
-                        }`}></div>
-                      </div>
+                      {chat.isNew && (
+                        <span className="text-xs font-semibold" style={{ color: '#FF1493' }}>New!</span>
+                      )}
                     </div>
-                    <div className="flex-1">
-                      <div className="text-sm text-white">{chat.name}</div>
-                    </div>
-                    {chat.isNew && (
-                      <span className="px-2 py-1 bg-pink-500 text-white text-xs rounded-full font-medium">New!</span>
-                    )}
-                  </div>
-                ))}
+                  );
+                })}
               </>
             ) : (
               /* Collapsed Chat Icon */
@@ -435,7 +435,7 @@ export default function Sidebar({ setActivePage, onCollapseChange, setSelectedCh
             {/* Level */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Level</label>
-              <div className="text-gray-900">Level 6</div>
+              <div>Level 6</div>
               <hr className="mt-3 border-gray-200" />
             </div>
             
@@ -495,7 +495,7 @@ export default function Sidebar({ setActivePage, onCollapseChange, setSelectedCh
           }}
         >
           {/* Chat Header */}
-          <div className="flex items-center justify-between px-6 py-2 border-b bg-gray-100">
+          <div className="flex items-center justify-between px-4 py-2 border-b bg-brand-black">
             <div className="flex items-center space-x-3">
               <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm text-white font-semibold ${
                 selectedChat.id === 1 ? 'bg-orange-500' : 
@@ -505,7 +505,7 @@ export default function Sidebar({ setActivePage, onCollapseChange, setSelectedCh
                 {selectedChat.name.split(' ')[0].charAt(0)}
               </div>
               <div>
-                <h3 className="text-base font-bold text-gray-900">{selectedChat.name}</h3>
+                <h3 className="text-base font-bold text-white">{selectedChat.name}</h3>
                 <span className={`text-sm ${getStatusDisplay(selectedChat.status).color}`}>
                   {getStatusDisplay(selectedChat.status).text}
                 </span>
@@ -524,7 +524,7 @@ export default function Sidebar({ setActivePage, onCollapseChange, setSelectedCh
                 title="Open in new window"
               >
                 <img 
-                  src="/assets/icons/open_in_new.png" 
+                  src="/assets/icons/open_in_new.svg" 
                   alt="Open in new" 
                   className="w-5 h-5"
                 />
