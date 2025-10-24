@@ -101,9 +101,10 @@ export default function OverviewContent() {
       </div>
 
       {/* Daily Goals Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        {/* Today's Goals */}
-        <div className="md:col-span-2 bg-white p-[10px]">
+      <div className="@container">
+        <div className="flex flex-col lg:flex-row gap-4">
+          {/* Today's Goals */}
+          <div className="bg-white p-[10px] @[1111px]:p-[20px] lg:min-w-[500px] flex-shrink-0">
           <div className="mb-4">
             <h6>TODAY'S GOALS</h6>
           </div>
@@ -124,7 +125,7 @@ export default function OverviewContent() {
             </div>
             <div className="text-center">
               <ProgressPieChart
-                percentage={100}
+                percentage={78}
                 size={120}
                 strokeWidth={12}
                 progressColor="var(--brand-lilac)"
@@ -144,10 +145,14 @@ export default function OverviewContent() {
                 progressColor="var(--brand-orange)"
                 backgroundColor="var(--brand-surface)"
                 iconSize={32}
+                thunderIconFill="#FC7E3A"
+                thunderIconStroke="white"
               >
-                <svg className="w-10 h-10" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
-                </svg>
+                <div className="rounded-full bg-brand-orange-light flex items-center justify-center" style={{ width: '74px', height: '74px' }}>
+                  <svg className="w-8 h-8" fill="black" viewBox="0 0 20 20">
+                    <path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
+                  </svg>
+                </div>
               </ProgressPieChart>
               <div className="text-xs py-1 px-1 mt-2">Life Skills</div>
             </div>
@@ -168,12 +173,38 @@ export default function OverviewContent() {
           </div>
         </div>
 
-        {/* New Badges */}
-        <div className="bg-white p-[10px]">
+          {/* Level 6 */}
+          <div className="bg-white p-[10px] @[1111px]:p-[20px] flex flex-col flex-1 min-w-[120px]">
+          <div className="flex items-center gap-2 mb-4">
+            <h6>LEVEL 6</h6>
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+            <h6>7</h6>
+          </div>
+          <div className="flex flex-col items-center justify-center flex-1">
+            <img 
+              src="/assets/icons/level-icon.png" 
+              alt="Level 6 - 79%" 
+              className="w-20 h-20"
+            />
+          </div>
+        </div>
+
+          {/* New Badges */}
+          <div className="bg-white p-[10px] @[1111px]:p-[20px] flex flex-col flex-1 min-w-[120px]">
           <h6 className="mb-4">NEW BADGES</h6>
-          <div className="flex flex-col items-center justify-center">
-            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-400 to-green-400 flex items-center justify-center mb-2">
-              <span className="text-white text-xl">⭐</span>
+          <div className="flex flex-col items-center justify-center flex-1">
+            <div className="relative group">
+              <img 
+                src="/assets/icons/Badges/badge-1.png" 
+                alt="English Genius" 
+                className="w-16 h-16 mb-2 cursor-pointer"
+              />
+              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-white text-gray-900 text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-50">
+                <div className="font-semibold mb-1">English Genius</div>
+                <div className="text-gray-600">Mastered 50 English topics</div>
+              </div>
             </div>
             <div className="text-sm mb-2">English Genius</div>
             <button className="px-4 py-1 bg-gray-200 text-xs flex items-center space-x-1 hover:bg-gray-300 transition-colors">
@@ -185,15 +216,10 @@ export default function OverviewContent() {
           </div>
         </div>
 
-        {/* Streak */}
-        <div className="bg-white p-[10px]">
-          <h6 className="mb-4 flex items-center space-x-1">
-            <span>STREAK</span>
-            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03zM12.12 15.12A3 3 0 017 13s.879.5 2.5.5c0-1 .5-4 1.25-4.5.5 1 .786 1.293 1.371 1.879A2.99 2.99 0 0113 13a2.99 2.99 0 01-.879 2.121z" clipRule="evenodd"/>
-            </svg>
-          </h6>
-          <div className="flex flex-col items-center justify-center">
+          {/* Streak */}
+          <div className="bg-white p-[10px] @[1111px]:p-[20px] flex flex-col flex-1 min-w-[120px]">
+          <h6 className="mb-4">STREAK</h6>
+          <div className="flex flex-col items-center justify-center flex-1">
             <div className="text-4xl font-bold mb-2" style={{ color: '#3FC7FF' }}>4 days</div>
             <div className="flex items-center space-x-1 text-xs" style={{ backgroundColor: '#E0F7FF', padding: '4px 8px' }}>
               <svg className="w-3 h-3" style={{ color: '#3FC7FF' }} fill="currentColor" viewBox="0 0 20 20">
@@ -203,6 +229,7 @@ export default function OverviewContent() {
             </div>
           </div>
         </div>
+      </div>
       </div>
 
       {/* Mastery Progress */}

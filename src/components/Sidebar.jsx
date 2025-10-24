@@ -5,6 +5,7 @@ export default function Sidebar({ setActivePage, onCollapseChange, setSelectedCh
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [selectedChat, setSelectedChat] = useState(null);
   const [isChatsExpanded, setIsChatsExpanded] = useState(true);
+  const [isAchievementsExpanded, setIsAchievementsExpanded] = useState(true);
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   // Notify parent about collapse state changes
@@ -107,7 +108,8 @@ export default function Sidebar({ setActivePage, onCollapseChange, setSelectedCh
 
   return (
     <div className="relative">
-      <aside className={`bg-black flex flex-col overflow-y-auto transition-all duration-300 ${isCollapsed ? 'w-16' : 'w-64'}`} style={{ minHeight: '100vh', maxHeight: '100vh' }}>
+      <aside className={`bg-black flex flex-col transition-all duration-300 ${isCollapsed ? 'w-16' : 'w-64'}`} style={{ minHeight: '100vh', maxHeight: '100vh' }}>
+      <div className="flex-1 overflow-y-auto">
       {/* Toggle Button */}
       <div className="flex justify-end p-2">
         <button 
@@ -151,9 +153,7 @@ export default function Sidebar({ setActivePage, onCollapseChange, setSelectedCh
             setIsAccountOpen(!isAccountOpen);
           }}>
             <p className="text-xl font-semibold text-white">Jennifer Roswell</p>
-            <svg className="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clipRule="evenodd"/>
-            </svg>
+            <img src="/assets/icons/settings-icon.svg" alt="Settings" className="w-4 h-4" />
           </div>
           <div className="bg-brand-lilac-medium text-brand-black px-3 py-1 text-sm font-medium mt-2 inline-block">Level 6</div>
         </div>
@@ -187,7 +187,7 @@ export default function Sidebar({ setActivePage, onCollapseChange, setSelectedCh
             >
               <path 
                 d="M15.3638 0L5.93874 2.12532L0 14.9686L5.11231 13.7012L1.94401 25L16 6.94156L10.6911 8.12894L15.3638 0Z" 
-                fill="#FE55A4"
+                fill="#C9642E"
                 stroke="white"
                 strokeWidth="1"
               />
@@ -203,45 +203,68 @@ export default function Sidebar({ setActivePage, onCollapseChange, setSelectedCh
       {/* Achievements Section */}
       {!isCollapsed && (
         <div className="px-4 mb-4">
-          <h6 className="text-white mb-3">Achievements</h6>
-          <div className="flex space-x-2 mb-2">
-            <div className="relative group">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center cursor-pointer">
-                <span className="text-white text-xs">🏆</span>
-              </div>
-              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-black text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-50">
-                Quiz Master
-              </div>
+          <div className="flex items-center justify-between mb-3 group">
+            <div className="flex items-center space-x-2 cursor-pointer" onClick={() => setIsAchievementsExpanded(!isAchievementsExpanded)}>
+              <svg 
+                className={`w-4 h-4 text-gray-400 transition-transform duration-200 ${isAchievementsExpanded ? 'rotate-180' : ''}`} 
+                fill="currentColor" 
+                viewBox="0 0 20 20"
+              >
+                <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd"/>
+              </svg>
+              <div className="text-white" style={{ fontFamily: 'Outfit', fontSize: '20px', fontWeight: 400 }}>Achievements</div>
             </div>
-            <div className="relative group">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center cursor-pointer">
-                <span className="text-white text-xs">💡</span>
-              </div>
-              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-black text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-50">
-                Problem Solver
-              </div>
-            </div>
-            <div className="relative group">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center cursor-pointer">
-                <span className="text-white text-xs">⭐</span>
-              </div>
-              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-black text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-50">
-                Star Student
-              </div>
-            </div>
-            <div className="relative group">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center cursor-pointer">
-                <span className="text-white text-xs">🎯</span>
-              </div>
-              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-black text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-50">
-                Goal Achiever
-              </div>
+            <div className="flex items-center space-x-1 opacity-0 group-hover:opacity-100 transition-opacity">
+              <button className="p-1 hover:bg-gray-800">
+                <img 
+                  src="/assets/icons/open_in_new.svg" 
+                  alt="Open" 
+                  className="w-4 h-4"
+                />
+              </button>
             </div>
           </div>
-          <div className="flex items-center cursor-pointer mt-2">
-            <span className="text-sm text-gray-400">View all</span>
-            <img src="/assets/icons/chevron.svg" alt="" className="w-3 h-3 ml-1" />
-          </div>
+          
+          {isAchievementsExpanded && (
+            <div className="flex space-x-2 mb-2">
+              <div className="relative group">
+                <div className="w-8 h-8 cursor-pointer">
+                  <img src="/assets/icons/Badges/badge-1.png" alt="English Genius" className="w-full h-full object-contain" />
+                </div>
+                <div className="absolute bottom-full left-0 mb-2 px-2 py-1 bg-white text-gray-900 text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-50" style={{ minWidth: '150px' }}>
+                  <div className="font-semibold mb-1">English Genius</div>
+                  <div className="text-gray-600 text-xs">Mastered 50 English topics</div>
+                </div>
+              </div>
+              <div className="relative group">
+                <div className="w-8 h-8 cursor-pointer">
+                  <img src="/assets/icons/Badges/badge-2.png" alt="Math Wizard" className="w-full h-full object-contain" />
+                </div>
+                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-white text-gray-900 text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-50" style={{ minWidth: '150px' }}>
+                  <div className="font-semibold mb-1">Math Wizard</div>
+                  <div className="text-gray-600 text-xs">Solved 100 math problems</div>
+                </div>
+              </div>
+              <div className="relative group">
+                <div className="w-8 h-8 cursor-pointer">
+                  <img src="/assets/icons/Badges/badge-3.png" alt="Streak Champion" className="w-full h-full object-contain" />
+                </div>
+                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-white text-gray-900 text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-50" style={{ minWidth: '150px' }}>
+                  <div className="font-semibold mb-1">Streak Champion</div>
+                  <div className="text-gray-600 text-xs">7-day learning streak</div>
+                </div>
+              </div>
+              <div className="relative group">
+                <div className="w-8 h-8 cursor-pointer">
+                  <img src="/assets/icons/Badges/badge-4.png" alt="Goal Crusher" className="w-full h-full object-contain" />
+                </div>
+                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-white text-gray-900 text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-50" style={{ minWidth: '150px' }}>
+                  <div className="font-semibold mb-1">Goal Crusher</div>
+                  <div className="text-gray-600 text-xs">Completed 25 daily goals</div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       )}
       
@@ -259,9 +282,8 @@ export default function Sidebar({ setActivePage, onCollapseChange, setSelectedCh
       {/* CONVERSATIONS Section */}
       <div className={`${isCollapsed ? 'px-2' : 'px-4'} mb-4 flex-1`}>
         {!isCollapsed && (
-          <div className="flex items-center justify-between mb-3">
+          <div className="flex items-center justify-between mb-3 group">
             <div className="flex items-center space-x-2 cursor-pointer" onClick={() => setIsChatsExpanded(!isChatsExpanded)}>
-              <h6 className="text-white">Conversations</h6>
               <svg 
                 className={`w-4 h-4 text-gray-400 transition-transform duration-200 ${isChatsExpanded ? 'rotate-180' : ''}`} 
                 fill="currentColor" 
@@ -269,12 +291,24 @@ export default function Sidebar({ setActivePage, onCollapseChange, setSelectedCh
               >
                 <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd"/>
               </svg>
+              <div className="text-white" style={{ fontFamily: 'Outfit', fontSize: '20px', fontWeight: 400 }}>Conversations</div>
             </div>
-            <button className="p-1 hover:bg-gray-800">
-              <svg className="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd"/>
-              </svg>
-            </button>
+            <div className="flex items-center space-x-1 opacity-0 group-hover:opacity-100 transition-opacity">
+              <button className="p-1 hover:bg-gray-800">
+                <img 
+                  src="/assets/icons/open_in_new.svg" 
+                  alt="Open" 
+                  className="w-4 h-4"
+                />
+              </button>
+              <button className="p-1 hover:bg-gray-800">
+                <img 
+                  src="/assets/icons/create_new.svg" 
+                  alt="Create" 
+                  className="w-4 h-4"
+                />
+              </button>
+            </div>
           </div>
         )}
         
@@ -318,13 +352,7 @@ export default function Sidebar({ setActivePage, onCollapseChange, setSelectedCh
             )}
           </div>
         )}
-        
-        {!isCollapsed && (
-          <div className="flex items-center cursor-pointer mt-2" onClick={() => setActivePage('squad')}>
-            <span className="text-sm text-gray-400">View all</span>
-            <img src="/assets/icons/chevron.svg" alt="" className="w-3 h-3 ml-1" />
-          </div>
-        )}
+      </div>
       </div>
       
       <div className={`${isCollapsed ? 'p-2' : 'p-4'}`}>
@@ -416,11 +444,7 @@ export default function Sidebar({ setActivePage, onCollapseChange, setSelectedCh
               <label className="block text-sm font-medium text-gray-700 mb-2">Bio</label>
               <div className="flex justify-between items-start">
                 <p className="text-gray-900 text-sm leading-relaxed flex-1 pr-4">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                  Suspendisse varius enim in eros elementum tristique. Duis cursus, mi 
-                  quis viverra ornare, eros dolor interdum nulla, ut commodo diam 
-                  libero vitae erat. Aenean faucibus nibh et justo cursus id rutrum lorem 
-                  imperdiet. Nunc ut sem vitae risus tristique posuere.
+                  I love reading fantasy novels and writing short stories in my free time. I play volleyball on the school team and enjoy hanging out with my friends on weekends. My favorite subjects are English and Biology, and I'm really interested in marine science. I also love baking cookies and trying new recipes!
                 </p>
                 <button className="text-sm text-gray-600 hover:text-gray-800">Change</button>
               </div>
@@ -431,7 +455,7 @@ export default function Sidebar({ setActivePage, onCollapseChange, setSelectedCh
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Email address</label>
               <div className="flex justify-between items-center">
-                <span className="text-gray-900">email@example.com</span>
+                <span className="text-gray-900">jennifer.roswell@gmail.com</span>
                 <button className="text-sm text-gray-600 hover:text-gray-800">Change</button>
               </div>
               <hr className="mt-3 border-gray-200" />
