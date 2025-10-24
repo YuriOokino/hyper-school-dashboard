@@ -18,7 +18,7 @@ export default function StudentDashboard() {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [selectedChatFromSidebar, setSelectedChatFromSidebar] = useState(null);
   const [triggerSidebarChat, setTriggerSidebarChat] = useState(null);
-  const [hyperCredits, setHyperCredits] = useState(240);
+  const [hyperCredits, setHyperCredits] = useState(12450);
   const [dailyGoals, setDailyGoals] = useState({
     think: { current: 1, target: 5, completed: false },
     move: { current: 6000, target: 5000, completed: true },

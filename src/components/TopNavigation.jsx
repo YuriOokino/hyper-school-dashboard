@@ -100,7 +100,7 @@ export default function TopNavigation({ activePage, setActivePage, activeTab, se
   
   return (
     <nav className="bg-black">
-      <div className="px-6">
+      <div>
         <div className="grid grid-cols-12 gap-4 items-center h-16">
           <div className="col-span-8 flex items-center space-x-8">
             <button 
@@ -117,7 +117,7 @@ export default function TopNavigation({ activePage, setActivePage, activeTab, se
               }}
             >
               <img src="/assets/icons/home.svg" alt="Overview" className="w-5 h-5" />
-              <span className="font-oswald font-medium uppercase">Overview</span>
+              <h6 className="text-white">Overview</h6>
             </button>
             <button 
               onClick={() => {
@@ -133,8 +133,8 @@ export default function TopNavigation({ activePage, setActivePage, activeTab, se
                 backgroundColor: activePage === 'challenges' ? '#FE55A4' : 'transparent'
               }}
             >
-              <img src="/assets/icons/lightbulb.svg" alt="Challenges" className="w-5 h-5" />
-              <span className="font-oswald font-medium uppercase">Challenges</span>
+              <img src="/assets/icons/trophy-icon..svg" alt="Challenges" className="w-5 h-5" />
+              <h6 className="text-white">Challenges</h6>
             </button>
             <button 
               onClick={() => setActivePage('squad')}
@@ -147,8 +147,8 @@ export default function TopNavigation({ activePage, setActivePage, activeTab, se
                 backgroundColor: activePage === 'squad' ? '#FE55A4' : 'transparent'
               }}
             >
-              <img src="/assets/icons/perm_contact_calendar.svg" alt="Squad" className="w-5 h-5" />
-              <span className="font-oswald font-medium uppercase">Squad</span>
+              <img src="/assets/icons/flag-icon.svg" alt="Squad" className="w-5 h-5" />
+              <h6 className="text-white">Squad</h6>
             </button>
             <button 
               onClick={() => setActivePage('rewards')}
@@ -162,14 +162,14 @@ export default function TopNavigation({ activePage, setActivePage, activeTab, se
               }}
             >
               <img src="/assets/icons/shopping_bag.svg" alt="Rewards" className="w-5 h-5" />
-              <span className="font-oswald font-medium uppercase">Rewards</span>
+              <h6 className="text-white">Rewards</h6>
             </button>
           </div>
-          <div className="col-span-4 flex items-center justify-end space-x-4">
+          <div className="col-span-4 flex items-center justify-end space-x-4 px-6">
             <div className="flex items-center space-x-2 relative">
               <img src="/assets/icons/Hyper credits.png" alt="Hyper Credits" className="w-5 h-5" />
-              <span className={`font-semibold text-white transition-transform duration-300 ${showCelebration ? 'scale-125' : ''}`}>
-                {hyperCredits || 240}
+              <span className={`font-semibold text-white text-[18px] transition-transform duration-300 ${showCelebration ? 'scale-125' : ''}`}>
+                {hyperCredits?.toLocaleString()}
               </span>
               
               {/* Celebration Stars */}
@@ -220,13 +220,9 @@ export default function TopNavigation({ activePage, setActivePage, activeTab, se
                 onClick={() => setShowNotifications(!showNotifications)}
                 className="text-gray-400 hover:text-gray-200 relative"
               >
-                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z" />
-                </svg>
+                <img src="/assets/icons/bell-icon.svg" alt="Notifications" className="w-6 h-6" />
                 {unreadCount > 0 && (
-                  <div className="absolute -top-1 -right-1 bg-rose-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
-                    {unreadCount}
-                  </div>
+                  <div className="absolute top-0 right-0 bg-pink-500 rounded-full w-2 h-2"></div>
                 )}
               </button>
 

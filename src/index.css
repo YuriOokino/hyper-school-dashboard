@@ -2,6 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --brand-black: #121214;
+  --brand-white: #FFFFFF;
+  --brand-surface: #E8EBFB;
+  --brand-rose: #FE55A4;
+  --brand-lilac: #6279E5;
+  --brand-lime: #DBFF4D;
+  --brand-blue: #3FC7FF;
+  --brand-orange: #FC7E3A;
+}
+
 @layer base {
   body {
     font-family: 'Outfit', sans-serif;
