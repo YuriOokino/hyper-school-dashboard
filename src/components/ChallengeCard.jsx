@@ -44,7 +44,7 @@ const ChallengeCard = ({
   return (
     <CardWrapper 
       onClick={onClick}
-      className={`bg-white flex flex-col group ${className} ${onClick ? 'cursor-pointer hover:shadow-lg transition-shadow text-left w-full' : ''}`}
+      className={`bg-white flex flex-col group h-full ${className} ${onClick ? 'cursor-pointer hover:shadow-lg transition-shadow text-left w-full' : ''}`}
     >
       {/* Wave Header */}
       <div className="w-full h-[100px] overflow-hidden">
@@ -80,7 +80,7 @@ const ChallengeCard = ({
         )}
 
         {/* Title */}
-        <div className="mb-6 text-gray-900 font-outfit normal-case font-medium text-xl">{title}</div>
+        <div className="mb-6 text-gray-900 font-outfit normal-case text-body-large">{title}</div>
 
         {/* Custom Content (e.g., mood selector, descriptions) */}
         {children && !buttonText && (

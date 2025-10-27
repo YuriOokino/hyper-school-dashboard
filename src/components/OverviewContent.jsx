@@ -329,7 +329,7 @@ export default function OverviewContent({ setActivePage, setShowLesson }) {
         </button>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6 items-stretch">
         {/* Introduction to Volcanoes */}
         <ChallengeCard
           title="Introduction to Volcanoes"
@@ -358,7 +358,7 @@ export default function OverviewContent({ setActivePage, setShowLesson }) {
 
         {/* Mood Check */}
         {showMoodCard && (
-          <div className="transition-opacity duration-300 ease-in-out">
+          <div className="transition-opacity duration-300 ease-in-out h-full">
           <ChallengeCard
             title="Mood Check"
             pillar="physical"
@@ -553,7 +553,7 @@ export default function OverviewContent({ setActivePage, setShowLesson }) {
 
         {/* New Challenge - appears after mood task */}
         {showNewCard && (
-          <div className="animate-fade-in">
+          <div className="animate-fade-in h-full">
           <ChallengeCard
             title="American History 1900s"
             pillar="knowledge"

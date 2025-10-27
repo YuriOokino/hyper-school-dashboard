@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { ChatInputSimple } from './ui';
 
 export default function LessonContent({ onBackToLearning, setHyperCredits }) {
   const [activeTab, setActiveTab] = useState('knowledge');
@@ -96,12 +97,12 @@ export default function LessonContent({ onBackToLearning, setHyperCredits }) {
                 <p className="text-gray-700 leading-relaxed mb-4">
                   A volcano is an opening in the Earth's surface where hot melted rock, called magma, can escape. When magma reaches the surface, it becomes lava. Sometimes, gas and ash explode out too! Most volcanoes are shaped like mountains with a hole at the top called a crater. Volcanoes are powerful and can change landscapes quickly, but they also help create new land and improve soil for plants.
                 </p>
-                {/* Media Placeholder */}
-                <div className="w-full h-64 bg-gray-200 flex items-center justify-center">
-                  <svg className="w-16 h-16 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clipRule="evenodd" />
-                  </svg>
-                </div>
+                {/* Media */}
+                <img 
+                  src="/assets/lessons/volcano-1.jpg" 
+                  alt="Volcano illustration" 
+                  className="w-full h-64 object-cover"
+                />
               </div>
 
               {/* Section 2 */}
@@ -319,28 +320,13 @@ export default function LessonContent({ onBackToLearning, setHyperCredits }) {
               </div>
               
               {/* Text Input - pinned to bottom */}
-              <div className="flex items-center space-x-3 px-4 py-3 border border-gray-300 bg-white">
-                <input
-                  type="text"
-                  placeholder="Ask any question"
-                  className="flex-1 text-sm text-gray-600 focus:outline-none placeholder-gray-400"
-                />
-                <button className="p-1 hover:bg-gray-100 transition-colors" title="Attach file">
-                  <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                  </svg>
-                </button>
-                <button className="p-1 hover:bg-gray-100 transition-colors" title="Emoji">
-                  <svg className="w-5 h-5 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 100-2 1 1 0 000 2zm7-1a1 1 0 11-2 0 1 1 0 012 0zm-.464 5.535a1 1 0 10-1.415-1.414 3 3 0 01-4.242 0 1 1 0 00-1.415 1.414 5 5 0 007.072 0z" clipRule="evenodd" />
-                  </svg>
-                </button>
-                <button className="p-2 bg-gray-900 hover:bg-gray-800 transition-colors" title="Send">
-                  <svg className="w-5 h-5 text-white transform rotate-45" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"/>
-                  </svg>
-                </button>
-              </div>
+              <ChatInputSimple
+                placeholder="Ask any question"
+                onSend={(message) => {
+                  console.log('AI Assistant question:', message);
+                }}
+                rounded={false}
+              />
             </div>
           </div>
         </div>

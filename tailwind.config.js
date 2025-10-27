@@ -32,6 +32,12 @@ export default {
         'oswald': ['Oswald', 'sans-serif'],
         'outfit': ['Outfit', 'sans-serif'],
       },
+      fontSize: {
+        'body-small': ['12px', { lineHeight: '1.5', fontWeight: '400' }],
+        'body': ['16px', { lineHeight: '1.5', fontWeight: '400' }],
+        'body-medium': ['18px', { lineHeight: '1.5', fontWeight: '500' }],
+        'body-large': ['22px', { lineHeight: '1.5', fontWeight: '600' }],
+      },
       colors: {
         'brand-black': brandColors.black,
         'brand-white': brandColors.white,
