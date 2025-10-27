@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import TopNavigation from './components/TopNavigation';
 import Sidebar from './components/Sidebar';
 import OverviewContent from './components/OverviewContent';
@@ -10,8 +11,10 @@ import LessonContent from './components/LessonContent';
 import SquadContent from './components/SquadContent';
 import RewardsContent from './components/RewardsContent';
 import RightPanel from './components/RightPanel';
+import DashboardTour from './components/onboarding/DashboardTour';
 
 export default function StudentDashboard() {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [activeTab, setActiveTab] = useState('knowledge');
   const [activePage, setActivePage] = useState('overview');
   const [showLesson, setShowLesson] = useState(false);
@@ -19,12 +22,42 @@ export default function StudentDashboard() {
   const [selectedChatFromSidebar, setSelectedChatFromSidebar] = useState(null);
   const [triggerSidebarChat, setTriggerSidebarChat] = useState(null);
   const [hyperCredits, setHyperCredits] = useState(12450);
+  const [showTour, setShowTour] = useState(false);
+  const [showSuccessToast, setShowSuccessToast] = useState(false);
   const [dailyGoals, setDailyGoals] = useState({
     think: { current: 1, target: 5, completed: false },
     move: { current: 6000, target: 5000, completed: true },
     connect: { current: 87, target: 80, completed: true },
     thrive: { current: 1, target: 3, completed: false }
   });
+
+  // Check for tour parameter
+  useEffect(() => {
+    if (searchParams.get('tour') === 'true') {
+      setShowTour(true);
+      setShowSuccessToast(true);
+      // Remove tour parameter from URL
+      setSearchParams({});
+    }
+  }, [searchParams, setSearchParams]);
+
+  // Auto-dismiss success toast
+  useEffect(() => {
+    if (showSuccessToast) {
+      const timer = setTimeout(() => {
+        setShowSuccessToast(false);
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [showSuccessToast]);
+
+  const handleTourComplete = () => {
+    setShowTour(false);
+  };
+
+  const handleTourSkip = () => {
+    setShowTour(false);
+  };
 
   const masteryData = [
     {
@@ -467,6 +500,34 @@ export default function StudentDashboard() {
         </main>
       </div>
 
+      {/* Success Toast - Shows after completing onboarding */}
+      {showSuccessToast && (
+        <div className="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 animate-fade-in">
+          <div 
+            className="px-6 py-4 flex items-center space-x-3 shadow-lg"
+            style={{ backgroundColor: '#DBFF4D' }}
+          >
+            <img src="/assets/icons/thunder-icon..svg" alt="" className="w-6 h-6" />
+            <span className="font-outfit font-medium text-brand-black">
+              You earned 50 Hyper Credits for completing onboarding!
+            </span>
+            <button 
+              onClick={() => setShowSuccessToast(false)}
+              className="text-brand-black hover:text-gray-700"
+            >
+              ×
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Dashboard Tour */}
+      {showTour && (
+        <DashboardTour 
+          onComplete={handleTourComplete}
+          onSkip={handleTourSkip}
+        />
+      )}
     </div>
   );
 }
