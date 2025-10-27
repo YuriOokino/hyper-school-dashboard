@@ -2,10 +2,10 @@ import { useState } from 'react';
 import { ChatInputSimple } from './ui';
 
 export default function LessonContent({ onBackToLearning, setHyperCredits }) {
-  const [activeTab, setActiveTab] = useState('knowledge');
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [isAnswerChecked, setIsAnswerChecked] = useState(false);
   const [masteryProgress, setMasteryProgress] = useState(30); // percentage
+  const [chatMessage, setChatMessage] = useState('');
 
   const handleCheckAnswer = () => {
     if (selectedAnswer && !isAnswerChecked) {
@@ -37,7 +37,7 @@ export default function LessonContent({ onBackToLearning, setHyperCredits }) {
       <div className="p-6 flex items-center justify-between">
         <button 
           onClick={onBackToLearning}
-          className="flex items-center space-x-2 text-gray-900 hover:text-gray-700"
+          className="flex items-center space-x-2 text-gray-900"
         >
           <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
             <path fillRule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clipRule="evenodd" />
@@ -46,31 +46,21 @@ export default function LessonContent({ onBackToLearning, setHyperCredits }) {
         </button>
       </div>
 
-      {/* Category Tabs */}
+      {/* Category Tags */}
       <div className="px-6 pb-4">
-        <div className="flex space-x-2">
-          <button
-            onClick={() => setActiveTab('knowledge')}
-            className={`px-6 py-2 font-bold uppercase text-sm transition-colors ${
-              activeTab === 'knowledge'
-                ? 'text-white'
-                : 'bg-white text-gray-900 hover:bg-gray-100'
-            }`}
-            style={activeTab === 'knowledge' ? { backgroundColor: '#6279E5' } : {}}
-          >
-            Knowledge
-          </button>
-          <button
-            onClick={() => setActiveTab('science')}
-            className={`px-6 py-2 font-bold uppercase text-sm transition-colors ${
-              activeTab === 'science'
-                ? 'text-white'
-                : 'bg-white text-gray-900 hover:bg-gray-100'
-            }`}
-            style={activeTab === 'science' ? { backgroundColor: '#6279E5' } : {}}
+        <div className="flex gap-2">
+          <span 
+            className="font-outfit uppercase px-3 py-1 text-xs"
+            style={{ 
+              backgroundColor: '#FE55A4',
+              color: '#FFFFFF'
+            }}
           >
             Science
-          </button>
+          </span>
+          <span className="font-outfit uppercase px-3 py-1 text-xs bg-gray-100 text-gray-900">
+            Fast Quiz
+          </span>
         </div>
       </div>
 
@@ -111,11 +101,11 @@ export default function LessonContent({ onBackToLearning, setHyperCredits }) {
                 <p className="text-gray-700 leading-relaxed mb-4">
                   Deep under the ground, the Earth is made of layers. One of these layers, the mantle, is very hot and partly melted. When pressure builds up underground, the magma finds weak spots in the crust and pushes its way out — that's how an eruption happens! Some eruptions are gentle, with slow-moving lava, while others are explosive and fast. Scientists who study volcanoes work to understand these eruptions so people nearby can stay safe.
                 </p>
-                <div className="w-full h-64 bg-gray-200 flex items-center justify-center">
-                  <svg className="w-16 h-16 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clipRule="evenodd" />
-                  </svg>
-                </div>
+                <img 
+                  src="/assets/lessons/volcano-2.jpg" 
+                  alt="Volcano eruption" 
+                  className="w-full h-64 object-cover"
+                />
               </div>
 
               {/* Section 3 */}
@@ -132,11 +122,11 @@ export default function LessonContent({ onBackToLearning, setHyperCredits }) {
                 <p className="text-gray-700 leading-relaxed mb-4">
                   There are three main types of volcanoes. Shield volcanoes are wide and flat, formed by layers of thin, runny lava. Composite volcanoes (also called stratovolcanoes) are tall and cone-shaped, built from layers of lava and ash. Cinder cone volcanoes are the smallest type, made from pieces of lava that cool and fall around the vent. Each type forms differently based on the kind of lava and how explosive the eruptions are.
                 </p>
-                <div className="w-full h-64 bg-gray-200 flex items-center justify-center">
-                  <svg className="w-16 h-16 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clipRule="evenodd" />
-                  </svg>
-                </div>
+                <img 
+                  src="/assets/lessons/volcano-3.jpg" 
+                  alt="Types of volcanoes" 
+                  className="w-full h-64 object-cover"
+                />
               </div>
 
               {/* Section 5 */}
@@ -168,20 +158,20 @@ export default function LessonContent({ onBackToLearning, setHyperCredits }) {
                       className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-base flex-shrink-0 ${
                         step === 1 && isAnswerChecked
                           ? selectedAnswer === 'lava'
-                            ? 'bg-black text-white'
+                            ? 'bg-brand-lilac text-white'
                             : 'bg-gray-400 text-white'
                           : step === 1 
-                            ? 'bg-black text-white' 
-                            : 'border-2 border-gray-300 text-gray-900 bg-white'
+                            ? 'bg-brand-lilac text-white' 
+                            : 'border border-gray-900 text-gray-900 bg-white'
                       }`}
                     >
                       {step === 1 && isAnswerChecked ? (
                         selectedAnswer === 'lava' ? (
-                          <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                          <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                             <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                           </svg>
                         ) : (
-                          <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                          <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                             <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
                           </svg>
                         )
@@ -189,22 +179,24 @@ export default function LessonContent({ onBackToLearning, setHyperCredits }) {
                         step
                       )}
                     </div>
-                    {index < 3 && (
-                      <div className="flex-1 h-0.5 bg-gray-300 mx-2"></div>
-                    )}
+                    <div className="flex-1 h-px bg-gray-900"></div>
                   </div>
                 ))}
+                <div className="flex items-center gap-1 flex-shrink-0">
+                  <img src="/assets/icons/Hyper credits.png" alt="Hyper credits" className="h-4 w-auto" />
+                  <span className="font-bold text-base text-gray-900">50</span>
+                </div>
               </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-2" style={{ fontFamily: 'Outfit, sans-serif' }}>
+              <p className="text-body-large font-bold text-gray-900 mb-2">
                 What is magma called when it reaches the Earth's surface?
-              </h3>
+              </p>
               <div className="space-y-3 mb-4">
                 <div 
                   className={`flex items-center justify-between p-3 ${
-                    !isAnswerChecked ? 'cursor-pointer hover:bg-gray-50' : ''
+                    !isAnswerChecked ? 'cursor-pointer' : ''
                   } ${
                     isAnswerChecked && selectedAnswer === 'ash'
-                      ? 'bg-pink-200 border-2 border-pink-300'
+                      ? 'bg-brand-rose-light'
                       : ''
                   }`}
                   onClick={() => !isAnswerChecked && setSelectedAnswer('ash')}
@@ -225,11 +217,9 @@ export default function LessonContent({ onBackToLearning, setHyperCredits }) {
                 </div>
                 <div 
                   className={`flex items-center justify-between p-3 ${
-                    !isAnswerChecked ? 'cursor-pointer hover:bg-gray-50' : ''
+                    !isAnswerChecked ? 'cursor-pointer' : ''
                   } ${
-                    isAnswerChecked
-                      ? 'bg-lime-300 border-2 border-lime-400'
-                      : ''
+                    isAnswerChecked ? 'bg-brand-lime' : ''
                   }`}
                   onClick={() => !isAnswerChecked && setSelectedAnswer('lava')}
                 >
@@ -243,16 +233,16 @@ export default function LessonContent({ onBackToLearning, setHyperCredits }) {
                     </div>
                     <span className={`text-gray-900 ${selectedAnswer === 'lava' ? 'font-bold' : ''}`}>Lava</span>
                   </div>
-                  {isAnswerChecked && (
+                  {isAnswerChecked && selectedAnswer === 'lava' && (
                     <span className="text-gray-900 font-bold">Correct!</span>
                   )}
                 </div>
                 <div 
                   className={`flex items-center justify-between p-3 ${
-                    !isAnswerChecked ? 'cursor-pointer hover:bg-gray-50' : ''
+                    !isAnswerChecked ? 'cursor-pointer' : ''
                   } ${
                     isAnswerChecked && selectedAnswer === 'smoke'
-                      ? 'bg-pink-200 border-2 border-pink-300'
+                      ? 'bg-brand-rose-light'
                       : ''
                   }`}
                   onClick={() => !isAnswerChecked && setSelectedAnswer('smoke')}
@@ -275,12 +265,12 @@ export default function LessonContent({ onBackToLearning, setHyperCredits }) {
               <button 
                 onClick={isAnswerChecked ? handleNext : handleCheckAnswer}
                 disabled={!selectedAnswer && !isAnswerChecked}
-                className={`w-full py-3 font-bold uppercase transition-colors ${
+                className={`w-full py-3 font-bold uppercase ${
                   isAnswerChecked 
-                    ? 'bg-black text-white hover:bg-gray-800' 
+                    ? 'bg-brand-black text-white' 
                     : !selectedAnswer 
-                      ? 'bg-transparent border-2 border-gray-300 text-gray-300 cursor-not-allowed' 
-                      : 'bg-transparent border-2 border-black text-black hover:bg-gray-100'
+                      ? 'bg-white border-2 border-gray-300 text-gray-300 cursor-not-allowed' 
+                      : 'bg-white border-2 border-brand-black text-brand-black'
                 }`}
               >
                 {isAnswerChecked ? 'NEXT' : 'CHECK'}
@@ -293,12 +283,7 @@ export default function LessonContent({ onBackToLearning, setHyperCredits }) {
               style={{ backgroundColor: '#C4CEFF' }}
             >
               <div className="flex items-center space-x-2 mb-4">
-                <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ backgroundColor: '#6279E5' }}>
-                  <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M2 5a2 2 0 012-2h7a2 2 0 012 2v4a2 2 0 01-2 2H9l-3 3v-3H4a2 2 0 01-2-2V5z"/>
-                    <path d="M15 7v2a4 4 0 01-4 4H9.828l-1.766 1.767c.28.149.599.233.938.233h2l3 3v-3h2a2 2 0 002-2V9a2 2 0 00-2-2h-1z"/>
-                  </svg>
-                </div>
+                <img src="/assets/icons/ai-chat.svg" alt="AI" className="w-10 h-10" />
                 <h3 className="text-lg font-bold text-gray-900">Need help?</h3>
               </div>
               
@@ -321,11 +306,13 @@ export default function LessonContent({ onBackToLearning, setHyperCredits }) {
               
               {/* Text Input - pinned to bottom */}
               <ChatInputSimple
+                value={chatMessage}
+                onChange={setChatMessage}
                 placeholder="Ask any question"
                 onSend={(message) => {
                   console.log('AI Assistant question:', message);
+                  setChatMessage('');
                 }}
-                rounded={false}
               />
             </div>
           </div>

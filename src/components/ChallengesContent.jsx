@@ -247,7 +247,7 @@ export default function ChallengesContent({ onStartLesson, setTriggerSidebarChat
               >
                 <span>What is Mastery?</span>
                 <img 
-                  src="/assets/icons/AI chat icon.png" 
+                  src="/assets/icons/ai-chat.svg" 
                   alt="Ask AI" 
                   className="w-5 h-5"
                 />

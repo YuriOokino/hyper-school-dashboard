@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { ChatInputSimple } from './ui';
 
 export default function Sidebar({ setActivePage, onCollapseChange, setSelectedChatFromSidebar, triggerSidebarChat, setTriggerSidebarChat }) {
   const [isAccountOpen, setIsAccountOpen] = useState(false);
@@ -7,6 +8,7 @@ export default function Sidebar({ setActivePage, onCollapseChange, setSelectedCh
   const [isChatsExpanded, setIsChatsExpanded] = useState(true);
   const [isAchievementsExpanded, setIsAchievementsExpanded] = useState(true);
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [chatMessage, setChatMessage] = useState('');
 
   // Notify parent about collapse state changes
   useEffect(() => {
@@ -326,7 +328,7 @@ export default function Sidebar({ setActivePage, onCollapseChange, setSelectedCh
                   return (
                     <div key={chat.id} className="flex items-center space-x-3 p-2 hover:bg-gray-800 cursor-pointer" onClick={() => handleChatClick(chat)}>
                       {chat.id === 3 ? (
-                        <img src="/assets/icons/AI chat icon.png" alt="AI" className="w-8 h-8" />
+                        <img src="/assets/icons/ai-chat.svg" alt="AI" className="w-8 h-8" />
                       ) : (
                         <div className={`w-8 h-8 rounded-full ${chatColors[chat.id]}`}></div>
                       )}
@@ -366,7 +368,7 @@ export default function Sidebar({ setActivePage, onCollapseChange, setSelectedCh
             onClick={() => handleChatClick(chats[2])}
           >
             <img 
-              src="/assets/icons/AI chat icon.png" 
+              src="/assets/icons/ai-chat.svg" 
               alt="AI Chat" 
               className="w-5 h-5"
             />
@@ -385,7 +387,7 @@ export default function Sidebar({ setActivePage, onCollapseChange, setSelectedCh
               onClick={() => handleChatClick(chats[2])}
             >
               <img 
-                src="/assets/icons/AI chat icon.png" 
+                src="/assets/icons/ai-chat.svg" 
                 alt="AI Chat" 
                 className="w-5 h-5"
               />
@@ -495,7 +497,7 @@ export default function Sidebar({ setActivePage, onCollapseChange, setSelectedCh
           }}
         >
           {/* Chat Header */}
-          <div className="flex items-center justify-between px-4 py-2 border-b bg-brand-black">
+          <div className="flex items-center justify-between px-4 py-2 bg-brand-black">
             <div className="flex items-center space-x-3">
               <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm text-white font-semibold ${
                 selectedChat.id === 1 ? 'bg-orange-500' : 
@@ -520,7 +522,7 @@ export default function Sidebar({ setActivePage, onCollapseChange, setSelectedCh
                   setActivePage('squad');
                   setIsChatOpen(false);
                 }}
-                className="p-2 hover:bg-gray-100 transition-colors"
+                className="p-2"
                 title="Open in new window"
               >
                 <img 
@@ -531,10 +533,10 @@ export default function Sidebar({ setActivePage, onCollapseChange, setSelectedCh
               </button>
               <button 
                 onClick={() => setIsChatOpen(false)}
-                className="p-2 hover:bg-gray-100 transition-colors"
+                className="p-2"
                 title="Close"
               >
-                <svg className="w-6 h-6 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
+                <svg className="w-5 h-5 text-gray-900" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd"/>
                 </svg>
               </button>
@@ -611,28 +613,15 @@ export default function Sidebar({ setActivePage, onCollapseChange, setSelectedCh
           
           {/* Message Input */}
           <div className="px-6 py-4 border-t bg-white">
-            <div className="flex items-center space-x-3 px-4 py-3 border border-gray-300 bg-white">
-              <input
-                type="text"
-                placeholder="Type your message"
-                className="flex-1 text-sm text-gray-600 focus:outline-none placeholder-gray-400"
-              />
-              <button className="p-1 hover:bg-gray-100 transition-colors" title="Attach file">
-                <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                </svg>
-              </button>
-              <button className="p-1 hover:bg-gray-100 transition-colors" title="Emoji">
-                <svg className="w-5 h-5 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 100-2 1 1 0 000 2zm7-1a1 1 0 11-2 0 1 1 0 012 0zm-.464 5.535a1 1 0 10-1.415-1.414 3 3 0 01-4.242 0 1 1 0 00-1.415 1.414 5 5 0 007.072 0z" clipRule="evenodd" />
-                </svg>
-              </button>
-              <button className="p-2 bg-gray-900 hover:bg-gray-800 transition-colors" title="Send">
-                <svg className="w-5 h-5 text-white transform rotate-45" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"/>
-                </svg>
-              </button>
-            </div>
+            <ChatInputSimple
+              value={chatMessage}
+              onChange={setChatMessage}
+              placeholder="Type your message"
+              onSend={(message) => {
+                console.log('Sidebar chat message:', message);
+                setChatMessage('');
+              }}
+            />
           </div>
         </div>
       )}

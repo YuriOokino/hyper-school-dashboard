@@ -10,8 +10,7 @@ export default function ChatInputSimple({
   placeholder = "Type your message",
   className = '',
   showAttach = true,
-  showEmoji = true,
-  rounded = true
+  showEmoji = false
 }) {
   const handleKeyDown = (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -26,34 +25,32 @@ export default function ChatInputSimple({
     }
   };
 
-  const borderClass = rounded ? 'rounded-lg' : '';
-
   return (
-    <div className={`flex items-center gap-3 px-4 py-3 border border-gray-300 bg-white ${borderClass} ${className}`}>
+    <div className={`flex items-center gap-3 px-4 py-3 border border-gray-300 bg-white ${className}`}>
       <input
         type="text"
         value={value}
         onChange={(e) => onChange?.(e.target.value)}
         onKeyDown={handleKeyDown}
         placeholder={placeholder}
-        className="flex-1 text-sm text-gray-900 focus:outline-none placeholder-gray-400 font-outfit"
+        className="flex-1 text-base text-gray-900 focus:outline-none placeholder-gray-400 font-outfit"
       />
       
-      <div className="flex items-center gap-2 flex-shrink-0">
+      <div className="flex items-center gap-3 flex-shrink-0">
         {showAttach && (
           <button 
-            className="p-1 hover:opacity-70 transition-opacity" 
+            className="w-8 h-8 flex items-center justify-center rounded-full border-2 border-gray-900" 
             title="Attach file"
           >
-            <svg className="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+            <svg className="w-4 h-4 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 4v16m8-8H4" />
             </svg>
           </button>
         )}
         
         {showEmoji && (
           <button 
-            className="p-1 hover:opacity-70 transition-opacity" 
+            className="w-8 h-8 flex items-center justify-center" 
             title="Emoji"
           >
             <svg className="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
@@ -68,11 +65,11 @@ export default function ChatInputSimple({
         <button 
           onClick={handleSend}
           disabled={!value.trim()}
-          className="p-1 hover:opacity-70 transition-opacity disabled:opacity-30 disabled:cursor-not-allowed" 
+          className="disabled:cursor-not-allowed" 
           title="Send"
         >
-          <svg className="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+          <svg className="w-8 h-8" viewBox="0 0 24 24">
+            <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" fill="#121214"/>
           </svg>
         </button>
       </div>
