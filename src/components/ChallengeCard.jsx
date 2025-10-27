@@ -10,7 +10,8 @@ const ChallengeCard = ({
   buttonVariant = 'challenge',
   credits,
   children,
-  className = ''
+  className = '',
+  onClick
 }) => {
   // Map pillars to their wave patterns and colors
   const pillarConfig = {
@@ -38,8 +39,13 @@ const ChallengeCard = ({
 
   const config = pillarConfig[pillar] || pillarConfig.knowledge;
 
+  const CardWrapper = onClick ? 'button' : 'div';
+  
   return (
-    <div className={`bg-white flex flex-col group ${className}`}>
+    <CardWrapper 
+      onClick={onClick}
+      className={`bg-white flex flex-col group ${className} ${onClick ? 'cursor-pointer hover:shadow-lg transition-shadow text-left w-full' : ''}`}
+    >
       {/* Wave Header */}
       <div className="w-full h-[100px] overflow-hidden">
         <img 
@@ -74,7 +80,7 @@ const ChallengeCard = ({
         )}
 
         {/* Title */}
-        <h5 className="mb-3 text-gray-900 font-outfit normal-case font-medium">{title}</h5>
+        <div className="mb-6 text-gray-900 font-outfit normal-case font-medium text-xl">{title}</div>
 
         {/* Custom Content (e.g., mood selector, descriptions) */}
         {children && !buttonText && (
@@ -103,7 +109,7 @@ const ChallengeCard = ({
           </div>
         )}
       </div>
-    </div>
+    </CardWrapper>
   );
 };
 

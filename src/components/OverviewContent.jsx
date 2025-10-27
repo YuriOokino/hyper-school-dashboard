@@ -1,9 +1,89 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Tab, ProgressPieChart } from './ui';
 import ChallengeCard from './ChallengeCard';
 
-export default function OverviewContent() {
+export default function OverviewContent({ setActivePage, setShowLesson }) {
   const [timeView, setTimeView] = useState('year');
+  const [selectedMood, setSelectedMood] = useState(null);
+  const [showMoodCard, setShowMoodCard] = useState(true);
+  const [showNewCard, setShowNewCard] = useState(false);
+  const [showCalendar, setShowCalendar] = useState(false);
+  const [selectedYear, setSelectedYear] = useState('2026-2027');
+  const [selectedMonth, setSelectedMonth] = useState('October');
+  const [selectedWeek, setSelectedWeek] = useState('Oct 15-21');
+  const [calendarYear, setCalendarYear] = useState(2026);
+  
+  const calendarRef = useRef(null);
+
+  const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  const years = ['2024-2025', '2025-2026', '2026-2027', '2027-2028', '2028-2029', '2029-2030'];
+  
+  // Generate weeks for the selected month
+  const getWeeksForMonth = (month) => {
+    const monthAbbr = month.substring(0, 3);
+    // Simplified - assumes 4-5 weeks per month
+    return [
+      `${monthAbbr} 1-7`,
+      `${monthAbbr} 8-14`,
+      `${monthAbbr} 15-21`,
+      `${monthAbbr} 22-28`
+    ];
+  };
+  
+  const weeks = getWeeksForMonth(selectedMonth);
+
+  const handlePreviousPeriod = () => {
+    if (timeView === 'year') {
+      const currentIndex = years.indexOf(selectedYear);
+      if (currentIndex > 0) setSelectedYear(years[currentIndex - 1]);
+    } else if (timeView === 'month') {
+      const currentIndex = months.indexOf(selectedMonth);
+      if (currentIndex > 0) {
+        const newMonth = months[currentIndex - 1];
+        setSelectedMonth(newMonth);
+        // Reset selected week to first week of new month
+        setSelectedWeek(getWeeksForMonth(newMonth)[0]);
+      }
+    } else if (timeView === 'week') {
+      const currentIndex = weeks.indexOf(selectedWeek);
+      if (currentIndex > 0) setSelectedWeek(weeks[currentIndex - 1]);
+    }
+  };
+
+  const handleNextPeriod = () => {
+    if (timeView === 'year') {
+      const currentIndex = years.indexOf(selectedYear);
+      if (currentIndex < years.length - 1) setSelectedYear(years[currentIndex + 1]);
+    } else if (timeView === 'month') {
+      const currentIndex = months.indexOf(selectedMonth);
+      if (currentIndex < months.length - 1) {
+        const newMonth = months[currentIndex + 1];
+        setSelectedMonth(newMonth);
+        // Reset selected week to first week of new month
+        setSelectedWeek(getWeeksForMonth(newMonth)[0]);
+      }
+    } else if (timeView === 'week') {
+      const currentIndex = weeks.indexOf(selectedWeek);
+      if (currentIndex < weeks.length - 1) setSelectedWeek(weeks[currentIndex + 1]);
+    }
+  };
+
+  // Handle click outside calendar to close it
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (calendarRef.current && !calendarRef.current.contains(event.target)) {
+        setShowCalendar(false);
+      }
+    };
+
+    if (showCalendar) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showCalendar]);
 
   // Sample data for curriculum mastery
   // 800 total topics in school year / 12 months = ~67 topics per month
@@ -238,7 +318,10 @@ export default function OverviewContent() {
         <h4 className="text-gray-900">
           JUMP RIGHT IN!
         </h4>
-        <button className="flex items-center gap-2 text-gray-900 hover:underline">
+        <button 
+          onClick={() => setActivePage('challenges')}
+          className="flex items-center gap-2 text-gray-900 hover:opacity-70 transition-opacity"
+        >
           <span className="text-base">View all challenges</span>
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -256,6 +339,10 @@ export default function OverviewContent() {
           buttonText="Continue"
           buttonVariant="continue"
           credits={90}
+          onClick={() => {
+            setActivePage('challenges');
+            setShowLesson(true);
+          }}
         />
 
         {/* Budgeting 101 */}
@@ -270,34 +357,188 @@ export default function OverviewContent() {
         />
 
         {/* Mood Check */}
-        <ChallengeCard
-          title="Mood Check"
-          pillar="physical"
-          category="Mental Health"
-          typeLabel="Check In"
-          credits={10}
-        >
-          <div className="relative w-full h-[40px] bg-brand-black group-hover:bg-transparent transition-colors flex items-center justify-center overflow-hidden">
-            <div className="absolute inset-0 flex items-center justify-center gap-2 transition-opacity group-hover:opacity-0 whitespace-nowrap">
-              <span className="text-brand-white text-sm font-outfit uppercase font-medium">How are you feeling?</span>
-              <div className="flex items-center gap-1 flex-shrink-0">
-                <img src="/assets/icons/Hyper credits.png" alt="" className="h-4 w-auto" />
-                <span className="text-brand-white text-sm">10</span>
+        {showMoodCard && (
+          <div className="transition-opacity duration-300 ease-in-out">
+          <ChallengeCard
+            title="Mood Check"
+            pillar="physical"
+            category="Mental Health"
+            typeLabel="Check In"
+            credits={10}
+          >
+            <div className={`relative w-full h-[40px] bg-brand-black transition-colors duration-500 ease-in-out flex items-center justify-center ${!selectedMood ? 'group-hover:bg-transparent' : 'bg-transparent'}`}>
+              <div className={`absolute inset-0 flex items-center justify-center gap-2 transition-opacity duration-500 ease-in-out whitespace-nowrap overflow-hidden ${!selectedMood ? 'group-hover:opacity-0' : 'opacity-0'}`}>
+                <span className="text-brand-white text-sm font-outfit uppercase font-medium">How are you feeling?</span>
+                <div className="flex items-center gap-1 flex-shrink-0">
+                  <img src="/assets/icons/Hyper credits.png" alt="" className="h-4 w-auto" />
+                  <span className="text-brand-white text-sm">10</span>
+                </div>
+              </div>
+              <div className={`absolute inset-0 flex items-center justify-center gap-3 transition-opacity duration-500 ease-in-out py-1 ${!selectedMood ? 'opacity-0 group-hover:opacity-100' : 'opacity-100'}`}>
+                <button 
+                  onClick={() => {
+                    setSelectedMood('bad');
+                    setTimeout(() => {
+                      setShowMoodCard(false);
+                      setShowNewCard(true);
+                    }, 2000);
+                  }}
+                  className={`w-10 h-10 flex items-center justify-center hover:scale-110 transition-all duration-500 ease-out relative ${selectedMood && selectedMood !== 'bad' ? 'hidden' : ''} ${selectedMood === 'bad' ? 'scale-125' : ''}`}
+                >
+                  <img src="/assets/icons/mood_bad.png" alt="Bad mood" className="w-full h-full" />
+                  {selectedMood === 'bad' && (
+                    <>
+                      {[
+                        { x: -40, y: -60 },
+                        { x: 25, y: -50 },
+                        { x: 40, y: -15 },
+                        { x: 30, y: 25 },
+                        { x: -40, y: 50 },
+                        { x: -60, y: 30 },
+                        { x: -70, y: -10 },
+                        { x: -55, y: -40 }
+                      ].map((pos, i) => (
+                        <div
+                          key={i}
+                          className="absolute pointer-events-none"
+                          style={{
+                            top: '50%',
+                            left: '50%',
+                            transform: 'translate(-50%, -50%)',
+                            animation: `moodSparkle${i} 1.5s ease-out forwards`,
+                          }}
+                        >
+                          <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="#FC7E3A" stroke="#FC7E3A" strokeWidth="2"/>
+                          </svg>
+                          <style>{`
+                            @keyframes moodSparkle${i} {
+                              0% { 
+                                transform: translate(-50%, -50%) scale(0); 
+                                opacity: 1; 
+                              }
+                              100% { 
+                                transform: translate(calc(-50% + ${pos.x}px), calc(-50% + ${pos.y}px)) scale(1); 
+                                opacity: 0; 
+                              }
+                            }
+                          `}</style>
+                        </div>
+                      ))}
+                    </>
+                  )}
+                </button>
+                <button 
+                  onClick={() => {
+                    setSelectedMood('neutral');
+                    setTimeout(() => {
+                      setShowMoodCard(false);
+                      setShowNewCard(true);
+                    }, 2000);
+                  }}
+                  className={`w-10 h-10 flex items-center justify-center hover:scale-110 transition-all duration-500 ease-out relative ${selectedMood && selectedMood !== 'neutral' ? 'hidden' : ''} ${selectedMood === 'neutral' ? 'scale-125' : ''}`}
+                >
+                  <img src="/assets/icons/mood_neutral.png" alt="Neutral mood" className="w-full h-full" />
+                  {selectedMood === 'neutral' && (
+                    <>
+                      {[
+                        { x: -40, y: -60 },
+                        { x: 25, y: -50 },
+                        { x: 40, y: -15 },
+                        { x: 30, y: 25 },
+                        { x: -40, y: 50 },
+                        { x: -60, y: 30 },
+                        { x: -70, y: -10 },
+                        { x: -55, y: -40 }
+                      ].map((pos, i) => (
+                        <div
+                          key={i}
+                          className="absolute pointer-events-none"
+                          style={{
+                            top: '50%',
+                            left: '50%',
+                            transform: 'translate(-50%, -50%)',
+                            animation: `moodSparkle${i} 1.5s ease-out forwards`,
+                          }}
+                        >
+                          <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="#FC7E3A" stroke="#FC7E3A" strokeWidth="2"/>
+                          </svg>
+                          <style>{`
+                            @keyframes moodSparkle${i} {
+                              0% { 
+                                transform: translate(-50%, -50%) scale(0); 
+                                opacity: 1; 
+                              }
+                              100% { 
+                                transform: translate(calc(-50% + ${pos.x}px), calc(-50% + ${pos.y}px)) scale(1); 
+                                opacity: 0; 
+                              }
+                            }
+                          `}</style>
+                        </div>
+                      ))}
+                    </>
+                  )}
+                </button>
+                <button 
+                  onClick={() => {
+                    setSelectedMood('good');
+                    setTimeout(() => {
+                      setShowMoodCard(false);
+                      setShowNewCard(true);
+                    }, 2000);
+                  }}
+                  className={`w-10 h-10 flex items-center justify-center hover:scale-110 transition-all duration-500 ease-out relative ${selectedMood && selectedMood !== 'good' ? 'hidden' : ''} ${selectedMood === 'good' ? 'scale-125' : ''}`}
+                >
+                  <img src="/assets/icons/mood_good.png" alt="Good mood" className="w-full h-full" />
+                  {selectedMood === 'good' && (
+                    <>
+                      {[
+                        { x: -40, y: -60 },
+                        { x: 25, y: -50 },
+                        { x: 40, y: -15 },
+                        { x: 30, y: 25 },
+                        { x: -40, y: 50 },
+                        { x: -60, y: 30 },
+                        { x: -70, y: -10 },
+                        { x: -55, y: -40 }
+                      ].map((pos, i) => (
+                        <div
+                          key={i}
+                          className="absolute pointer-events-none"
+                          style={{
+                            top: '50%',
+                            left: '50%',
+                            transform: 'translate(-50%, -50%)',
+                            animation: `moodSparkle${i} 1.5s ease-out forwards`,
+                          }}
+                        >
+                          <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="#FC7E3A" stroke="#FC7E3A" strokeWidth="2"/>
+                          </svg>
+                          <style>{`
+                            @keyframes moodSparkle${i} {
+                              0% { 
+                                transform: translate(-50%, -50%) scale(0); 
+                                opacity: 1; 
+                              }
+                              100% { 
+                                transform: translate(calc(-50% + ${pos.x}px), calc(-50% + ${pos.y}px)) scale(1); 
+                                opacity: 0; 
+                              }
+                            }
+                          `}</style>
+                        </div>
+                      ))}
+                    </>
+                  )}
+                </button>
               </div>
             </div>
-            <div className="absolute inset-0 flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-              <button className="w-8 h-8 rounded-full bg-brand-rose flex items-center justify-center text-xl hover:scale-110 transition-transform">
-                😢
-              </button>
-              <button className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-xl hover:scale-110 transition-transform">
-                😐
-              </button>
-              <button className="w-8 h-8 rounded-full bg-brand-lime flex items-center justify-center text-xl hover:scale-110 transition-transform">
-                😊
-              </button>
-            </div>
+          </ChallengeCard>
           </div>
-        </ChallengeCard>
+        )}
 
         {/* Engage with the Squad */}
         <ChallengeCard
@@ -309,6 +550,21 @@ export default function OverviewContent() {
           buttonVariant="primary"
           credits={10}
         />
+
+        {/* New Challenge - appears after mood task */}
+        {showNewCard && (
+          <div className="animate-fade-in">
+          <ChallengeCard
+            title="American History 1900s"
+            pillar="knowledge"
+            category="History"
+            typeLabel="Test"
+            buttonText="Start"
+            buttonVariant="primary"
+            credits={100}
+          />
+          </div>
+        )}
       </div>
 
       {/* Mastery Progress */}
@@ -343,23 +599,141 @@ export default function OverviewContent() {
                 </Tab>
               </div>
               
-              {/* Time Period Navigator */}
-              <div className="flex items-center space-x-4">
-                <button className="p-1 hover:bg-gray-100">
-                  <svg className="w-5 h-5 text-gray-700" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd"/>
-                  </svg>
-                </button>
-                <span className="text-lg text-gray-900">
-                  {timeView === 'year' && '2026-2027'}
-                  {timeView === 'month' && 'October 2026'}
-                  {timeView === 'week' && 'Oct 15-21, 2026'}
-                </span>
-                <button className="p-1 hover:bg-gray-100">
-                  <svg className="w-5 h-5 text-gray-700" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd"/>
-                  </svg>
-                </button>
+                {/* Time Period Navigator */}
+                <div className="flex items-center space-x-4 relative">
+                  {timeView !== 'year' && (
+                    <button 
+                      onClick={handlePreviousPeriod}
+                      className="p-1 hover:bg-gray-100 rounded transition-colors"
+                    >
+                      <svg className="w-5 h-5 text-gray-700" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd"/>
+                      </svg>
+                    </button>
+                  )}
+                  <button 
+                    onClick={() => timeView !== 'year' && setShowCalendar(!showCalendar)}
+                    className="text-lg text-gray-900 w-38 text-center"
+                  >
+                    {timeView === 'year' && selectedYear}
+                    {timeView === 'month' && `${selectedMonth} ${calendarYear}`}
+                    {timeView === 'week' && `${selectedWeek}, ${calendarYear}`}
+                  </button>
+                  <button 
+                    disabled={timeView === 'year'}
+                    onClick={handleNextPeriod}
+                    className={`p-1 rounded transition-colors ${
+                      timeView === 'year' ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-100'
+                    }`}
+                  >
+                    <svg className="w-5 h-5 text-gray-700" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd"/>
+                    </svg>
+                  </button>
+
+                {/* Calendar Widget Popup */}
+                {showCalendar && (
+                  <div ref={calendarRef} className="absolute top-12 left-0 bg-white shadow-xl border border-gray-200 p-4 z-50 w-80">
+                    <div className="flex items-center justify-center mb-3">
+                      {timeView === 'month' && (
+                        <div className="flex items-center gap-2 w-full">
+                          <button onClick={() => setCalendarYear(calendarYear - 1)} className="p-1 hover:bg-gray-100 rounded">
+                            <svg className="w-4 h-4 text-gray-700" fill="currentColor" viewBox="0 0 20 20">
+                              <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd"/>
+                            </svg>
+                          </button>
+                          <h6 className="text-gray-900 font-medium flex-1 text-center">{calendarYear}</h6>
+                          <button onClick={() => setCalendarYear(calendarYear + 1)} className="p-1 hover:bg-gray-100 rounded">
+                            <svg className="w-4 h-4 text-gray-700" fill="currentColor" viewBox="0 0 20 20">
+                              <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd"/>
+                            </svg>
+                          </button>
+                        </div>
+                      )}
+                      {timeView === 'week' && (
+                        <div className="flex items-center gap-2 w-full">
+                          <button onClick={handlePreviousPeriod} className="p-1 hover:bg-gray-100 rounded">
+                            <svg className="w-4 h-4 text-gray-700" fill="currentColor" viewBox="0 0 20 20">
+                              <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd"/>
+                            </svg>
+                          </button>
+                          <h6 className="text-gray-900 font-medium flex-1 text-center">{selectedMonth} {calendarYear}</h6>
+                          <button onClick={handleNextPeriod} className="p-1 hover:bg-gray-100 rounded">
+                            <svg className="w-4 h-4 text-gray-700" fill="currentColor" viewBox="0 0 20 20">
+                              <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd"/>
+                            </svg>
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                    
+                    {/* Year View - School Year Selection */}
+                    {timeView === 'year' && (
+                      <div className="space-y-2">
+                        {years.map((year, i) => (
+                          <button
+                            key={i}
+                            onClick={() => {
+                              setSelectedYear(year);
+                              setShowCalendar(false);
+                            }}
+                            className={`w-full py-3 px-4 hover:bg-gray-100 transition-colors ${
+                              year === selectedYear ? 'bg-gray-100' : ''
+                            }`}
+                          >
+                            {year}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* Month View - Month Selection */}
+                    {timeView === 'month' && (
+                      <div className="grid grid-cols-3 gap-2 text-center text-sm">
+                        {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].map((month, i) => {
+                          const fullMonth = months[i];
+                          return (
+                            <button
+                              key={i}
+                              onClick={() => {
+                                setSelectedMonth(fullMonth);
+                                setShowCalendar(false);
+                              }}
+                              className={`py-3 hover:bg-gray-100 transition-colors ${
+                                selectedMonth === fullMonth ? 'bg-gray-100' : ''
+                              }`}
+                            >
+                              {month}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    )}
+
+                    {/* Week View - Week Selection */}
+                    {timeView === 'week' && (
+                      <div className="space-y-2">
+                        {weeks.map((week, i) => {
+                          const isCurrentWeek = week === selectedWeek;
+                          return (
+                            <button
+                              key={i}
+                              onClick={() => {
+                                setSelectedWeek(week);
+                                setShowCalendar(false);
+                              }}
+                              className={`w-full py-3 px-4 hover:bg-gray-100 transition-colors ${
+                                isCurrentWeek ? 'bg-gray-100' : ''
+                              }`}
+                            >
+                              {week}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
 

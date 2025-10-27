@@ -328,7 +328,7 @@ export default function StudentDashboard() {
           ) : (
             <div className="p-6">
               {activePage === 'overview' ? (
-                <OverviewContent />
+                <OverviewContent setActivePage={setActivePage} setShowLesson={setShowLesson} />
               ) : activePage === 'challenges' ? (
                 <ChallengesContent 
                   onStartLesson={() => setShowLesson(true)} 
