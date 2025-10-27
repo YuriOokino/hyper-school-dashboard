@@ -187,7 +187,7 @@ export default function Sidebar({ setActivePage, onCollapseChange, setSelectedCh
             >
               <path 
                 d="M15.3638 0L5.93874 2.12532L0 14.9686L5.11231 13.7012L1.94401 25L16 6.94156L10.6911 8.12894L15.3638 0Z" 
-                fill="#C9642E"
+                fill="#FE0D7E"
                 stroke="white"
                 strokeWidth="1"
               />

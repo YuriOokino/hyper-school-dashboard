@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Tab, ProgressPieChart } from './ui';
+import ChallengeCard from './ChallengeCard';
 
 export default function OverviewContent() {
   const [timeView, setTimeView] = useState('year');
@@ -232,10 +233,88 @@ export default function OverviewContent() {
       </div>
       </div>
 
+      {/* Jump Right In Section */}
+      <div className="flex items-center justify-between mb-4">
+        <h4 className="text-gray-900">
+          JUMP RIGHT IN!
+        </h4>
+        <button className="flex items-center gap-2 text-gray-900 hover:underline">
+          <span className="text-base">View all challenges</span>
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        {/* Introduction to Volcanoes */}
+        <ChallengeCard
+          title="Introduction to Volcanoes"
+          pillar="knowledge"
+          category="Science"
+          typeLabel="Fast Quiz"
+          buttonText="Continue"
+          buttonVariant="continue"
+          credits={90}
+        />
+
+        {/* Budgeting 101 */}
+        <ChallengeCard
+          title="Budgeting 101"
+          pillar="life"
+          category="Finance"
+          typeLabel="Practice"
+          buttonText="Start"
+          buttonVariant="primary"
+          credits={50}
+        />
+
+        {/* Mood Check */}
+        <ChallengeCard
+          title="Mood Check"
+          pillar="physical"
+          category="Mental Health"
+          typeLabel="Check In"
+          credits={10}
+        >
+          <div className="relative w-full h-[40px] bg-brand-black group-hover:bg-transparent transition-colors flex items-center justify-center overflow-hidden">
+            <div className="absolute inset-0 flex items-center justify-center gap-2 transition-opacity group-hover:opacity-0 whitespace-nowrap">
+              <span className="text-brand-white text-sm font-outfit uppercase font-medium">How are you feeling?</span>
+              <div className="flex items-center gap-1 flex-shrink-0">
+                <img src="/assets/icons/Hyper credits.png" alt="" className="h-4 w-auto" />
+                <span className="text-brand-white text-sm">10</span>
+              </div>
+            </div>
+            <div className="absolute inset-0 flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+              <button className="w-8 h-8 rounded-full bg-brand-rose flex items-center justify-center text-xl hover:scale-110 transition-transform">
+                😢
+              </button>
+              <button className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-xl hover:scale-110 transition-transform">
+                😐
+              </button>
+              <button className="w-8 h-8 rounded-full bg-brand-lime flex items-center justify-center text-xl hover:scale-110 transition-transform">
+                😊
+              </button>
+            </div>
+          </div>
+        </ChallengeCard>
+
+        {/* Engage with the Squad */}
+        <ChallengeCard
+          title="Engage with the Squad"
+          pillar="physical"
+          category="Mental Health"
+          typeLabel="Engage"
+          buttonText="LEAVE A COMMENT"
+          buttonVariant="primary"
+          credits={10}
+        />
+      </div>
+
       {/* Mastery Progress */}
-      <h2 className="text-2xl font-bold text-gray-900 uppercase">
+      <h4 className="text-gray-900">
         MASTERY PROGRESS
-      </h2>
+      </h4>
 
       <div className="bg-white p-6">
         <div className="flex gap-4">

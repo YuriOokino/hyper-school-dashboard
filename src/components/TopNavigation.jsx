@@ -167,7 +167,7 @@ export default function TopNavigation({ activePage, setActivePage, activeTab, se
           </div>
           <div className="col-span-4 flex items-center justify-end space-x-4 px-6">
             <div className="flex items-center space-x-2 relative">
-              <img src="/assets/icons/Hyper credits.png" alt="Hyper Credits" className="w-5 h-5" />
+              <img src="/assets/icons/Hyper credits.png" alt="Hyper Credits" className="h-6 w-auto" />
               <span className={`font-semibold text-white text-[18px] transition-transform duration-300 ${showCelebration ? 'scale-125' : ''}`}>
                 {hyperCredits?.toLocaleString()}
               </span>
