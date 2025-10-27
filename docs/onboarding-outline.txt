@@ -1,0 +1,53 @@
+﻿Onboarding User Journey
+Enrollment
+
+
+Stage
+	Actions & Touchpoints
+	User Thoughts & Feelings
+	Opportunities / UX Considerations
+	1. Entry Access & Account Setup
+	• User signs in via Google or enters a disposable code emailed to them.
+• Guided screen: “Welcome, let’s get you started”.
+• Minimal profile info (name, age/DOB, optional avatar).
+	“It’s easy to get started.”
+“I hope I don’t need to fill a long form.”
+	Keep form minimal, auto-fill from Google when possible. Provide reassurance about data privacy.
+	2. Year Assignment
+	• Ask for age or DOB.
+• Immediately show: “Based on your age, you’re assigned to Year …).”
+• Allow manual override (e.g., for advanced students).
+	“Okay, that makes sense.”
+“What if I’m ahead of my year?”
+	Use friendly wording. Offer override in small text link rather than heavy UI. Show how this affects course suggestions.
+	3. Topic / Course-Interest Selection
+	• Display multi-select tiles for subjects: e.g., Math, Science, English, Coding, Art.
+• Each subject tile with icon/illustration + short description.
+• CTA: “Select at least one”.
+	“I like science and coding!”
+“Which subjects should I pick?”
+	Use colorful easily tappable cards. Possibly show “You can choose new topics next year” to reduce pressure.
+	4. Placement Test for Selected Subjects
+	• Based on selected topics, run one short adaptive quiz per topic.
+• Show progress indicator (“Question 2 of 5”).
+• At end: instant feedback and level assignment.
+	“I hope it’s not too hard.”“I feel good when I finish one quiz.”
+	Keep quiz light (2-3 questions each), fun rather than scary. Use positive microcopy. Consider optional skip for low friction.
+	5. Personalized Course Assignment & Preview
+	• Show summary: Year X, Subjects selected + levels assigned (e.g., Science – Intermediate).
+• Visual roadmap or checklist (“Your learning path”), “Start Lesson 1”.
+	“Great — I know what I’ll be doing.”
+“This looks doable.”
+	Use visual roadmap or “progress path” graphic. Make “Start” very visible. Provide optional “View full plan” for curious users.
+	6. Dashboard & Onboarding Tour
+	• First time on dashboard: highlight key elements (progress bar, tasks, continue button).
+• Options: set weekly goal, notifications.
+• CTA: “Begin your first lesson”.
+	“I’m ready to learn!”
+“Where do I go next?”
+	Use tooltips or coach-marks for first session. Allow skip. Ensure dashboard is clean, intuitive, and visually consistent with rest of brand.
+	7. Home/Routine & Future Re-Enrollment Reminder
+	• Periodic access: show “Select new topics for next year” when re-enrolling.
+• Provide clear reminder: “Next year you can pick new subjects”.
+	“Cool — next year I can change topics.”
+	Provide yearly refresh option with minimal friction. Keep returning students’ flow lighter (skip quizzes unless opted in).
