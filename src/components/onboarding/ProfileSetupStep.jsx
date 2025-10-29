@@ -78,9 +78,12 @@ export default function ProfileSetupStep({ profileData, updateProfileData, nextS
     <div>
       {/* Header */}
       <div className="text-center mb-8">
-        <h2 className="text-brand-black mb-2">LET'S GET TO KNOW YOU!</h2>
-        <p className="font-outfit text-base text-gray-900">
-          Just a few quick questions. This will only take 2 minutes!
+        <h2 className="text-brand-black mb-2">WELCOME, {profileData.firstName?.toUpperCase() || 'JENNIFER'}!</h2>
+        <p className="font-outfit text-base text-gray-900 mb-4">
+          You're about to create your own personalized learning journey! Before we dive in, let's make sure your profile is all set.
+        </p>
+        <p className="font-outfit text-sm text-gray-700">
+          Check that everything looks good below.
         </p>
       </div>
 

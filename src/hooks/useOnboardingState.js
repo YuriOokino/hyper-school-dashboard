@@ -18,6 +18,8 @@ export const useOnboardingState = () => {
     parentEmail: ''
   });
   const [selectedSubjects, setSelectedSubjects] = useState([]);
+  const [likedActivities, setLikedActivities] = useState([]);
+  const [dislikedActivities, setDislikedActivities] = useState([]);
   const [goalSettings, setGoalSettings] = useState({
     weeklyGoal: 'moderate',
     emailReminders: true,
@@ -37,6 +39,8 @@ export const useOnboardingState = () => {
         if (data.currentStep) setCurrentStep(data.currentStep);
         if (data.profileData) setProfileData(data.profileData);
         if (data.selectedSubjects) setSelectedSubjects(data.selectedSubjects);
+        if (data.likedActivities) setLikedActivities(data.likedActivities);
+        if (data.dislikedActivities) setDislikedActivities(data.dislikedActivities);
         if (data.goalSettings) setGoalSettings(data.goalSettings);
         if (data.quizAnswers) setQuizAnswers(data.quizAnswers);
         if (data.quizResults) setQuizResults(data.quizResults);
@@ -52,12 +56,14 @@ export const useOnboardingState = () => {
       currentStep,
       profileData,
       selectedSubjects,
+      likedActivities,
+      dislikedActivities,
       goalSettings,
       quizAnswers,
       quizResults
     };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-  }, [currentStep, profileData, selectedSubjects, goalSettings, quizAnswers, quizResults]);
+  }, [currentStep, profileData, selectedSubjects, likedActivities, dislikedActivities, goalSettings, quizAnswers, quizResults]);
 
   const goToStep = (step) => {
     setCurrentStep(step);
@@ -83,6 +89,15 @@ export const useOnboardingState = () => {
         return [...prev, subject];
       }
     });
+  };
+
+  const updateActivities = (activities) => {
+    if (activities.likedActivities !== undefined) {
+      setLikedActivities(activities.likedActivities);
+    }
+    if (activities.dislikedActivities !== undefined) {
+      setDislikedActivities(activities.dislikedActivities);
+    }
   };
 
   const updateGoalSettings = (settings) => {
@@ -126,6 +141,8 @@ export const useOnboardingState = () => {
       parentEmail: ''
     });
     setSelectedSubjects([]);
+    setLikedActivities([]);
+    setDislikedActivities([]);
     setGoalSettings({
       weeklyGoal: 'moderate',
       emailReminders: true,
@@ -141,6 +158,8 @@ export const useOnboardingState = () => {
     currentStep,
     profileData,
     selectedSubjects,
+    likedActivities,
+    dislikedActivities,
     goalSettings,
     quizAnswers,
     quizResults,
@@ -149,6 +168,7 @@ export const useOnboardingState = () => {
     previousStep,
     updateProfileData,
     toggleSubject,
+    updateActivities,
     updateGoalSettings,
     saveQuizAnswer,
     saveQuizResults,

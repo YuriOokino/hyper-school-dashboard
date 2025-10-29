@@ -2,11 +2,11 @@ import { useNavigate } from 'react-router-dom';
 import { useOnboardingState } from '../../hooks/useOnboardingState';
 import OnboardingProgress from './OnboardingProgress';
 import ProfileSetupStep from './ProfileSetupStep';
-import YearAssignmentStep from './YearAssignmentStep';
 import SubjectSelectionStep from './SubjectSelectionStep';
-import GoalSettingsStep from './GoalSettingsStep';
+import PhysicalActivitiesStep from './PhysicalActivitiesStep';
+import YearAssignmentStep from './YearAssignmentStep';
 
-const WIZARD_STEPS = ['Your Info', 'Year & Grade', 'Pick Subjects', 'Set Goals'];
+const WIZARD_STEPS = ['Welcome', 'Choose subjects', 'Choose activities', 'Complete onboarding'];
 
 export default function OnboardingWizard() {
   const navigate = useNavigate();
@@ -18,11 +18,11 @@ export default function OnboardingWizard() {
       case 1:
         return <ProfileSetupStep {...onboardingState} />;
       case 2:
-        return <YearAssignmentStep {...onboardingState} />;
-      case 3:
         return <SubjectSelectionStep {...onboardingState} />;
+      case 3:
+        return <PhysicalActivitiesStep {...onboardingState} />;
       case 4:
-        return <GoalSettingsStep {...onboardingState} navigate={navigate} />;
+        return <YearAssignmentStep {...onboardingState} navigate={navigate} />;
       default:
         return <ProfileSetupStep {...onboardingState} />;
     }
