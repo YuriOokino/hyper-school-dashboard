@@ -5,6 +5,7 @@ import PlacementQuizOverview from './components/onboarding/PlacementQuizOverview
 import PlacementQuiz from './components/onboarding/PlacementQuiz.jsx';
 import QuizTransition from './components/onboarding/QuizTransition.jsx';
 import CourseAssignmentResults from './components/onboarding/CourseAssignmentResults.jsx';
+import PlacementTest from './components/PlacementTest.jsx';
 
 function App() {
   return (
@@ -20,6 +21,9 @@ function App() {
           
           {/* Dashboard Route */}
           <Route path="/dashboard" element={<StudentDashboard />} />
+          
+          {/* Placement Test Preview Route */}
+          <Route path="/placement-test" element={<PlacementTest />} />
           
           {/* Default Route */}
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
