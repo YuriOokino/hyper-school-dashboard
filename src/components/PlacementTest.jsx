@@ -365,6 +365,7 @@ export default function PlacementTest() {
   const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState({});
+  const [progressedQuestions, setProgressedQuestions] = useState(new Set());
   const [flaggedQuestions, setFlaggedQuestions] = useState(new Set());
   const [timeRemaining, setTimeRemaining] = useState(COMPREHENSIVE_TEST.totalTime);
   const [isTestActive, setIsTestActive] = useState(true);
@@ -413,11 +414,11 @@ export default function PlacementTest() {
   
   // Calculate total questions across all sections
   const totalQuestions = COMPREHENSIVE_TEST.sections.reduce((sum, section) => sum + section.questions.length, 0);
-  const answeredCount = Object.keys(answers).length;
+  const answeredCount = progressedQuestions.size;
   const progress = (answeredCount / totalQuestions) * 100;
   
   // Current section progress
-  const sectionAnsweredCount = currentSection.questions.filter(q => answers[q.id] !== undefined).length;
+  const sectionAnsweredCount = currentSection.questions.filter(q => progressedQuestions.has(q.id)).length;
   const sectionProgress = (sectionAnsweredCount / currentSection.questions.length) * 100;
 
   // Answer handlers
@@ -435,6 +436,13 @@ export default function PlacementTest() {
         [questionId]: optionId
       };
     });
+    
+    // Remove from skipped questions when answered
+    setFlaggedQuestions(prev => {
+      const newSet = new Set(prev);
+      newSet.delete(questionId);
+      return newSet;
+    });
   };
 
   const handleFlagQuestion = (questionId) => {
@@ -451,6 +459,16 @@ export default function PlacementTest() {
 
   // Navigation handlers
   const handleNext = () => {
+    const currentQuestionId = currentSection.questions[currentQuestionIndex].id;
+    
+    // Mark current question as progressed
+    setProgressedQuestions(prev => new Set([...prev, currentQuestionId]));
+    
+    // Mark current question as skipped if not answered
+    if (answers[currentQuestionId] === undefined) {
+      setFlaggedQuestions(prev => new Set([...prev, currentQuestionId]));
+    }
+    
     if (currentQuestionIndex < currentSection.questions.length - 1) {
       setCurrentQuestionIndex(prev => prev + 1);
     } else if (currentSectionIndex < totalSections - 1) {
@@ -464,14 +482,16 @@ export default function PlacementTest() {
       setCurrentQuestionIndex(prev => prev - 1);
     } else if (currentSectionIndex > 0) {
       // Go to previous section's last question
-      setCurrentSectionIndex(prev => prev - 1);
-      setCurrentQuestionIndex(COMPREHENSIVE_TEST.sections[currentSectionIndex - 1].questions.length - 1);
+      const newSectionIndex = currentSectionIndex - 1;
+      setCurrentSectionIndex(newSectionIndex);
+      setCurrentQuestionIndex(COMPREHENSIVE_TEST.sections[newSectionIndex].questions.length - 1);
     }
   };
 
   const handleNextSection = () => {
     setShowSectionTransition(false);
-    setCurrentSectionIndex(prev => prev + 1);
+    const newSectionIndex = currentSectionIndex + 1;
+    setCurrentSectionIndex(newSectionIndex);
     setCurrentQuestionIndex(0);
   };
 
@@ -687,41 +707,41 @@ export default function PlacementTest() {
   // Main test interface
   return (
     <div style={{ minHeight: '100vh', backgroundColor: '#f9fafb' }}>
-      {/* Top Navigation Bar */}
-      <div style={{ backgroundColor: 'white', padding: '15px 20px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)', position: 'sticky', top: 0, zIndex: 100 }}>
-        <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          {/* Test Title */}
-          <div>
-            <div style={{ fontSize: '14px', color: '#666', marginBottom: '2px' }}>
-              Section {currentSectionIndex + 1} of {totalSections}
-            </div>
-            <div style={{ fontSize: '20px', fontWeight: 'bold' }}>
-              {currentSection.name}
-            </div>
-          </div>
+      {/* Minimal Header */}
+      <div style={{ backgroundColor: 'white', padding: '10px 20px', boxShadow: '0 1px 3px rgba(0,0,0,0.08)', position: 'sticky', top: 0, zIndex: 100 }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto', position: 'relative', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          {/* Overall Counter - Left */}
+          <span style={{ fontSize: '22px', color: '#000', fontWeight: 'bold' }}>
+            {answeredCount} / {totalQuestions}
+          </span>
 
-          {/* Timer */}
+          {/* Timer - Center */}
           <div style={{ 
-            fontSize: '24px', 
+            fontSize: '22px', 
             fontWeight: 'bold', 
             color: getTimeColor(),
             display: 'flex',
             alignItems: 'center',
-            gap: '10px'
+            gap: '8px',
+            position: 'absolute',
+            left: '50%',
+            transform: 'translateX(-50%)'
           }}>
             <span>⏱️</span>
             <span>{formatTime(timeRemaining)}</span>
           </div>
 
-          {/* Exit Button */}
+          {/* Exit Button - Right */}
           <button 
             onClick={handleExit}
             style={{ 
-              fontSize: '28px', 
+              fontSize: '26px', 
               border: 'none', 
               backgroundColor: 'transparent', 
               cursor: 'pointer',
-              padding: '5px 10px'
+              padding: '0',
+              lineHeight: 1,
+              color: '#666'
             }}
           >
             ✕
@@ -729,76 +749,131 @@ export default function PlacementTest() {
         </div>
       </div>
 
-      {/* Section Indicators */}
-      <div style={{ backgroundColor: 'white', padding: '20px' }}>
-        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-          <div style={{ marginBottom: '10px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span style={{ fontSize: '14px', color: '#666', fontWeight: 'bold' }}>
-              Test Sections
-            </span>
-            <span style={{ fontSize: '12px', color: '#999' }}>
-              {answeredCount} of {totalQuestions} total questions
-            </span>
-          </div>
-          <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-            {COMPREHENSIVE_TEST.sections.map((section, idx) => {
+      {/* Question Content */}
+      <div style={{ maxWidth: '1200px', margin: '40px auto', padding: '0 20px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '320px 1fr', gap: '30px' }}>
+          {/* Question Navigator Sidebar */}
+          <div style={{ backgroundColor: 'white', padding: '20px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)', height: 'fit-content', position: 'sticky', top: '100px', borderRadius: '4px' }}>
+            {COMPREHENSIVE_TEST.sections.map((section, sectionIdx) => {
+              const isSectionVisible = sectionIdx === currentSectionIndex;
               const sectionQs = section.questions.map(q => q.id);
-              const sectionAnswered = sectionQs.filter(id => answers[id] !== undefined).length;
-              const sectionTotal = section.questions.length;
-              const isCurrentSection = idx === currentSectionIndex;
-              const isCompleted = sectionAnswered === sectionTotal;
-              const isNotStarted = sectionAnswered === 0 && !isCurrentSection;
+              const sectionAnswered = sectionQs.filter(id => progressedQuestions.has(id)).length;
+              const isCompleted = sectionAnswered === section.questions.length;
+              const isNotStarted = sectionAnswered === 0;
+              const isInProgress = sectionAnswered > 0 && !isCompleted;
               
-              let backgroundColor, textColor;
-              if (isCurrentSection) {
-                backgroundColor = '#121214'; // black
-                textColor = 'white';
+              // Determine status indicator
+              let statusColor;
+              if (isSectionVisible) {
+                statusColor = '#121214'; // black for current
               } else if (isCompleted) {
-                backgroundColor = '#10b981'; // green
-                textColor = 'white';
+                statusColor = '#121214'; // black for completed
+              } else if (isInProgress) {
+                statusColor = '#9ca3af'; // grey for in progress
               } else {
-                backgroundColor = '#e5e7eb'; // grey
-                textColor = '#666';
+                statusColor = '#d1d5db'; // light grey for not started
               }
               
               return (
-                <div
-                  key={section.id}
-                  style={{
-                    padding: '10px 16px',
-                    backgroundColor,
-                    color: textColor,
-                    fontSize: '13px',
-                    fontWeight: isCurrentSection ? 'bold' : 'normal',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '8px'
+                <div 
+                  key={section.id} 
+                  style={{ 
+                    marginBottom: '16px',
+                    backgroundColor: '#f9fafb',
+                    padding: '12px',
+                    borderRadius: '6px',
+                    border: '1px solid #e5e7eb'
                   }}
                 >
-                  {isCompleted && (
-                    <span style={{ fontSize: '14px' }}>✓</span>
-                  )}
-                  <span>{section.name}: {sectionAnswered}/{sectionTotal}</span>
+                  <div style={{ 
+                    fontSize: '15px', 
+                    fontWeight: isSectionVisible ? '600' : '500',
+                    color: '#1f2937',
+                    marginBottom: '12px',
+                    display: 'flex',
+                    gap: '10px',
+                    alignItems: 'center'
+                  }}>
+                    <div style={{ 
+                      width: '8px', 
+                      height: '8px', 
+                      borderRadius: '50%', 
+                      backgroundColor: statusColor,
+                      flexShrink: 0
+                    }}></div>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ marginBottom: '2px' }}>{section.name}</div>
+                      <div style={{ fontSize: '13px', fontWeight: 'normal', color: '#6b7280' }}>
+                        {sectionAnswered}/{section.questions.length} answered
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '8px' }}>
+                    {section.questions.map((q, qIdx) => {
+                      const isAnswered = progressedQuestions.has(q.id) && answers[q.id] !== undefined;
+                      const isCurrent = sectionIdx === currentSectionIndex && qIdx === currentQuestionIndex;
+                      const isSkipped = progressedQuestions.has(q.id) && answers[q.id] === undefined;
+                      
+                      let bgColor, textColor, borderStyle;
+                      if (isCurrent) {
+                        bgColor = 'white';
+                        textColor = '#121214';
+                        borderStyle = '2px solid #121214';
+                      } else if (isAnswered) {
+                        bgColor = '#121214';
+                        textColor = 'white';
+                        borderStyle = 'none';
+                      } else if (isSkipped) {
+                        bgColor = '#e5e7eb';
+                        textColor = '#666';
+                        borderStyle = 'none';
+                      } else {
+                        bgColor = 'white';
+                        textColor = '#666';
+                        borderStyle = '1px solid #e5e7eb';
+                      }
+                      
+                      return (
+                        <button
+                          key={q.id}
+                          onClick={() => handleGoToQuestion(sectionIdx, qIdx)}
+                          style={{
+                            width: '44px',
+                            height: '44px',
+                            borderRadius: '4px',
+                            backgroundColor: bgColor,
+                            color: textColor,
+                            border: borderStyle,
+                            cursor: 'pointer',
+                            fontSize: '14px',
+                            fontWeight: isCurrent ? 'bold' : 'normal',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                          }}
+                          title={isCurrent ? 'Current' : isAnswered ? 'Answered' : isSkipped ? 'Skipped' : 'Not answered'}
+                        >
+                          {qIdx + 1}
+                        </button>
+                      );
+                    })}
+                  </div>
                 </div>
               );
             })}
           </div>
-        </div>
-      </div>
 
-      {/* Question Content */}
-      <div style={{ maxWidth: '1200px', margin: '40px auto', padding: '0 20px' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 400px', gap: '30px' }}>
           {/* Main Question Area */}
-          <div style={{ backgroundColor: 'white', padding: '40px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
+          <div style={{ backgroundColor: 'white', padding: '24px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)', borderRadius: '4px', position: 'sticky', top: '100px', height: 'fit-content' }}>
             {/* Section Progress */}
-            <div style={{ marginBottom: '30px', paddingBottom: '20px', borderBottom: '1px solid #e5e7eb' }}>
-              <div style={{ marginBottom: '8px' }}>
-                <span style={{ fontSize: '14px', color: '#666', fontWeight: 'bold' }}>
-                  {currentSection.name} - Question {currentQuestionIndex + 1} of {currentSection.questions.length}
+            <div style={{ marginBottom: '16px', paddingBottom: '12px', borderBottom: '1px solid #e5e7eb' }}>
+              <div style={{ marginBottom: '6px' }}>
+                <span style={{ fontSize: '13px', color: '#666' }}>
+                  Question {currentQuestionIndex + 1} of {currentSection.questions.length}
                 </span>
               </div>
-              <div style={{ width: '100%', height: '8px', backgroundColor: '#e5e7eb', overflow: 'hidden' }}>
+              <div style={{ width: '100%', height: '6px', backgroundColor: '#e5e7eb', overflow: 'hidden' }}>
                 <div 
                   style={{ 
                     width: `${sectionProgress}%`, 
@@ -811,14 +886,14 @@ export default function PlacementTest() {
             </div>
 
             {/* Question Header */}
-            <div style={{ marginBottom: '30px' }}>
-              <h2 style={{ fontSize: '18px', margin: 0, fontFamily: 'Outfit', fontWeight: 500, lineHeight: '1.6' }}>
+            <div style={{ marginBottom: '20px' }}>
+              <h2 style={{ fontSize: '18px', margin: 0, fontFamily: 'Outfit', fontWeight: 500, lineHeight: '1.6', textTransform: 'none' }}>
                 {currentQuestion.question}
               </h2>
             </div>
 
           {/* Answer Options */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '15px', marginBottom: '40px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '24px' }}>
             {currentQuestion.options.map((option) => {
               const isSelected = answers[currentQuestion.id] === option.id;
               
@@ -871,8 +946,7 @@ export default function PlacementTest() {
                 cursor: (currentQuestionIndex === 0 && currentSectionIndex === 0) ? 'not-allowed' : 'pointer',
                 opacity: (currentQuestionIndex === 0 && currentSectionIndex === 0) ? 0.5 : 1,
                 fontSize: '14px',
-                minWidth: '180px',
-                textTransform: 'uppercase'
+                minWidth: '180px'
               }}
             >
               ← Previous
@@ -891,7 +965,6 @@ export default function PlacementTest() {
                     cursor: 'pointer',
                     fontSize: '14px',
                     minWidth: '200px',
-                    textTransform: 'uppercase'
                   }}
                 >
                   Review Section
@@ -916,7 +989,6 @@ export default function PlacementTest() {
                     cursor: 'pointer',
                     fontSize: '14px',
                     minWidth: '200px',
-                    textTransform: 'uppercase'
                   };
                 } else if (isLastQuestionInSection && isLastSection) {
                   buttonText = 'Submit Test';
@@ -929,7 +1001,6 @@ export default function PlacementTest() {
                     cursor: 'pointer',
                     fontSize: '14px',
                     minWidth: '200px',
-                    textTransform: 'uppercase'
                   };
                 } else if (isLastQuestionInSection) {
                   buttonText = `Finish ${currentSection.name} →`;
@@ -942,7 +1013,6 @@ export default function PlacementTest() {
                     cursor: 'pointer',
                     fontSize: '14px',
                     minWidth: '200px',
-                    textTransform: 'uppercase'
                   };
                 } else {
                   buttonText = 'Next →';
@@ -955,7 +1025,6 @@ export default function PlacementTest() {
                     cursor: 'pointer',
                     fontSize: '14px',
                     minWidth: '200px',
-                    textTransform: 'uppercase'
                   };
                 }
                 
@@ -967,91 +1036,6 @@ export default function PlacementTest() {
               })()}
             </div>
           </div>
-          </div>
-
-          {/* Question Navigator Sidebar */}
-          <div style={{ backgroundColor: 'white', padding: '24px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)', height: '100%', position: 'sticky', top: '100px' }}>
-            <h3 style={{ fontSize: '18px', margin: '0 0 20px 0', fontWeight: 'bold' }}>Questions</h3>
-            
-            {COMPREHENSIVE_TEST.sections.map((section, sectionIdx) => {
-              const isSectionVisible = sectionIdx === currentSectionIndex;
-              const sectionQs = section.questions.map(q => q.id);
-              const sectionAnswered = sectionQs.filter(id => answers[id] !== undefined).length;
-              
-              return (
-                <div key={section.id}>
-                  <div 
-                    style={{ 
-                      fontSize: '15px', 
-                      fontWeight: 'bold', 
-                      marginBottom: '8px',
-                      color: isSectionVisible ? '#121214' : '#999',
-                      padding: '10px',
-                      backgroundColor: isSectionVisible ? '#f3f4f6' : 'transparent'
-                    }}
-                  >
-                    {section.name}
-                    <div style={{ fontSize: '13px', fontWeight: 'normal', marginTop: '4px' }}>
-                      {sectionAnswered}/{section.questions.length} answered
-                    </div>
-                  </div>
-                  
-                  {isSectionVisible && (
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '10px' }}>
-                      {section.questions.map((q, qIdx) => {
-                        const isAnswered = answers[q.id] !== undefined;
-                        const isCurrent = sectionIdx === currentSectionIndex && qIdx === currentQuestionIndex;
-                        const isSkipped = flaggedQuestions.has(q.id);
-                        
-                        return (
-                          <button
-                            key={q.id}
-                            onClick={() => handleGoToQuestion(sectionIdx, qIdx)}
-                            style={{
-                              width: '48px',
-                              height: '48px',
-                              borderRadius: '50%',
-                              backgroundColor: isCurrent ? '#f59e0b' : isAnswered ? '#10b981' : isSkipped ? '#fef3c7' : '#f3f4f6',
-                              color: isCurrent || isAnswered ? 'white' : '#666',
-                              border: 'none',
-                              cursor: 'pointer',
-                              fontSize: '14px',
-                              fontWeight: isCurrent ? 'bold' : 'normal',
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              position: 'relative'
-                            }}
-                            title={isAnswered ? 'Answered' : isSkipped ? 'Skipped' : 'Not answered'}
-                          >
-                            {qIdx + 1}
-                            {isAnswered && !isCurrent && (
-                              <span style={{ position: 'absolute', top: '2px', right: '6px', fontSize: '10px' }}>✓</span>
-                            )}
-                          </button>
-                        );
-                      })}
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-            
-            <div style={{ marginTop: '24px', padding: '16px', backgroundColor: '#f3f4f6', fontSize: '14px' }}>
-              <div style={{ marginBottom: '10px', fontWeight: 'bold' }}>Legend:</div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px' }}>
-                <div style={{ width: '24px', height: '24px', borderRadius: '50%', backgroundColor: '#f59e0b' }}></div>
-                <span>Current</span>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px' }}>
-                <div style={{ width: '24px', height: '24px', borderRadius: '50%', backgroundColor: '#10b981' }}></div>
-                <span>Answered</span>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <div style={{ width: '24px', height: '24px', borderRadius: '50%', backgroundColor: '#f3f4f6', border: '1px solid #e5e7eb' }}></div>
-                <span>Not Answered</span>
-              </div>
-            </div>
           </div>
         </div>
       </div>
