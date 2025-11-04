@@ -650,21 +650,17 @@ export default function PlacementTest() {
       return messageArray[sectionIndex % messageArray.length];
     };
 
-    // Calculate overall level based on answers (simplified logic for demo)
+    // Calculate overall level based on answers (capped at Level 4 for placement)
+    // In production, this would be based on correct answers from API
     const totalAnswered = Object.keys(answers).length;
     const percentage = (totalAnswered / totalQuestions) * 100;
     
+    // Placement assigns Level 1-4 max, Levels 5-10 earned through mastery work
     let assignedLevel;
-    if (percentage >= 90) assignedLevel = 10;
-    else if (percentage >= 80) assignedLevel = 9;
-    else if (percentage >= 70) assignedLevel = 8;
-    else if (percentage >= 60) assignedLevel = 7;
-    else if (percentage >= 50) assignedLevel = 6;
-    else if (percentage >= 40) assignedLevel = 5;
-    else if (percentage >= 30) assignedLevel = 4;
-    else if (percentage >= 20) assignedLevel = 3;
-    else if (percentage >= 10) assignedLevel = 2;
-    else assignedLevel = 1;
+    if (percentage >= 90) assignedLevel = 4;      // High proficiency → Level 4 (max placement)
+    else if (percentage >= 60) assignedLevel = 3; // Above average → Level 3
+    else if (percentage >= 30) assignedLevel = 2; // Below average → Level 2
+    else assignedLevel = 1;                       // Foundational → Level 1
 
     return (
       <div style={{ 
