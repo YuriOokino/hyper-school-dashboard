@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 // Comprehensive placement test data - would come from API in production
 const COMPREHENSIVE_TEST = {
   title: "Comprehensive Placement Test (Grades 6-12)",
-  totalTime: 5400, // 90 minutes total (1.5 hours)
+  totalTime: 1200, // 20 minutes total
   sections: [
     {
       id: 'math',
@@ -374,7 +374,6 @@ export default function PlacementTest() {
   const [showExitModal, setShowExitModal] = useState(false);
   const [showSubmitModal, setShowSubmitModal] = useState(false);
   const [showFinishSectionModal, setShowFinishSectionModal] = useState(false);
-  const [showSectionTransition, setShowSectionTransition] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   // Timer countdown
@@ -402,12 +401,9 @@ export default function PlacementTest() {
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
-  // Get time color based on remaining time
+  // Get time color - always black
   const getTimeColor = () => {
-    const percentRemaining = (timeRemaining / COMPREHENSIVE_TEST.totalTime) * 100;
-    if (percentRemaining < 10) return '#DC2626'; // red
-    if (percentRemaining < 25) return '#F59E0B'; // orange
-    return '#10B981'; // green
+    return '#000000'; // black
   };
 
   const currentSection = COMPREHENSIVE_TEST.sections[currentSectionIndex];
@@ -557,14 +553,9 @@ export default function PlacementTest() {
 
   const confirmFinishSection = () => {
     setShowFinishSectionModal(false);
-    // Show section transition
-    setShowSectionTransition(true);
-  };
-
-  const handleNextSection = () => {
     // Mark current section as completed
     setCompletedSections(prev => new Set([...prev, currentSectionIndex]));
-    setShowSectionTransition(false);
+    // Move directly to next section
     const newSectionIndex = currentSectionIndex + 1;
     setCurrentSectionIndex(newSectionIndex);
     setCurrentQuestionIndex(0);
@@ -574,7 +565,6 @@ export default function PlacementTest() {
     setCurrentSectionIndex(sectionIndex);
     setCurrentQuestionIndex(questionIndex);
     setShowReviewScreen(false);
-    setShowSectionTransition(false);
   };
 
   const handleReviewAnswers = () => {
@@ -609,79 +599,232 @@ export default function PlacementTest() {
     setShowExitModal(false);
   };
 
-  // Section Transition screen
-  if (showSectionTransition) {
-    const nextSection = COMPREHENSIVE_TEST.sections[currentSectionIndex + 1];
-    return (
-      <div style={{ minHeight: '100vh', backgroundColor: '#f9fafb', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <div style={{ textAlign: 'center', maxWidth: '600px', padding: '40px', backgroundColor: 'white', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
-          <div style={{ fontSize: '64px', marginBottom: '20px' }}>✓</div>
-          <h2 style={{ fontSize: '32px', marginBottom: '15px' }}>{currentSection.name} Complete!</h2>
-          <p style={{ fontSize: '18px', marginBottom: '30px', color: '#666' }}>
-            Great job! You've finished the {currentSection.name} section.
-          </p>
-          {nextSection && (
-            <>
-              <div style={{ backgroundColor: '#f3f4f6', padding: '20px', marginBottom: '30px' }}>
-                <h3 style={{ fontSize: '20px', marginBottom: '10px' }}>Up Next:</h3>
-                <p style={{ fontSize: '18px', fontWeight: 'bold', marginBottom: '5px' }}>{nextSection.name}</p>
-                <p style={{ fontSize: '14px', color: '#666' }}>{nextSection.description}</p>
-                <p style={{ fontSize: '14px', color: '#666', marginTop: '10px' }}>
-                  {nextSection.questions.length} questions • ~{Math.ceil(nextSection.timeAllocation / 60)} minutes
-                </p>
-              </div>
-              <button
-                onClick={handleNextSection}
-                style={{
-                  padding: '15px 40px',
-                  backgroundColor: 'black',
-                  color: 'white',
-                  border: 'none',
-                  cursor: 'pointer',
-                  fontSize: '16px',
-                  fontWeight: 'bold'
-                }}
-              >
-                Continue to {nextSection.name} →
-              </button>
-            </>
-          )}
-        </div>
-      </div>
-    );
-  }
-
   // Test completion screen
   if (isSubmitted) {
-    const sectionsCompleted = COMPREHENSIVE_TEST.sections.map(section => {
+    // Calculate performance feedback for each section (randomized for demo since we don't track correct answers)
+    const getSectionFeedback = (sectionId, sectionIndex) => {
+      const section = COMPREHENSIVE_TEST.sections.find(s => s.id === sectionId);
       const sectionQuestions = section.questions.map(q => q.id);
-      const answeredInSection = sectionQuestions.filter(id => answers[id] !== undefined).length;
-      return {
-        name: section.name,
-        answered: answeredInSection,
-        total: section.questions.length
-      };
-    });
+      const answeredCount = sectionQuestions.filter(id => answers[id] !== undefined).length;
+      
+      // Simulate varied performance (in production, this would be based on actual correct answers)
+      const seed = sectionIndex * 37; // Use section index to create variation
+      const simulatedPercentage = 30 + ((seed % 60) + (answeredCount % 30)); // Random range 30-90%
+      
+      const highMessages = [
+        { text: "You've absolutely nailed this! 🌟", emoji: "🎯" },
+        { text: "Outstanding! You're a natural at this! 🔥", emoji: "⭐" },
+        { text: "Impressive skills! Keep up the amazing work! 💫", emoji: "🏆" }
+      ];
+      
+      const goodMessages = [
+        { text: "Great foundation! Let's build on it! 🚀", emoji: "💪" },
+        { text: "You're on the right track! Ready to soar! ✨", emoji: "🌟" },
+        { text: "Solid skills! Let's take them to the next level! 🎯", emoji: "👍" }
+      ];
+      
+      const developingMessages = [
+        { text: "Good start! We'll strengthen these skills together! 💪", emoji: "🌱" },
+        { text: "You've got the basics! Time to grow! 🌿", emoji: "📚" },
+        { text: "Nice progress! Let's keep building! 🔨", emoji: "💡" }
+      ];
+      
+      const foundationMessages = [
+        { text: "Let's work on these skills together! 🎯", emoji: "📖" },
+        { text: "We'll build strong foundations here! 🏗️", emoji: "🎓" },
+        { text: "Exciting opportunity to grow! Let's do this! 🌟", emoji: "🚀" }
+      ];
+      
+      let messageArray;
+      if (simulatedPercentage >= 75) {
+        messageArray = highMessages;
+      } else if (simulatedPercentage >= 55) {
+        messageArray = goodMessages;
+      } else if (simulatedPercentage >= 35) {
+        messageArray = developingMessages;
+      } else {
+        messageArray = foundationMessages;
+      }
+      
+      // Use section index to pick a consistent message for each section
+      return messageArray[sectionIndex % messageArray.length];
+    };
+
+    // Calculate overall level based on answers (simplified logic for demo)
+    const totalAnswered = Object.keys(answers).length;
+    const percentage = (totalAnswered / totalQuestions) * 100;
+    
+    let assignedLevel;
+    if (percentage >= 90) assignedLevel = 10;
+    else if (percentage >= 80) assignedLevel = 9;
+    else if (percentage >= 70) assignedLevel = 8;
+    else if (percentage >= 60) assignedLevel = 7;
+    else if (percentage >= 50) assignedLevel = 6;
+    else if (percentage >= 40) assignedLevel = 5;
+    else if (percentage >= 30) assignedLevel = 4;
+    else if (percentage >= 20) assignedLevel = 3;
+    else if (percentage >= 10) assignedLevel = 2;
+    else assignedLevel = 1;
 
     return (
-      <div style={{ padding: '40px', textAlign: 'center', maxWidth: '700px', margin: '0 auto' }}>
-        <h1 style={{ fontSize: '32px', marginBottom: '20px' }}>Test Submitted Successfully!</h1>
-        <p style={{ fontSize: '18px', marginBottom: '30px' }}>
-          Thank you for completing the {COMPREHENSIVE_TEST.title}.
-        </p>
-        <div style={{ backgroundColor: '#f3f4f6', padding: '20px', marginBottom: '20px', textAlign: 'left' }}>
-          <p style={{ marginBottom: '15px' }}><strong>Overall Summary:</strong></p>
-          <p style={{ marginBottom: '10px' }}>Questions Answered: {answeredCount} of {totalQuestions}</p>
-          <p style={{ marginBottom: '15px' }}>Time Used: {formatTime(COMPREHENSIVE_TEST.totalTime - timeRemaining)}</p>
-          
-          <p style={{ marginTop: '20px', marginBottom: '10px' }}><strong>By Section:</strong></p>
-          {sectionsCompleted.map((section, idx) => (
-            <p key={idx} style={{ marginBottom: '5px' }}>
-              • {section.name}: {section.answered} / {section.total} questions
-            </p>
-          ))}
+      <div style={{ 
+        minHeight: '100vh', 
+        display: 'flex', 
+        alignItems: 'center', 
+        justifyContent: 'center',
+        backgroundColor: '#f9fafb',
+        padding: '40px'
+      }}>
+        <div style={{ textAlign: 'center', maxWidth: '1100px', width: '100%' }}>
+          <div style={{ 
+            fontSize: '80px', 
+            marginBottom: '20px',
+            animation: 'celebrate 0.6s ease-out'
+          }}>
+            🎉
+          </div>
+          <h1 style={{ 
+            fontSize: '42px', 
+            marginBottom: '10px',
+            fontWeight: 'bold',
+            color: '#121214'
+          }}>
+            Placement Complete!
+          </h1>
+          <p style={{ 
+            fontSize: '18px', 
+            marginBottom: '40px',
+            lineHeight: '1.6',
+            color: '#4b5563'
+          }}>
+            Here's where your learning journey begins 🌟
+          </p>
+
+          {/* Two Column Layout */}
+          <div style={{ 
+            display: 'grid', 
+            gridTemplateColumns: '1fr 400px',
+            gap: '30px',
+            marginBottom: '40px'
+          }}>
+            {/* Section Feedback */}
+            <div style={{ 
+              backgroundColor: 'white', 
+              padding: '30px',
+              boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
+              textAlign: 'left'
+            }}>
+              <h3 style={{ 
+                fontSize: '20px', 
+                marginBottom: '24px',
+                fontWeight: '600',
+                color: '#121214',
+                textAlign: 'center'
+              }}>
+                Your Subject Insights
+              </h3>
+              {COMPREHENSIVE_TEST.sections.map((section, index) => {
+                const feedback = getSectionFeedback(section.id, index);
+                const isLast = index === COMPREHENSIVE_TEST.sections.length - 1;
+                return (
+                  <div key={section.id} style={{ 
+                    marginBottom: isLast ? '0' : '20px',
+                    paddingBottom: isLast ? '0' : '20px',
+                    borderBottom: isLast ? 'none' : '1px solid #e5e7eb'
+                  }}>
+                    <div style={{ 
+                      display: 'flex', 
+                      alignItems: 'center',
+                      gap: '12px',
+                      marginBottom: '8px'
+                    }}>
+                      <span style={{ fontSize: '24px' }}>{feedback.emoji}</span>
+                      <span style={{ fontSize: '16px', fontWeight: '600', color: '#121214' }}>
+                        {section.name}
+                      </span>
+                    </div>
+                    <p style={{ 
+                      fontSize: '15px', 
+                      color: '#4b5563',
+                      margin: '0 0 0 36px',
+                      lineHeight: '1.5'
+                    }}>
+                      {feedback.text}
+                    </p>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Level Result */}
+            <div style={{ 
+              backgroundColor: 'white', 
+              padding: '40px',
+              boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              textAlign: 'center'
+            }}>
+              <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+                <div style={{ 
+                  fontSize: '18px', 
+                  marginBottom: '16px',
+                  fontWeight: '500',
+                  color: '#4b5563'
+                }}>
+                  Your Starting Level
+                </div>
+                <div style={{ 
+                  fontSize: '72px', 
+                  fontWeight: 'bold',
+                  color: '#121214',
+                  marginBottom: '16px'
+                }}>
+                  {assignedLevel}
+                </div>
+                <p style={{ 
+                  fontSize: '16px', 
+                  color: '#6b7280',
+                  lineHeight: '1.5',
+                  margin: 0
+                }}>
+                  Complete challenges to build mastery and level up! 🚀
+                </p>
+              </div>
+              
+              <a 
+                href="/"
+                style={{
+                  display: 'block',
+                  width: '100%',
+                  padding: '16px',
+                  marginTop: '30px',
+                  backgroundColor: '#121214',
+                  color: 'white',
+                  textDecoration: 'none',
+                  fontWeight: 'bold',
+                  fontSize: '18px',
+                  cursor: 'pointer',
+                  transition: 'opacity 0.2s',
+                  textAlign: 'center'
+                }}
+                onMouseEnter={(e) => e.target.style.opacity = '0.9'}
+                onMouseLeave={(e) => e.target.style.opacity = '1'}
+              >
+                Go to Your Dashboard
+              </a>
+            </div>
+          </div>
+          <style>{`
+            @keyframes celebrate {
+              0% { transform: scale(0) rotate(0deg); opacity: 0; }
+              50% { transform: scale(1.2) rotate(180deg); }
+              100% { transform: scale(1) rotate(360deg); opacity: 1; }
+            }
+          `}</style>
         </div>
-        <p>Your results will be processed and you'll receive your placement levels for each subject shortly.</p>
       </div>
     );
   }
@@ -873,8 +1016,8 @@ export default function PlacementTest() {
                   }}>
                     <div style={{ flex: 1 }}>
                       <div style={{ marginBottom: '2px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        {isSectionLocked && <span style={{ fontSize: '16px' }}>✓</span>}
                         {section.name}
-                        {isSectionLocked && <span style={{ fontSize: '13px' }}>🔒</span>}
                       </div>
                       <div style={{ fontSize: '13px', fontWeight: 'normal', color: '#6b7280' }}>
                         {sectionAnswered}/{section.questions.length} answered
@@ -1117,21 +1260,9 @@ export default function PlacementTest() {
         }}>
           <div style={{ backgroundColor: 'white', padding: '40px', maxWidth: '500px', margin: '20px' }}>
             <h3 style={{ marginTop: 0, marginBottom: '15px' }}>Submit Your Test?</h3>
-            <div style={{ marginBottom: '25px' }}>
-              <p><strong>Summary:</strong></p>
-              <ul style={{ listStyle: 'none', padding: 0 }}>
-                <li>✓ Answered: {answeredCount} questions</li>
-                <li>✗ Unanswered: {totalQuestions - answeredCount} questions</li>
-                {flaggedQuestions.size > 0 && (
-                  <li>🚩 Flagged: {flaggedQuestions.size} questions</li>
-                )}
-              </ul>
-              {answeredCount < totalQuestions && (
-                <p style={{ color: '#f59e0b', fontWeight: 'bold' }}>
-                  ⚠️ You have unanswered questions. Are you sure you want to submit?
-                </p>
-              )}
-            </div>
+            <p style={{ marginBottom: '30px', lineHeight: '1.6', color: '#4b5563' }}>
+              Great work! You've completed the placement test. Your responses will help us create a personalized learning path tailored just for you. Ready to see where your journey begins?
+            </p>
             <div style={{ display: 'flex', gap: '15px' }}>
               <button
                 onClick={() => setShowSubmitModal(false)}
@@ -1144,7 +1275,7 @@ export default function PlacementTest() {
                   fontWeight: 'bold'
                 }}
               >
-                Review More
+                Review Answers
               </button>
               <button
                 onClick={confirmSubmit}
