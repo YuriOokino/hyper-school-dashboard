@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useSearchParams, useLocation } from 'react-router-dom';
-import FirstTimeStudentDashboard from './components/FirstTimeStudentDashboard';
+import { useSearchParams } from 'react-router-dom';
 import TopNavigation from './components/TopNavigation';
 import Sidebar from './components/Sidebar';
 import OverviewContent from './components/OverviewContent';
@@ -16,13 +15,6 @@ import DashboardTour from './components/onboarding/DashboardTour';
 
 export default function StudentDashboard() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const location = useLocation();
-  const { assignedLevel, isFirstTime } = location.state || {};
-  
-  // Check if user has completed onboarding
-  const userProfile = localStorage.getItem('userProfile');
-  const isProfileComplete = userProfile ? JSON.parse(userProfile).onboardingComplete : false;
-  const [showFirstTimeView, setShowFirstTimeView] = useState(isFirstTime && !isProfileComplete);
   
   const [activeTab, setActiveTab] = useState('knowledge');
   const [activePage, setActivePage] = useState('overview');
@@ -328,23 +320,6 @@ export default function StudentDashboard() {
     };
     return colorMap[color] || colorMap.blue;
   };
-
-  const handleSetupComplete = (profileData) => {
-    console.log('Setup complete, transitioning to main dashboard', profileData);
-    setShowFirstTimeView(false);
-    setShowTour(true);
-    setShowSuccessToast(true);
-  };
-
-  // Show first-time dashboard if user hasn't completed onboarding
-  if (showFirstTimeView) {
-    return (
-      <FirstTimeStudentDashboard 
-        assignedLevel={assignedLevel || 1}
-        onSetupComplete={handleSetupComplete}
-      />
-    );
-  }
 
   return (
     <div className="h-screen flex overflow-hidden" style={{ backgroundColor: '#E8EBFB' }}>

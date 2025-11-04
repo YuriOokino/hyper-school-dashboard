@@ -1,8 +1,22 @@
 import { useState, useEffect } from 'react';
 import { ChatInputSimple } from './ui';
 
-export default function Sidebar({ setActivePage, onCollapseChange, setSelectedChatFromSidebar, triggerSidebarChat, setTriggerSidebarChat }) {
-  const [isAccountOpen, setIsAccountOpen] = useState(false);
+export default function Sidebar({ 
+  setActivePage, 
+  onCollapseChange, 
+  setSelectedChatFromSidebar, 
+  triggerSidebarChat, 
+  setTriggerSidebarChat,
+  externalAccountOpen,
+  onAccountOpenChange,
+  showEmptyProfile = false,
+  assignedLevel = 6,
+  progressPercentage = 79,
+  hideExtras = false
+}) {
+  const [internalAccountOpen, setInternalAccountOpen] = useState(false);
+  const isAccountOpen = externalAccountOpen !== undefined ? externalAccountOpen : internalAccountOpen;
+  const setIsAccountOpen = onAccountOpenChange || setInternalAccountOpen;
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [selectedChat, setSelectedChat] = useState(null);
   const [isChatsExpanded, setIsChatsExpanded] = useState(true);
@@ -109,7 +123,7 @@ export default function Sidebar({ setActivePage, onCollapseChange, setSelectedCh
   };
 
   return (
-    <div className="relative">
+    <div className="relative" style={{ zIndex: 10002 }}>
       <aside className={`bg-black flex flex-col transition-all duration-300 ${isCollapsed ? 'w-16' : 'w-64'}`} style={{ minHeight: '100vh', maxHeight: '100vh' }}>
       <div className="flex-1 overflow-y-auto">
       {/* Toggle Button */}
@@ -125,24 +139,49 @@ export default function Sidebar({ setActivePage, onCollapseChange, setSelectedCh
       </div>
       
       {/* Circular Profile Image */}
-      <div className={`flex ${isCollapsed ? 'justify-center' : 'justify-center'} pt-4 pb-4`}>
+      <div className={`flex ${isCollapsed ? 'justify-center' : 'justify-center'} pt-4 pb-4`} id="profile-picture-target">
         <div className="relative group">
-          <div className={`${isCollapsed ? 'w-10 h-10' : 'w-32 h-32'} rounded-full border-[1.5px] border-white overflow-hidden cursor-pointer`}>
-            <img 
-              src="/assets/Images/account-user.png" 
-              alt="User profile" 
-              className="w-full h-full object-cover"
-            />
+          <div className={`${isCollapsed ? 'w-10 h-10' : 'w-32 h-32'} rounded-full border-[1.5px] border-white overflow-hidden cursor-pointer ${showEmptyProfile ? 'bg-gray-200' : ''}`}>
+            {showEmptyProfile ? (
+              /* Empty placeholder for first-time users */
+              <div className="w-full h-full flex items-center justify-center text-gray-400 text-4xl">
+                👤
+              </div>
+            ) : (
+              /* Regular profile image */
+              <img 
+                src="/assets/Images/account-user.png" 
+                alt="User profile" 
+                className="w-full h-full object-cover"
+              />
+            )}
           </div>
           
           {/* Edit Tooltip */}
-          <div className="absolute inset-0 bg-black bg-opacity-50 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-            <div className="flex items-center space-x-1 text-white">
-              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"/>
-              </svg>
-              <span className="text-sm font-medium">Edit</span>
-            </div>
+          <div className="absolute inset-0 bg-black bg-opacity-50 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 cursor-pointer">
+            {showEmptyProfile ? (
+              <>
+                <input 
+                  type="file" 
+                  accept="image/*"
+                  className="hidden"
+                  id="profile-pic-upload"
+                />
+                <label htmlFor="profile-pic-upload" className="flex items-center space-x-1 text-white cursor-pointer">
+                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"/>
+                  </svg>
+                  <span className="text-sm font-medium">Edit</span>
+                </label>
+              </>
+            ) : (
+              <div className="flex items-center space-x-1 text-white">
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"/>
+                </svg>
+                <span className="text-sm font-medium">Edit</span>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -154,17 +193,17 @@ export default function Sidebar({ setActivePage, onCollapseChange, setSelectedCh
             console.log('Clicked! Current state:', isAccountOpen);
             setIsAccountOpen(!isAccountOpen);
           }}>
-            <p className="text-xl font-semibold text-white">Jennifer Roswell</p>
+            <p className="text-xl font-semibold text-white">{showEmptyProfile ? 'Student' : 'Jennifer Roswell'}</p>
             <img src="/assets/icons/settings-icon.svg" alt="Settings" className="w-4 h-4" />
           </div>
-          <div className="bg-brand-lilac-medium text-brand-black px-3 py-1 text-sm mt-2 inline-block">Level 6</div>
+          <div className="bg-brand-lilac-medium text-brand-black px-3 py-1 text-sm mt-2 inline-block">Level {assignedLevel}</div>
         </div>
       )}
       
       {/* Collapsed Level Display */}
       {isCollapsed && (
         <div className="flex justify-center mb-4">
-          <div className="bg-purple-600 text-white px-2 py-1 text-xs font-bold">LV 6</div>
+          <div className="bg-purple-600 text-white px-2 py-1 text-xs font-bold">LV {assignedLevel}</div>
         </div>
       )}
       
@@ -173,37 +212,39 @@ export default function Sidebar({ setActivePage, onCollapseChange, setSelectedCh
         <div className="px-4 mb-4 mt-6">
           <div className="flex justify-between items-center mb-2">
             <h6 className="text-white">Progress</h6>
-            <span className="text-sm font-bold text-white">79%</span>
+            <span className="text-sm font-bold text-white">{progressPercentage}%</span>
           </div>
           <div className="relative w-full bg-gray-700 h-2 overflow-visible">
-            <div className="h-full" style={{ width: '79%', backgroundColor: '#DBFF4D' }}></div>
-            <svg 
-              className="absolute top-1/2 w-4 h-6"
-              style={{ 
-                left: '79%', 
-                transform: 'translate(-50%, -50%)'
-              }}
-              viewBox="0 0 16 25"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path 
-                d="M15.3638 0L5.93874 2.12532L0 14.9686L5.11231 13.7012L1.94401 25L16 6.94156L10.6911 8.12894L15.3638 0Z" 
-                fill="#FE0D7E"
-                stroke="white"
-                strokeWidth="1"
-              />
-            </svg>
+            <div className="h-full" style={{ width: `${progressPercentage}%`, backgroundColor: '#DBFF4D' }}></div>
+            {progressPercentage > 0 && (
+              <svg 
+                className="absolute top-1/2 w-4 h-6"
+                style={{ 
+                  left: `${progressPercentage}%`, 
+                  transform: 'translate(-50%, -50%)'
+                }}
+                viewBox="0 0 16 25"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path 
+                  d="M15.3638 0L5.93874 2.12532L0 14.9686L5.11231 13.7012L1.94401 25L16 6.94156L10.6911 8.12894L15.3638 0Z" 
+                  fill="#FE0D7E"
+                  stroke="white"
+                  strokeWidth="1"
+                />
+              </svg>
+            )}
           </div>
           <div className="flex justify-between text-xs text-white mt-1">
-            <span>Level 6</span>
-            <span>Level 7</span>
+            <span>Level {assignedLevel}</span>
+            <span>Level {assignedLevel + 1}</span>
           </div>
         </div>
       )}
       
       {/* Achievements Section */}
-      {!isCollapsed && (
+      {!isCollapsed && !hideExtras && (
         <div className="px-4 mb-4">
           <div className="flex items-center justify-between mb-3 group">
             <div className="flex items-center space-x-2 cursor-pointer" onClick={() => setIsAchievementsExpanded(!isAchievementsExpanded)}>
@@ -228,44 +269,44 @@ export default function Sidebar({ setActivePage, onCollapseChange, setSelectedCh
           </div>
           
           {isAchievementsExpanded && (
-            <div className="flex space-x-2 mb-2">
-              <div className="relative group">
-                <div className="w-8 h-8 cursor-pointer">
-                  <img src="/assets/icons/Badges/badge-1.png" alt="English Genius" className="w-full h-full object-contain" />
+              <div className="flex space-x-2 mb-2">
+                <div className="relative group">
+                  <div className="w-8 h-8 cursor-pointer">
+                    <img src="/assets/icons/Badges/badge-1.png" alt="English Genius" className="w-full h-full object-contain" />
+                  </div>
+                  <div className="absolute bottom-full left-0 mb-2 px-2 py-1 bg-white text-gray-900 text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-50" style={{ minWidth: '150px' }}>
+                    <div className="font-semibold mb-1">English Genius</div>
+                    <div className="text-gray-600 text-xs">Mastered 50 English topics</div>
+                  </div>
                 </div>
-                <div className="absolute bottom-full left-0 mb-2 px-2 py-1 bg-white text-gray-900 text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-50" style={{ minWidth: '150px' }}>
-                  <div className="font-semibold mb-1">English Genius</div>
-                  <div className="text-gray-600 text-xs">Mastered 50 English topics</div>
+                <div className="relative group">
+                  <div className="w-8 h-8 cursor-pointer">
+                    <img src="/assets/icons/Badges/badge-2.png" alt="Math Wizard" className="w-full h-full object-contain" />
+                  </div>
+                  <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-white text-gray-900 text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-50" style={{ minWidth: '150px' }}>
+                    <div className="font-semibold mb-1">Math Wizard</div>
+                    <div className="text-gray-600 text-xs">Solved 100 math problems</div>
+                  </div>
+                </div>
+                <div className="relative group">
+                  <div className="w-8 h-8 cursor-pointer">
+                    <img src="/assets/icons/Badges/badge-3.png" alt="Streak Champion" className="w-full h-full object-contain" />
+                  </div>
+                  <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-white text-gray-900 text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-50" style={{ minWidth: '150px' }}>
+                    <div className="font-semibold mb-1">Streak Champion</div>
+                    <div className="text-gray-600 text-xs">7-day learning streak</div>
+                  </div>
+                </div>
+                <div className="relative group">
+                  <div className="w-8 h-8 cursor-pointer">
+                    <img src="/assets/icons/Badges/badge-4.png" alt="Goal Crusher" className="w-full h-full object-contain" />
+                  </div>
+                  <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-white text-gray-900 text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-50" style={{ minWidth: '150px' }}>
+                    <div className="font-semibold mb-1">Goal Crusher</div>
+                    <div className="text-gray-600 text-xs">Completed 25 daily goals</div>
+                  </div>
                 </div>
               </div>
-              <div className="relative group">
-                <div className="w-8 h-8 cursor-pointer">
-                  <img src="/assets/icons/Badges/badge-2.png" alt="Math Wizard" className="w-full h-full object-contain" />
-                </div>
-                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-white text-gray-900 text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-50" style={{ minWidth: '150px' }}>
-                  <div className="font-semibold mb-1">Math Wizard</div>
-                  <div className="text-gray-600 text-xs">Solved 100 math problems</div>
-                </div>
-              </div>
-              <div className="relative group">
-                <div className="w-8 h-8 cursor-pointer">
-                  <img src="/assets/icons/Badges/badge-3.png" alt="Streak Champion" className="w-full h-full object-contain" />
-                </div>
-                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-white text-gray-900 text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-50" style={{ minWidth: '150px' }}>
-                  <div className="font-semibold mb-1">Streak Champion</div>
-                  <div className="text-gray-600 text-xs">7-day learning streak</div>
-                </div>
-              </div>
-              <div className="relative group">
-                <div className="w-8 h-8 cursor-pointer">
-                  <img src="/assets/icons/Badges/badge-4.png" alt="Goal Crusher" className="w-full h-full object-contain" />
-                </div>
-                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-white text-gray-900 text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-50" style={{ minWidth: '150px' }}>
-                  <div className="font-semibold mb-1">Goal Crusher</div>
-                  <div className="text-gray-600 text-xs">Completed 25 daily goals</div>
-                </div>
-              </div>
-            </div>
           )}
         </div>
       )}
@@ -278,27 +319,6 @@ export default function Sidebar({ setActivePage, onCollapseChange, setSelectedCh
               <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
             </svg>
           </div>
-        </div>
-      )}
-
-      {/* Development Test Button - Only shows in dev mode */}
-      {!isCollapsed && import.meta.env.DEV && (
-        <div className="px-4 mt-auto mb-4">
-          <button
-            onClick={() => {
-              // Clear onboarding completion flag
-              localStorage.removeItem('onboarding_completed');
-              // Redirect to onboarding
-              window.location.href = '/onboarding';
-            }}
-            className="w-full py-2 px-4 bg-orange-500 hover:bg-orange-600 text-white transition-colors flex items-center justify-center space-x-2 text-sm"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-            </svg>
-            <span>Test Onboarding</span>
-          </button>
         </div>
       )}
       
@@ -341,27 +361,27 @@ export default function Sidebar({ setActivePage, onCollapseChange, setSelectedCh
               <>
                 {/* Tutor Chats */}
                 {chats.map((chat) => {
-                  const chatColors = {
-                    1: 'bg-blue-500',
-                    2: 'bg-orange-500'
-                  };
-                  
-                  return (
-                    <div key={chat.id} className="flex items-center space-x-3 p-2 hover:bg-gray-800 cursor-pointer" onClick={() => handleChatClick(chat)}>
-                      {chat.id === 3 ? (
-                        <img src="/assets/icons/ai-chat.svg" alt="AI" className="w-8 h-8" />
-                      ) : (
-                        <div className={`w-8 h-8 rounded-full ${chatColors[chat.id]}`}></div>
-                      )}
-                      <div className="flex-1">
-                        <div className="text-sm text-white">{chat.name}</div>
-                      </div>
-                      {chat.isNew && (
-                        <span className="text-xs font-semibold" style={{ color: '#FF1493' }}>New!</span>
-                      )}
-                    </div>
-                  );
-                })}
+                      const chatColors = {
+                        1: 'bg-blue-500',
+                        2: 'bg-orange-500'
+                      };
+                      
+                      return (
+                        <div key={chat.id} className="flex items-center space-x-3 p-2 hover:bg-gray-800 cursor-pointer" onClick={() => handleChatClick(chat)}>
+                          {chat.id === 3 ? (
+                            <img src="/assets/icons/ai-chat.svg" alt="AI" className="w-8 h-8" />
+                          ) : (
+                            <div className={`w-8 h-8 rounded-full ${chatColors[chat.id]}`}></div>
+                          )}
+                          <div className="flex-1">
+                            <div className="text-sm text-white">{chat.name}</div>
+                          </div>
+                          {chat.isNew && (
+                            <span className="text-xs font-semibold" style={{ color: '#FF1493' }}>New!</span>
+                          )}
+                        </div>
+                      );
+                    })}
               </>
             ) : (
               /* Collapsed Chat Icon */
@@ -422,11 +442,12 @@ export default function Sidebar({ setActivePage, onCollapseChange, setSelectedCh
       {/* Account Panel - Fixed positioned next to sidebar */}
       {isAccountOpen && (
         <div 
-          className="absolute top-0 left-full bg-white shadow-2xl z-50 overflow-y-auto"
+          className="absolute top-0 left-full bg-white shadow-2xl overflow-y-auto"
           style={{
             width: '400px',
             minHeight: '100vh',
-            maxHeight: '100vh'
+            maxHeight: '100vh',
+            zIndex: 10002 // Above onboarding overlay
           }}
         >
           {/* Header */}
@@ -458,16 +479,16 @@ export default function Sidebar({ setActivePage, onCollapseChange, setSelectedCh
             {/* Level */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Level</label>
-              <div>Level 6</div>
+              <div>Level {assignedLevel}</div>
               <hr className="mt-3 border-gray-200" />
             </div>
             
             {/* Bio */}
-            <div>
+            <div id="bio-section">
               <label className="block text-sm font-medium text-gray-700 mb-2">Bio</label>
               <div className="flex justify-between items-start">
                 <p className="text-gray-900 text-sm leading-relaxed flex-1 pr-4">
-                  I love reading fantasy novels and writing short stories in my free time. I play volleyball on the school team and enjoy hanging out with my friends on weekends. My favorite subjects are English and Biology, and I'm really interested in marine science. I also love baking cookies and trying new recipes!
+                  Add a short bio to tell your squad about yourself...
                 </p>
                 <button className="text-sm text-gray-600 hover:text-gray-800">Change</button>
               </div>

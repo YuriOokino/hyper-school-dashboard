@@ -794,10 +794,9 @@ export default function PlacementTest() {
               </div>
               
               <button 
-                onClick={() => navigate('/dashboard', { 
+                onClick={() => navigate('/dashboard-first-time', { 
                   state: { 
-                    assignedLevel,
-                    isFirstTime: true 
+                    assignedLevel
                   }
                 })}
                 style={{
