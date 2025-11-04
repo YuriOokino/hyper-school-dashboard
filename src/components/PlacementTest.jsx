@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 // Comprehensive placement test data - would come from API in production
 const COMPREHENSIVE_TEST = {
@@ -361,6 +362,8 @@ const COMPREHENSIVE_TEST = {
 };
 
 export default function PlacementTest() {
+  const navigate = useNavigate();
+  
   // Test state
   const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -790,27 +793,29 @@ export default function PlacementTest() {
                 </p>
               </div>
               
-              <a 
-                href="/"
+              <button 
+                onClick={() => navigate('/dashboard', { 
+                  state: { 
+                    assignedLevel,
+                    isFirstTime: true 
+                  }
+                })}
                 style={{
-                  display: 'block',
                   width: '100%',
                   padding: '16px',
                   marginTop: '30px',
                   backgroundColor: '#121214',
                   color: 'white',
-                  textDecoration: 'none',
+                  border: 'none',
                   fontWeight: 'bold',
                   fontSize: '18px',
                   cursor: 'pointer',
-                  transition: 'opacity 0.2s',
+                  textTransform: 'uppercase',
                   textAlign: 'center'
                 }}
-                onMouseEnter={(e) => e.target.style.opacity = '0.9'}
-                onMouseLeave={(e) => e.target.style.opacity = '1'}
               >
-                Go to Your Dashboard
-              </a>
+                Get Started
+              </button>
             </div>
           </div>
           <style>{`
