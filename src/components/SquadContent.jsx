@@ -556,13 +556,13 @@ export default function SquadContent({ selectedChatFromSidebar, setSelectedChatF
         {/* Message Input */}
         <div className="bg-white border-t border-gray-200 p-3 flex-shrink-0">
           <ChatInput
-            value={newMessage}
+              value={newMessage}
             onChange={setNewMessage}
             onSend={(message) => {
               console.log('Sending message:', message);
               setNewMessage('');
             }}
-            placeholder="Write your message..."
+              placeholder="Write your message..."
           />
         </div>
       </div>

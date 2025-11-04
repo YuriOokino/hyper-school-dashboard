@@ -367,11 +367,13 @@ export default function PlacementTest() {
   const [answers, setAnswers] = useState({});
   const [progressedQuestions, setProgressedQuestions] = useState(new Set());
   const [flaggedQuestions, setFlaggedQuestions] = useState(new Set());
+  const [completedSections, setCompletedSections] = useState(new Set());
   const [timeRemaining, setTimeRemaining] = useState(COMPREHENSIVE_TEST.totalTime);
   const [isTestActive, setIsTestActive] = useState(true);
   const [showReviewScreen, setShowReviewScreen] = useState(false);
   const [showExitModal, setShowExitModal] = useState(false);
   const [showSubmitModal, setShowSubmitModal] = useState(false);
+  const [showFinishSectionModal, setShowFinishSectionModal] = useState(false);
   const [showSectionTransition, setShowSectionTransition] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -458,22 +460,87 @@ export default function PlacementTest() {
   };
 
   // Navigation handlers
+  const handleSkip = () => {
+    const currentQuestionId = currentSection.questions[currentQuestionIndex].id;
+    
+    // Remove answer if one was selected
+    setAnswers(prev => {
+      const newAnswers = { ...prev };
+      delete newAnswers[currentQuestionId];
+      return newAnswers;
+    });
+    
+    // Mark current question as progressed and skipped
+    setProgressedQuestions(prev => new Set([...prev, currentQuestionId]));
+    setFlaggedQuestions(prev => new Set([...prev, currentQuestionId]));
+    
+    // Move to next question or handle section end
+    if (currentQuestionIndex < currentSection.questions.length - 1) {
+      setCurrentQuestionIndex(prev => prev + 1);
+    } else {
+      // On last question - find first unanswered question
+      const firstUnansweredIndex = currentSection.questions.findIndex(q => answers[q.id] === undefined);
+      if (firstUnansweredIndex !== -1) {
+        setCurrentQuestionIndex(firstUnansweredIndex);
+      }
+    }
+  };
+
   const handleNext = () => {
     const currentQuestionId = currentSection.questions[currentQuestionIndex].id;
     
     // Mark current question as progressed
     setProgressedQuestions(prev => new Set([...prev, currentQuestionId]));
     
-    // Mark current question as skipped if not answered
-    if (answers[currentQuestionId] === undefined) {
-      setFlaggedQuestions(prev => new Set([...prev, currentQuestionId]));
+    // Remove from skipped questions if it was answered
+    if (answers[currentQuestionId] !== undefined) {
+      setFlaggedQuestions(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(currentQuestionId);
+        return newSet;
+      });
     }
     
-    if (currentQuestionIndex < currentSection.questions.length - 1) {
-      setCurrentQuestionIndex(prev => prev + 1);
-    } else if (currentSectionIndex < totalSections - 1) {
-      // End of section, show transition
-      setShowSectionTransition(true);
+    // Check if all questions in section are answered
+    const allSectionQuestionsAnswered = currentSection.questions.every(q => answers[q.id] !== undefined);
+    
+    if (allSectionQuestionsAnswered) {
+      // All answered - show finish modal regardless of which question we're on
+      if (currentSectionIndex < totalSections - 1) {
+        setShowFinishSectionModal(true);
+      } else {
+        // Last section - show submit test modal
+        handleSubmitTest();
+      }
+    } else {
+      // Find the closest skipped or unanswered question
+      // Search forward from current position + 1
+      let nextQuestionIndex = -1;
+      
+      // First, search from current position forward
+      for (let i = currentQuestionIndex + 1; i < currentSection.questions.length; i++) {
+        const q = currentSection.questions[i];
+        if (answers[q.id] === undefined) {
+          nextQuestionIndex = i;
+          break;
+        }
+      }
+      
+      // If not found forward, wrap around and search from beginning
+      if (nextQuestionIndex === -1) {
+        for (let i = 0; i < currentQuestionIndex; i++) {
+          const q = currentSection.questions[i];
+          if (answers[q.id] === undefined) {
+            nextQuestionIndex = i;
+            break;
+          }
+        }
+      }
+      
+      // Navigate to the found question
+      if (nextQuestionIndex !== -1) {
+        setCurrentQuestionIndex(nextQuestionIndex);
+      }
     }
   };
 
@@ -488,7 +555,15 @@ export default function PlacementTest() {
     }
   };
 
+  const confirmFinishSection = () => {
+    setShowFinishSectionModal(false);
+    // Show section transition
+    setShowSectionTransition(true);
+  };
+
   const handleNextSection = () => {
+    // Mark current section as completed
+    setCompletedSections(prev => new Set([...prev, currentSectionIndex]));
     setShowSectionTransition(false);
     const newSectionIndex = currentSectionIndex + 1;
     setCurrentSectionIndex(newSectionIndex);
@@ -761,6 +836,7 @@ export default function PlacementTest() {
               const isCompleted = sectionAnswered === section.questions.length;
               const isNotStarted = sectionAnswered === 0;
               const isInProgress = sectionAnswered > 0 && !isCompleted;
+              const isSectionLocked = completedSections.has(sectionIdx);
               
               // Determine status indicator
               let statusColor;
@@ -775,45 +851,45 @@ export default function PlacementTest() {
               }
               
               return (
-                <div 
-                  key={section.id} 
-                  style={{ 
+                <div
+                  key={section.id}
+                  style={{
                     marginBottom: '16px',
-                    backgroundColor: '#f9fafb',
+                    backgroundColor: isSectionLocked ? '#f3f4f6' : '#f9fafb',
                     padding: '12px',
                     borderRadius: '6px',
-                    border: '1px solid #e5e7eb'
+                    border: '1px solid #e5e7eb',
+                    opacity: isSectionLocked ? 0.6 : 1
                   }}
                 >
                   <div style={{ 
                     fontSize: '15px', 
                     fontWeight: isSectionVisible ? '600' : '500',
                     color: '#1f2937',
-                    marginBottom: '12px',
+                    marginBottom: isSectionVisible ? '12px' : '0',
                     display: 'flex',
                     gap: '10px',
                     alignItems: 'center'
                   }}>
-                    <div style={{ 
-                      width: '8px', 
-                      height: '8px', 
-                      borderRadius: '50%', 
-                      backgroundColor: statusColor,
-                      flexShrink: 0
-                    }}></div>
                     <div style={{ flex: 1 }}>
-                      <div style={{ marginBottom: '2px' }}>{section.name}</div>
+                      <div style={{ marginBottom: '2px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        {section.name}
+                        {isSectionLocked && <span style={{ fontSize: '13px' }}>🔒</span>}
+                      </div>
                       <div style={{ fontSize: '13px', fontWeight: 'normal', color: '#6b7280' }}>
                         {sectionAnswered}/{section.questions.length} answered
                       </div>
                     </div>
                   </div>
                   
+                  {isSectionVisible && (
                   <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '8px' }}>
                     {section.questions.map((q, qIdx) => {
                       const isAnswered = progressedQuestions.has(q.id) && answers[q.id] !== undefined;
                       const isCurrent = sectionIdx === currentSectionIndex && qIdx === currentQuestionIndex;
                       const isSkipped = progressedQuestions.has(q.id) && answers[q.id] === undefined;
+                      const isSectionCompleted = completedSections.has(sectionIdx);
+                      const isClickable = !isSectionCompleted && (isSkipped || isAnswered); // Can only click if section not completed
                       
                       let bgColor, textColor, borderStyle;
                       if (isCurrent) {
@@ -837,40 +913,43 @@ export default function PlacementTest() {
                       return (
                         <button
                           key={q.id}
-                          onClick={() => handleGoToQuestion(sectionIdx, qIdx)}
+                          onClick={isClickable ? () => handleGoToQuestion(sectionIdx, qIdx) : undefined}
+                          disabled={!isClickable}
                           style={{
                             width: '44px',
                             height: '44px',
                             borderRadius: '4px',
                             backgroundColor: bgColor,
-                            color: textColor,
+                    color: textColor,
                             border: borderStyle,
-                            cursor: 'pointer',
+                            cursor: isClickable ? 'pointer' : 'default',
                             fontSize: '14px',
                             fontWeight: isCurrent ? 'bold' : 'normal',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center'
-                          }}
-                          title={isCurrent ? 'Current' : isAnswered ? 'Answered' : isSkipped ? 'Skipped' : 'Not answered'}
+                    display: 'flex',
+                    alignItems: 'center',
+                            justifyContent: 'center',
+                            opacity: isClickable ? 1 : 0.7
+                  }}
+                          title={isSectionCompleted ? 'Section completed - locked' : isCurrent ? 'Current' : isAnswered ? 'Answered - Click to review' : isSkipped ? 'Skipped - Click to answer' : 'Not answered'}
                         >
                           {qIdx + 1}
                         </button>
-                      );
-                    })}
-                  </div>
-                </div>
               );
             })}
           </div>
+          )}
+        </div>
+              );
+            })}
+      </div>
 
           {/* Main Question Area */}
           <div style={{ backgroundColor: 'white', padding: '24px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)', borderRadius: '4px', position: 'sticky', top: '100px', height: 'fit-content' }}>
             {/* Section Progress */}
             <div style={{ marginBottom: '16px', paddingBottom: '12px', borderBottom: '1px solid #e5e7eb' }}>
-              <div style={{ marginBottom: '6px' }}>
-                <span style={{ fontSize: '13px', color: '#666' }}>
-                  Question {currentQuestionIndex + 1} of {currentSection.questions.length}
+              <div style={{ marginBottom: '8px' }}>
+                <span style={{ fontSize: '20px', color: '#000', fontWeight: '600' }}>
+                  {sectionAnsweredCount} of {currentSection.questions.length} answered
                 </span>
               </div>
               <div style={{ width: '100%', height: '6px', backgroundColor: '#e5e7eb', overflow: 'hidden' }}>
@@ -935,107 +1014,42 @@ export default function PlacementTest() {
           </div>
 
           {/* Navigation Buttons */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '20px', borderTop: '1px solid #e5e7eb' }}>
-            <button
-              onClick={handlePrevious}
-              disabled={currentQuestionIndex === 0 && currentSectionIndex === 0}
-              style={{
-                padding: '14px 40px',
-                border: '2px solid black',
-                backgroundColor: 'white',
-                cursor: (currentQuestionIndex === 0 && currentSectionIndex === 0) ? 'not-allowed' : 'pointer',
-                opacity: (currentQuestionIndex === 0 && currentSectionIndex === 0) ? 0.5 : 1,
-                fontSize: '14px',
-                minWidth: '180px'
-              }}
-            >
-              ← Previous
-            </button>
-
+          <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', paddingTop: '20px', borderTop: '1px solid #e5e7eb' }}>
             <div style={{ display: 'flex', gap: '10px' }}>
-              {/* Show Review button only on last question of a section */}
-              {currentQuestionIndex === currentSection.questions.length - 1 && (
-                <button
-                  onClick={handleReviewAnswers}
-                  style={{
-                    padding: '14px 40px',
-                    border: '2px solid #3b82f6',
-                    backgroundColor: 'white',
-                    color: '#3b82f6',
-                    cursor: 'pointer',
-                    fontSize: '14px',
-                    minWidth: '200px',
-                  }}
-                >
-                  Review Section
-                </button>
-              )}
+              {/* Skip Button */}
+              <button
+                onClick={handleSkip}
+                style={{
+                  padding: '14px 40px',
+                  backgroundColor: 'transparent',
+                  color: 'black',
+                  border: '2px solid black',
+                  cursor: 'pointer',
+                  fontSize: '14px',
+                  minWidth: '120px',
+                }}
+              >
+                Skip
+              </button>
 
-              {(() => {
-                const isAnswered = answers[currentQuestion.id] !== undefined;
-                const isLastQuestionInSection = currentQuestionIndex === currentSection.questions.length - 1;
-                const isLastSection = currentSectionIndex === totalSections - 1;
-                
-                let buttonText, buttonAction, buttonStyles;
-                
-                if (!isAnswered) {
-                  buttonText = 'Skip';
-                  buttonAction = handleNext;
-                  buttonStyles = {
-                    padding: '14px 40px',
-                    backgroundColor: 'transparent',
-                    color: 'black',
-                    border: '2px solid black',
-                    cursor: 'pointer',
-                    fontSize: '14px',
-                    minWidth: '200px',
-                  };
-                } else if (isLastQuestionInSection && isLastSection) {
-                  buttonText = 'Submit Test';
-                  buttonAction = handleSubmitTest;
-                  buttonStyles = {
-                    padding: '14px 40px',
-                    backgroundColor: '#10b981',
-                    color: 'white',
-                    border: 'none',
-                    cursor: 'pointer',
-                    fontSize: '14px',
-                    minWidth: '200px',
-                  };
-                } else if (isLastQuestionInSection) {
-                  buttonText = `Finish ${currentSection.name} →`;
-                  buttonAction = handleNext;
-                  buttonStyles = {
-                    padding: '14px 40px',
-                    backgroundColor: '#3b82f6',
-                    color: 'white',
-                    border: 'none',
-                    cursor: 'pointer',
-                    fontSize: '14px',
-                    minWidth: '200px',
-                  };
-                } else {
-                  buttonText = 'Next →';
-                  buttonAction = handleNext;
-                  buttonStyles = {
-                    padding: '14px 40px',
-                    backgroundColor: 'black',
-                    color: 'white',
-                    border: 'none',
-                    cursor: 'pointer',
-                    fontSize: '14px',
-                    minWidth: '200px',
-                  };
-                }
-                
-                return (
-                  <button onClick={buttonAction} style={buttonStyles}>
-                    {buttonText}
-                  </button>
-                );
-              })()}
+              {/* Next Button */}
+              <button
+                onClick={handleNext}
+                disabled={answers[currentQuestion.id] === undefined}
+                style={{
+                  padding: '14px 40px',
+                  backgroundColor: answers[currentQuestion.id] !== undefined ? 'black' : '#e5e7eb',
+                  color: answers[currentQuestion.id] !== undefined ? 'white' : '#9ca3af',
+                  border: 'none',
+                  cursor: answers[currentQuestion.id] !== undefined ? 'pointer' : 'not-allowed',
+                  fontSize: '14px',
+                  minWidth: '120px',
+                }}
+              >
+                Next
+              </button>
+              </div>
             </div>
-          </div>
           </div>
         </div>
       </div>
@@ -1145,6 +1159,56 @@ export default function PlacementTest() {
                 }}
               >
                 Submit Now
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Finish Section Confirmation Modal */}
+      {showFinishSectionModal && (
+        <div style={{
+          position: 'fixed',
+          inset: 0,
+          backgroundColor: 'rgba(0,0,0,0.5)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 1000
+        }}>
+          <div style={{ backgroundColor: 'white', padding: '40px', maxWidth: '500px', margin: '20px' }}>
+            <h3 style={{ marginTop: 0, marginBottom: '15px' }}>Ready to Submit?</h3>
+            <p style={{ marginBottom: '30px' }}>
+              Once you finish this section, you won't be able to go back and change your answers. 
+              Make sure you've reviewed all questions before continuing.
+            </p>
+            <div style={{ display: 'flex', gap: '15px' }}>
+              <button
+                onClick={() => setShowFinishSectionModal(false)}
+                style={{
+                  flex: 1,
+                  padding: '12px',
+                  border: '2px solid black',
+                  backgroundColor: 'white',
+                  cursor: 'pointer',
+                  fontWeight: 'bold'
+                }}
+              >
+                Review Answers
+              </button>
+              <button
+                onClick={confirmFinishSection}
+                style={{
+                  flex: 1,
+                  padding: '12px',
+                  backgroundColor: '#3b82f6',
+                  color: 'white',
+                  border: 'none',
+                  cursor: 'pointer',
+                  fontWeight: 'bold'
+                }}
+              >
+                Finish Section
               </button>
             </div>
           </div>
