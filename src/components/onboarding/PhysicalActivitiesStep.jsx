@@ -1,12 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 const ACTIVITIES = [
   'Walking',
   'Running',
   'Swimming',
-  'Cycling',
-  'Rope Jumping',
-  'Hiking'
+  'Cycling'
 ];
 
 export default function PhysicalActivitiesStep({ 
@@ -14,128 +12,136 @@ export default function PhysicalActivitiesStep({
   dislikedActivities = [], 
   updateActivities, 
   nextStep, 
-  previousStep 
+  previousStep,
+  profileData,
+  updateProfileData
 }) {
-  const toggleLikedActivity = (activity) => {
+  const [otherActivities, setOtherActivities] = useState(profileData?.otherActivities || '');
+  const handlePreference = (activity, preference) => {
     let newLiked = [...likedActivities];
     let newDisliked = [...dislikedActivities];
-    
-    if (newLiked.includes(activity)) {
-      // Remove from liked
-      newLiked = newLiked.filter(a => a !== activity);
-    } else {
-      // Add to liked and remove from disliked if present
+
+    // Remove from both lists first
+    newLiked = newLiked.filter(a => a !== activity);
+    newDisliked = newDisliked.filter(a => a !== activity);
+
+    // Add to appropriate list based on preference
+    if (preference === 'like') {
       newLiked.push(activity);
-      newDisliked = newDisliked.filter(a => a !== activity);
-    }
-    
-    updateActivities({ likedActivities: newLiked, dislikedActivities: newDisliked });
-  };
-
-  const toggleDislikedActivity = (activity) => {
-    let newLiked = [...likedActivities];
-    let newDisliked = [...dislikedActivities];
-    
-    if (newDisliked.includes(activity)) {
-      // Remove from disliked
-      newDisliked = newDisliked.filter(a => a !== activity);
-    } else {
-      // Add to disliked and remove from liked if present
+    } else if (preference === 'dislike') {
       newDisliked.push(activity);
-      newLiked = newLiked.filter(a => a !== activity);
     }
-    
+    // If 'no-preference', just remove from both lists (already done)
+
     updateActivities({ likedActivities: newLiked, dislikedActivities: newDisliked });
   };
 
-  // Filter out activities selected in the other list
-  const availableForLiked = ACTIVITIES.filter(a => !dislikedActivities.includes(a));
-  const availableForDisliked = ACTIVITIES.filter(a => !likedActivities.includes(a));
+  const getPreference = (activity) => {
+    if (likedActivities.includes(activity)) return 'like';
+    if (dislikedActivities.includes(activity)) return 'dislike';
+    return 'no-preference';
+  };
 
   return (
-    <div>
+    <div className="w-full">
       {/* Header */}
-      <div className="text-center mb-8">
-        <h3 className="text-brand-black mb-2">WHAT GETS YOU MOVING?</h3>
-        <p className="font-outfit text-base text-gray-900 max-w-2xl mx-auto">
-          Physical activity is part of your daily goals, and everyone moves differently! Pick activities you enjoy, from high-intensity sports to gentle options like walking or stretching. Skip the rest. We'll match you with challenges that work for YOU.
+      <div className="mb-12">
+        <h2 className="text-gray-900 mb-6">WHAT SPORTS AND ACTIVITIES DO YOU ENJOY?</h2>
+        <p className="font-outfit text-lg text-gray-900 leading-relaxed">
+          Physical activity is part of your daily goals, and everyone can find movement they enjoy! Whether it's high-intensity sports or low-impact activities, we have options for all abilities. Pick what appeals to you and skip the rest: no judgement!
         </p>
       </div>
 
-      {/* Content Container */}
-      <div className="bg-white p-10">
-        {/* I like section */}
-        <div className="mb-8">
-          <h5 className="text-brand-black mb-4">I like...</h5>
-          <p className="font-outfit text-sm text-gray-600 mb-4">
-            Choose as many as you want
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-            {availableForLiked.map((activity) => (
-              <label 
-                key={activity} 
-                className="flex items-center space-x-3 cursor-pointer p-2 hover:bg-gray-50 transition-colors"
-              >
-                <input
-                  type="checkbox"
-                  checked={likedActivities.includes(activity)}
-                  onChange={() => toggleLikedActivity(activity)}
-                  className="w-5 h-5 text-brand-lime border-2 border-gray-300 focus:ring-brand-lime"
-                />
-                <span className="font-outfit text-base">{activity}</span>
-              </label>
-            ))}
-          </div>
-        </div>
+      {/* Activities List */}
+      <div className="space-y-8">
+        {ACTIVITIES.map((activity) => {
+          const preference = getPreference(activity);
+          
+          return (
+            <div key={activity}>
+              <h5 className="text-gray-900 mb-4">{activity}</h5>
+              <div className="flex gap-3">
+                {/* Like Button */}
+                <button
+                  onClick={() => handlePreference(activity, 'like')}
+                  className={`px-6 py-3 border-2 border-gray-900 font-outfit text-base transition-colors flex items-center gap-2 ${
+                    preference === 'like'
+                      ? 'bg-gray-900 text-white'
+                      : 'bg-white text-gray-900'
+                  }`}
+                >
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/>
+                  </svg>
+                  Like
+                </button>
 
-        {/* I don't like section */}
-        <div className="mb-6">
-          <h5 className="text-brand-black mb-4">I don't like...</h5>
-          <p className="font-outfit text-sm text-gray-600 mb-4">
-            Select the activities you don't want to or cannot carry on
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-            {availableForDisliked.map((activity) => (
-              <label 
-                key={activity} 
-                className="flex items-center space-x-3 cursor-pointer p-2 hover:bg-gray-50 transition-colors"
-              >
-                <input
-                  type="checkbox"
-                  checked={dislikedActivities.includes(activity)}
-                  onChange={() => toggleDislikedActivity(activity)}
-                  className="w-5 h-5 text-gray-500 border-2 border-gray-300 focus:ring-gray-500"
-                />
-                <span className="font-outfit text-base">{activity}</span>
-              </label>
-            ))}
-          </div>
-        </div>
+                {/* Dislike Button */}
+                <button
+                  onClick={() => handlePreference(activity, 'dislike')}
+                  className={`px-6 py-3 border-2 border-gray-900 font-outfit text-base transition-colors flex items-center gap-2 ${
+                    preference === 'dislike'
+                      ? 'bg-gray-900 text-white'
+                      : 'bg-white text-gray-900'
+                  }`}
+                >
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"/>
+                  </svg>
+                  Dislike
+                </button>
 
-        {/* Info callout */}
-        <div className="bg-brand-blue-light p-4 flex items-start space-x-3 mb-6">
-          <span className="text-xl flex-shrink-0">💡</span>
-          <p className="font-outfit text-sm text-gray-900">
-            <strong>How are these tracked?</strong><br/>
-            Connect your fitness tracker or device to automatically track your progress!
-          </p>
-        </div>
+                {/* No Preference Button */}
+                <button
+                  onClick={() => handlePreference(activity, 'no-preference')}
+                  className={`px-6 py-3 border-2 border-gray-900 font-outfit text-base transition-colors ${
+                    preference === 'no-preference'
+                      ? 'bg-gray-900 text-white'
+                      : 'bg-white text-gray-900'
+                  }`}
+                >
+                  No preference
+                </button>
+              </div>
+            </div>
+          );
+        })}
+      </div>
 
-        {/* Buttons */}
+      {/* Other Activities Section */}
+      <div className="mt-12">
+        <p className="font-outfit text-base text-gray-900 leading-relaxed mb-4">
+          We're all different, and that's great! If none of the above fits your lifestyle, let us know what you enjoy and feel comfortable with.
+        </p>
+        <textarea
+          value={otherActivities}
+          onChange={(e) => {
+            setOtherActivities(e.target.value);
+            if (updateProfileData) {
+              updateProfileData({ otherActivities: e.target.value });
+            }
+          }}
+          placeholder="Tell us about other activities you enjoy..."
+          rows={4}
+          className="w-full border-2 border-gray-900 px-4 py-3 font-outfit text-base text-gray-900 focus:outline-none resize-none"
+        />
+      </div>
+
+      {/* Action Buttons */}
+      <div className="flex justify-end space-x-4 mt-16">
         <button
-          onClick={() => previousStep()}
-          className="font-outfit text-sm text-gray-600 hover:text-gray-900 transition-colors mb-3"
+          onClick={previousStep}
+          className="px-8 py-3 border-2 border-gray-900 bg-transparent font-outfit text-base uppercase font-medium text-gray-900"
         >
-          ← Back
+          BACK
         </button>
         <button
-          onClick={() => nextStep()}
-          className="w-full py-3 px-6 font-oswald uppercase text-base transition-opacity bg-brand-black text-white hover:opacity-90 cursor-pointer"
+          onClick={nextStep}
+          className="px-8 py-3 bg-gray-900 font-outfit text-base uppercase font-medium text-white"
         >
-          Next
+          NEXT
         </button>
       </div>
     </div>
   );
 }
-

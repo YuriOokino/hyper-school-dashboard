@@ -372,12 +372,13 @@ export default function PlacementTest() {
   const [flaggedQuestions, setFlaggedQuestions] = useState(new Set());
   const [completedSections, setCompletedSections] = useState(new Set());
   const [timeRemaining, setTimeRemaining] = useState(COMPREHENSIVE_TEST.totalTime);
-  const [isTestActive, setIsTestActive] = useState(true);
+  const [isTestActive, setIsTestActive] = useState(false); // Start as false
   const [showReviewScreen, setShowReviewScreen] = useState(false);
   const [showExitModal, setShowExitModal] = useState(false);
   const [showSubmitModal, setShowSubmitModal] = useState(false);
   const [showFinishSectionModal, setShowFinishSectionModal] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [showStartModal, setShowStartModal] = useState(true); // Show instruction modal on load
 
   // Timer countdown
   useEffect(() => {
@@ -600,6 +601,11 @@ export default function PlacementTest() {
     // In production, save progress to API
     console.log('Test exited, progress saved');
     setShowExitModal(false);
+  };
+
+  const handleStartTest = () => {
+    setShowStartModal(false);
+    setIsTestActive(true);
   };
 
   // Test completion screen
@@ -917,6 +923,111 @@ export default function PlacementTest() {
               You can click any question number to jump directly to it.
             </p>
           </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Start instruction modal
+  if (showStartModal) {
+    return (
+      <div style={{
+        position: 'fixed',
+        inset: 0,
+        backgroundColor: 'rgba(0, 0, 0, 0.6)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        zIndex: 1000
+      }}>
+        <div style={{ 
+          backgroundColor: 'white', 
+          padding: '40px', 
+          maxWidth: '600px', 
+          width: '90%',
+          margin: '20px'
+        }}>
+          <h2 style={{ 
+            fontSize: '36px',
+            fontFamily: 'Oswald, sans-serif',
+            textTransform: 'uppercase',
+            fontWeight: 700,
+            color: '#121214',
+            marginTop: 0,
+            marginBottom: '20px'
+          }}>
+            PLACEMENT TEST INSTRUCTIONS
+          </h2>
+          
+          <div style={{ marginBottom: '30px' }}>
+            <div style={{ backgroundColor: '#f3f4f6', padding: '20px', marginBottom: '20px' }}>
+              <div style={{ display: 'flex', alignItems: 'start', gap: '12px' }}>
+                <div style={{
+                  width: '24px',
+                  height: '24px',
+                  borderRadius: '50%',
+                  border: '2px solid #121214',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexShrink: 0,
+                  marginTop: '2px'
+                }}>
+                  <span style={{ fontSize: '14px', fontWeight: 'bold' }}>i</span>
+                </div>
+                <div>
+                  <h6 style={{
+                    fontSize: '22px',
+                    fontFamily: 'Oswald, sans-serif',
+                    textTransform: 'uppercase',
+                    fontWeight: 700,
+                    color: '#121214',
+                    marginTop: 0,
+                    marginBottom: '12px'
+                  }}>
+                    Before you begin
+                  </h6>
+                  <p style={{ 
+                    fontFamily: 'Outfit, sans-serif',
+                    fontSize: '16px',
+                    lineHeight: '1.6',
+                    color: '#121214',
+                    margin: '0 0 12px 0'
+                  }}>
+                    This test will take about 30 minutes to complete. Once you start, you cannot pause until you have answered all questions.
+                  </p>
+                  <p style={{ 
+                    fontFamily: 'Outfit, sans-serif',
+                    fontSize: '16px',
+                    lineHeight: '1.6',
+                    color: '#121214',
+                    margin: 0
+                  }}>
+                    You can skip it for now, but <strong>you must submit the test before you can start completing the challenges and earn rewards.</strong>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <button
+            onClick={handleStartTest}
+            style={{
+              width: '100%',
+              padding: '16px',
+              backgroundColor: '#121214',
+              color: 'white',
+              border: 'none',
+              fontFamily: 'Outfit, sans-serif',
+              fontWeight: 500,
+              fontSize: '16px',
+              textTransform: 'uppercase',
+              cursor: 'pointer',
+              boxShadow: '0 4px 0 0 #FE55A4'
+            }}
+          >
+            START TEST
+          </button>
         </div>
       </div>
     );

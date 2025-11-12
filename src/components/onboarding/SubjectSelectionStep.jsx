@@ -1,153 +1,201 @@
 import { useState } from 'react';
-import { validateSubjects } from '../../utils/onboardingValidation';
-import SubjectCard from './SubjectCard';
 
-const SUBJECTS = [
-  // Knowledge Pillar
-  { name: 'English', pillar: 'knowledge' },
-  { name: 'Math', pillar: 'knowledge' },
-  { name: 'History', pillar: 'knowledge' },
-  { name: 'Biology', pillar: 'knowledge' },
-  { name: 'Algebra', pillar: 'knowledge' },
-  { name: 'Environmental Science', pillar: 'knowledge' },
-  { name: 'Philosophy', pillar: 'knowledge' },
-  { name: 'Creative Writing', pillar: 'knowledge' },
-  { name: 'Science', pillar: 'knowledge' },
-  { name: 'Geometry', pillar: 'knowledge' },
-  { name: 'Computer Science', pillar: 'knowledge' },
-  { name: 'Physics', pillar: 'knowledge' },
-  // Life Skills Pillar
-  { name: 'Cooking', pillar: 'life' },
-  { name: 'Public Speaking', pillar: 'life' },
-  { name: 'Job Interview Practice', pillar: 'life' },
-  { name: 'Sewing', pillar: 'life' },
-  { name: 'Gardening', pillar: 'life' },
-  { name: 'Coding', pillar: 'life' },
-  { name: 'Budgeting', pillar: 'life' },
-  { name: 'Project Management', pillar: 'life' },
-  { name: 'Engineering', pillar: 'life' },
-  { name: 'Video Editing', pillar: 'life' }
-];
+const TOPICS = {
+  arts: [
+    'Creative Writing',
+    'Digital Art and Design',
+    'Photography',
+    'Drawing & Painting',
+    'Music',
+    'Journalism'
+  ],
+  technology: [
+    'Introduction to Coding',
+    'Game Design',
+    'Internet Safety',
+    '3D Design & Printing'
+  ],
+  languagesCultures: [
+    'Spanish',
+    'French',
+    'Mandarin Chinese',
+    'American Sign Language (ASL)',
+    'Global Cultures & Geography'
+  ],
+  personalGrowth: [
+    'Study Skills & Organization',
+    'Leadership',
+    'Community Service',
+    'Debate & Public Speaking',
+    'Entrepreneurship',
+    'Budgeting & Finance'
+  ]
+};
 
-export default function SubjectSelectionStep({ selectedSubjects, toggleSubject, nextStep, previousStep }) {
-  const [error, setError] = useState('');
-  const [showInfoBox, setShowInfoBox] = useState(false);
+export default function SubjectSelectionStep({ selectedSubjects = [], toggleSubject, nextStep, previousStep }) {
+  const minTopics = 7;
+  const maxTopics = 13;
+  const remaining = Math.max(0, minTopics - selectedSubjects.length);
+  const canContinue = selectedSubjects.length >= minTopics;
+  const atMaxCapacity = selectedSubjects.length >= maxTopics;
 
-  const handleContinue = () => {
-    // Skip validation for preview mode
-    nextStep();
-    
-    // Uncomment below for production validation
-    // const validation = validateSubjects(selectedSubjects);
-    // if (validation.isValid) {
-    //   nextStep();
-    // } else {
-    //   setError(validation.error);
-    // }
+  const handleToggle = (topic) => {
+    // If topic is already selected, allow deselection
+    if (selectedSubjects.includes(topic)) {
+      toggleSubject(topic);
+    } else {
+      // Only allow selection if under max capacity
+      if (!atMaxCapacity) {
+        toggleSubject(topic);
+      }
+    }
   };
 
-  const handleToggle = (subjectName) => {
-    toggleSubject(subjectName);
-    if (error) setError('');
-  };
-
-  const knowledgeSubjects = SUBJECTS.filter(s => s.pillar === 'knowledge');
-  const lifeSkillsSubjects = SUBJECTS.filter(s => s.pillar === 'life');
+  const isSelected = (topic) => selectedSubjects.includes(topic);
+  const isDisabled = (topic) => !isSelected(topic) && atMaxCapacity;
 
   return (
-    <div>
+    <div className="w-full">
       {/* Header */}
-      <div className="text-center mb-8">
-        <h3 className="text-brand-black mb-2">WHAT DO YOU WANT TO MASTER THIS YEAR?</h3>
-        <p className="font-outfit text-base text-gray-900">
-          Pick at least 3 subjects. You can update these at the start of each school year.
+      <div className="mb-12">
+        <h2 className="text-gray-900 mb-6">WHAT DO YOU WANT TO MASTER THIS YEAR?</h2>
+        <p className="font-outfit text-lg text-gray-900 leading-relaxed mb-6">
+          Personalize your curriculum for the coming year! Choose the topics you would like to learn. You can change them at the start of the next year.
         </p>
+        <div className="bg-gray-100 px-4 py-3 w-full">
+          <p className="font-outfit text-base text-gray-900">
+            {selectedSubjects.length === 0 
+              ? 'Pick at least 7 topics.'
+              : remaining > 0
+                ? `Pick ${remaining} more ${remaining === 1 ? 'topic' : 'topics'}.`
+                : atMaxCapacity
+                  ? 'You have selected all available topics.'
+                  : `You can choose up to ${maxTopics} topics.`
+            }
+          </p>
+        </div>
       </div>
 
-      {/* Error Message */}
-      {error && (
-        <div className="bg-red-100 border-2 border-red-500 px-4 py-3 mb-6 text-center">
-          <p className="font-outfit text-sm text-red-700">{error}</p>
-        </div>
-      )}
-
-      {/* Content Container */}
-      <div className="bg-white p-10">
-        {/* Knowledge Section */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between mb-4">
-            <h5 className="text-brand-rose">KNOWLEDGE</h5>
-            <span className="font-outfit text-sm text-gray-600">
-              {selectedSubjects.filter(s => knowledgeSubjects.some(ks => ks.name === s)).length} of {knowledgeSubjects.length} selected
-            </span>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-            {knowledgeSubjects.map((subject) => (
-              <label key={subject.name} className="flex items-center space-x-3 cursor-pointer p-2 hover:bg-gray-50 transition-colors">
-                <input
-                  type="checkbox"
-                  checked={selectedSubjects.includes(subject.name)}
-                  onChange={() => handleToggle(subject.name)}
-                  className="w-5 h-5 text-brand-rose border-2 border-gray-300 focus:ring-brand-rose"
-                />
-                <span className="font-outfit text-base">{subject.name}</span>
-              </label>
+      {/* Topics Grid */}
+      <div className="space-y-12">
+        {/* Arts */}
+        <div>
+          <h5 className="text-gray-900 mb-4">Arts</h5>
+          <div className="flex flex-wrap gap-3">
+            {TOPICS.arts.map((topic) => (
+              <button
+                key={topic}
+                onClick={() => handleToggle(topic)}
+                disabled={isDisabled(topic)}
+                className={`px-6 py-3 border-2 border-gray-900 font-outfit text-base transition-colors ${
+                  isSelected(topic)
+                    ? 'bg-gray-900 text-white'
+                    : isDisabled(topic)
+                    ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                    : 'bg-white text-gray-900'
+                }`}
+              >
+                {topic}
+              </button>
             ))}
           </div>
         </div>
 
-        {/* Life Skills Section */}
-        <div className="mb-6">
-          <div className="flex items-center justify-between mb-4">
-            <h5 className="text-brand-orange">LIFE SKILLS</h5>
-            <span className="font-outfit text-sm text-gray-600">
-              {selectedSubjects.filter(s => lifeSkillsSubjects.some(ls => ls.name === s)).length} of {lifeSkillsSubjects.length} selected
-            </span>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-            {lifeSkillsSubjects.map((subject) => (
-              <label key={subject.name} className="flex items-center space-x-3 cursor-pointer p-2 hover:bg-gray-50 transition-colors">
-                <input
-                  type="checkbox"
-                  checked={selectedSubjects.includes(subject.name)}
-                  onChange={() => handleToggle(subject.name)}
-                  className="w-5 h-5 text-brand-orange border-2 border-gray-300 focus:ring-brand-orange"
-                />
-                <span className="font-outfit text-base">{subject.name}</span>
-              </label>
+        {/* Technology */}
+        <div>
+          <h5 className="text-gray-900 mb-4">Technology</h5>
+          <div className="flex flex-wrap gap-3">
+            {TOPICS.technology.map((topic) => (
+              <button
+                key={topic}
+                onClick={() => handleToggle(topic)}
+                disabled={isDisabled(topic)}
+                className={`px-6 py-3 border-2 border-gray-900 font-outfit text-base transition-colors ${
+                  isSelected(topic)
+                    ? 'bg-gray-900 text-white'
+                    : isDisabled(topic)
+                    ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                    : 'bg-white text-gray-900'
+                }`}
+              >
+                {topic}
+              </button>
             ))}
           </div>
         </div>
 
-        {/* Info Box */}
-        <div className="bg-brand-blue-light p-4 flex items-start space-x-3 mb-6">
-          <span className="text-xl flex-shrink-0">💡</span>
-          <div>
-            <div className="font-outfit font-medium text-sm text-gray-900 mb-1">
-              What's the difference between Knowledge and Life Skills?
-            </div>
-            <p className="font-outfit text-sm text-gray-900">
-              <strong>Knowledge</strong> subjects are what you learn in class - Math, Science, English, and more. They build your academic foundation.<br/>
-              <strong>Life Skills</strong> teach you things you'll actually use every day - like managing your money, landing your dream job, and making smart decisions in the real world!
-            </p>
+        {/* Languages & Cultures */}
+        <div>
+          <h5 className="text-gray-900 mb-4">Languages & Cultures</h5>
+          <div className="flex flex-wrap gap-3">
+            {TOPICS.languagesCultures.map((topic) => (
+              <button
+                key={topic}
+                onClick={() => handleToggle(topic)}
+                disabled={isDisabled(topic)}
+                className={`px-6 py-3 border-2 border-gray-900 font-outfit text-base transition-colors ${
+                  isSelected(topic)
+                    ? 'bg-gray-900 text-white'
+                    : isDisabled(topic)
+                    ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                    : 'bg-white text-gray-900'
+                }`}
+              >
+                {topic}
+              </button>
+            ))}
           </div>
         </div>
 
-        {/* Buttons */}
+        {/* Personal Growth */}
+        <div>
+          <h5 className="text-gray-900 mb-4">Personal Growth</h5>
+          <div className="flex flex-wrap gap-3">
+            {TOPICS.personalGrowth.map((topic) => (
+              <button
+                key={topic}
+                onClick={() => handleToggle(topic)}
+                disabled={isDisabled(topic)}
+                className={`px-6 py-3 border-2 border-gray-900 font-outfit text-base transition-colors ${
+                  isSelected(topic)
+                    ? 'bg-gray-900 text-white'
+                    : isDisabled(topic)
+                    ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                    : 'bg-white text-gray-900'
+                }`}
+              >
+                {topic}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Action Buttons */}
+      <div className="flex justify-end items-center space-x-4 mt-16">
+        {remaining > 0 && (
+          <p className="font-outfit text-base text-gray-900">
+            Pick {remaining} more!
+          </p>
+        )}
         <button
-          onClick={() => previousStep()}
-          className="font-outfit text-sm text-gray-600 hover:text-gray-900 transition-colors mb-3"
+          onClick={previousStep}
+          className="px-8 py-3 border-2 border-gray-900 bg-transparent font-outfit text-base uppercase font-medium text-gray-900"
         >
-          ← Back
+          BACK
         </button>
         <button
-          onClick={handleContinue}
-          className="w-full py-3 px-6 font-oswald uppercase text-base transition-opacity bg-brand-black text-white hover:opacity-90 cursor-pointer"
+          onClick={nextStep}
+          disabled={!canContinue}
+          className={`px-8 py-3 font-outfit text-base uppercase font-medium ${
+            canContinue
+              ? 'bg-gray-900 text-white'
+              : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+          }`}
         >
-          Continue
+          NEXT
         </button>
       </div>
     </div>
   );
 }
-
