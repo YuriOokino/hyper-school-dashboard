@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import Button from '../ui/Button';
 
 export default function YearAssignmentStep({ previousStep }) {
   const navigate = useNavigate();
@@ -45,15 +46,13 @@ export default function YearAssignmentStep({ previousStep }) {
 
       {/* Buttons */}
       <div className="space-y-4">
-        <button
+        <Button
+          variant="primary"
+          size="large"
           onClick={handleStartPlacementTest}
-          className="w-full py-4 bg-gray-900 font-outfit text-base uppercase font-medium text-white relative"
-          style={{
-            boxShadow: '0 4px 0 0 #FE55A4'
-          }}
         >
           START PLACEMENT TEST
-        </button>
+        </Button>
         
         <div className="text-center">
           <button

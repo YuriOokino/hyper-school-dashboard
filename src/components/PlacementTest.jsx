@@ -677,7 +677,7 @@ export default function PlacementTest() {
         display: 'flex', 
         alignItems: 'center', 
         justifyContent: 'center',
-        backgroundColor: '#f9fafb',
+        backgroundColor: '#E8EBFB',
         padding: '40px'
       }}>
         <div style={{ textAlign: 'center', maxWidth: '1100px', width: '100%' }}>
@@ -691,6 +691,8 @@ export default function PlacementTest() {
           <h1 style={{ 
             fontSize: '42px', 
             marginBottom: '10px',
+            fontFamily: 'Outfit, sans-serif',
+            textTransform: 'uppercase',
             fontWeight: 'bold',
             color: '#121214'
           }}>
@@ -700,7 +702,8 @@ export default function PlacementTest() {
             fontSize: '18px', 
             marginBottom: '40px',
             lineHeight: '1.6',
-            color: '#4b5563'
+            fontFamily: 'Outfit, sans-serif',
+            color: '#121214'
           }}>
             Here's where your learning journey begins 🌟
           </p>
@@ -716,12 +719,13 @@ export default function PlacementTest() {
             <div style={{ 
               backgroundColor: 'white', 
               padding: '30px',
-              boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
               textAlign: 'left'
             }}>
               <h3 style={{ 
                 fontSize: '20px', 
                 marginBottom: '24px',
+                fontFamily: 'Outfit, sans-serif',
+                textTransform: 'uppercase',
                 fontWeight: '600',
                 color: '#121214',
                 textAlign: 'center'
@@ -744,13 +748,14 @@ export default function PlacementTest() {
                       marginBottom: '8px'
                     }}>
                       <span style={{ fontSize: '24px' }}>{feedback.emoji}</span>
-                      <span style={{ fontSize: '16px', fontWeight: '600', color: '#121214' }}>
+                      <span style={{ fontSize: '16px', fontFamily: 'Outfit, sans-serif', fontWeight: '600', color: '#121214' }}>
                         {section.name}
                       </span>
                     </div>
                     <p style={{ 
-                      fontSize: '15px', 
-                      color: '#4b5563',
+                      fontSize: '15px',
+                      fontFamily: 'Outfit, sans-serif',
+                      color: '#121214',
                       margin: '0 0 0 36px',
                       lineHeight: '1.5'
                     }}>
@@ -765,7 +770,6 @@ export default function PlacementTest() {
             <div style={{ 
               backgroundColor: 'white', 
               padding: '40px',
-              boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'space-between',
@@ -776,13 +780,16 @@ export default function PlacementTest() {
                 <div style={{ 
                   fontSize: '18px', 
                   marginBottom: '16px',
+                  fontFamily: 'Outfit, sans-serif',
+                  textTransform: 'uppercase',
                   fontWeight: '500',
-                  color: '#4b5563'
+                  color: '#121214'
                 }}>
                   Your Starting Level
                 </div>
                 <div style={{ 
                   fontSize: '72px', 
+                  fontFamily: 'Outfit, sans-serif',
                   fontWeight: 'bold',
                   color: '#121214',
                   marginBottom: '16px'
@@ -790,8 +797,9 @@ export default function PlacementTest() {
                   {assignedLevel}
                 </div>
                 <p style={{ 
-                  fontSize: '16px', 
-                  color: '#6b7280',
+                  fontSize: '16px',
+                  fontFamily: 'Outfit, sans-serif',
+                  color: '#121214',
                   lineHeight: '1.5',
                   margin: 0
                 }}>
@@ -812,8 +820,9 @@ export default function PlacementTest() {
                   backgroundColor: '#121214',
                   color: 'white',
                   border: 'none',
-                  fontWeight: 'bold',
-                  fontSize: '18px',
+                  fontFamily: 'Outfit, sans-serif',
+                  fontWeight: 500,
+                  fontSize: '16px',
                   cursor: 'pointer',
                   textTransform: 'uppercase',
                   textAlign: 'center'
@@ -838,21 +847,21 @@ export default function PlacementTest() {
   // Review screen
   if (showReviewScreen) {
     return (
-      <div style={{ minHeight: '100vh', backgroundColor: '#f9fafb' }}>
+      <div style={{ minHeight: '100vh', backgroundColor: '#E8EBFB' }}>
         {/* Header */}
-        <div style={{ backgroundColor: 'white', padding: '20px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)', marginBottom: '20px' }}>
+        <div style={{ backgroundColor: 'white', padding: '20px', marginBottom: '20px' }}>
           <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <h2 style={{ fontSize: '24px', margin: 0 }}>Check Answers</h2>
-            <div style={{ display: 'flex', gap: '10px' }}>
-              <button 
+            <h2 style={{ fontSize: '24px', margin: 0, fontFamily: 'Outfit, sans-serif', textTransform: 'uppercase', color: '#121214' }}>Check Answers</h2>
+            <div className="flex space-x-4">
+              <button
                 onClick={() => setShowReviewScreen(false)}
-                style={{ padding: '10px 20px', border: '2px solid black', backgroundColor: 'white', cursor: 'pointer' }}
+                className="px-8 py-3 border-2 border-gray-900 bg-transparent font-outfit text-base uppercase font-medium text-gray-900"
               >
                 Back to Test
               </button>
-              <button 
+              <button
                 onClick={handleSubmitTest}
-                style={{ padding: '10px 20px', backgroundColor: 'black', color: 'white', border: 'none', cursor: 'pointer' }}
+                className="px-8 py-3 bg-gray-900 font-outfit text-base uppercase font-medium text-white"
               >
                 Submit Test
               </button>
@@ -863,10 +872,10 @@ export default function PlacementTest() {
         {/* Review Grid */}
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
           <div style={{ backgroundColor: 'white', padding: '30px', marginBottom: '20px' }}>
-            <h3 style={{ marginBottom: '10px' }}>Progress Summary</h3>
-            <p>Answered: {answeredCount} of {totalQuestions} questions</p>
-            <p>Unanswered: {totalQuestions - answeredCount} questions</p>
-            <p>Flagged for review: {flaggedQuestions.size} questions</p>
+            <h3 style={{ marginBottom: '10px', fontFamily: 'Outfit, sans-serif', fontSize: '20px', textTransform: 'uppercase', color: '#121214' }}>Progress Summary</h3>
+            <p style={{ fontFamily: 'Outfit, sans-serif', fontSize: '16px', color: '#121214', margin: '8px 0' }}>Answered: {answeredCount} of {totalQuestions} questions</p>
+            <p style={{ fontFamily: 'Outfit, sans-serif', fontSize: '16px', color: '#121214', margin: '8px 0' }}>Unanswered: {totalQuestions - answeredCount} questions</p>
+            <p style={{ fontFamily: 'Outfit, sans-serif', fontSize: '16px', color: '#121214', margin: '8px 0' }}>Flagged for review: {flaggedQuestions.size} questions</p>
           </div>
 
           {/* Section-by-section review */}
@@ -877,8 +886,8 @@ export default function PlacementTest() {
             return (
               <div key={section.id} style={{ marginBottom: '30px' }}>
                 <div style={{ backgroundColor: 'white', padding: '20px', marginBottom: '15px' }}>
-                  <h4 style={{ margin: '0 0 10px 0', fontSize: '20px' }}>{section.name}</h4>
-                  <p style={{ margin: 0, color: '#666' }}>
+                  <h4 style={{ margin: '0 0 10px 0', fontSize: '20px', fontFamily: 'Outfit, sans-serif', textTransform: 'uppercase', color: '#121214' }}>{section.name}</h4>
+                  <p style={{ margin: 0, fontFamily: 'Outfit, sans-serif', fontSize: '16px', color: '#121214' }}>
                     {sectionAnsweredCount} of {section.questions.length} answered • {section.description}
                   </p>
                 </div>
@@ -894,12 +903,13 @@ export default function PlacementTest() {
                         onClick={() => handleGoToQuestion(sectionIdx, qIdx)}
                         style={{
                           padding: '15px',
-                          backgroundColor: isAnswered ? '#10b981' : '#e5e7eb',
-                          color: isAnswered ? 'white' : 'black',
-                          border: isFlagged ? '3px solid #f59e0b' : 'none',
+                          backgroundColor: isAnswered ? '#121214' : 'white',
+                          color: isAnswered ? 'white' : '#121214',
+                          border: isFlagged ? '3px solid #f59e0b' : '2px solid #121214',
                           cursor: 'pointer',
                           position: 'relative',
                           fontSize: '16px',
+                          fontFamily: 'Outfit, sans-serif',
                           fontWeight: 'bold'
                         }}
                       >
@@ -917,8 +927,8 @@ export default function PlacementTest() {
             );
           })}
 
-          <div style={{ marginTop: '30px', backgroundColor: '#fef3c7', padding: '15px' }}>
-            <p style={{ margin: 0 }}>
+          <div style={{ marginTop: '30px', backgroundColor: '#f3f4f6', padding: '20px' }}>
+            <p style={{ margin: 0, fontFamily: 'Outfit, sans-serif', fontSize: '16px', color: '#121214' }}>
               <strong>Tip:</strong> Review any unanswered or flagged questions before submitting. 
               You can click any question number to jump directly to it.
             </p>
@@ -1022,12 +1032,29 @@ export default function PlacementTest() {
               fontWeight: 500,
               fontSize: '16px',
               textTransform: 'uppercase',
-              cursor: 'pointer',
-              boxShadow: '0 4px 0 0 #FE55A4'
+              cursor: 'pointer'
             }}
           >
             START TEST
           </button>
+          
+          <div style={{ textAlign: 'center', marginTop: '16px' }}>
+            <button
+              onClick={() => navigate('/dashboard-first-time')}
+              style={{
+                background: 'none',
+                border: 'none',
+                fontFamily: 'Outfit, sans-serif',
+                fontSize: '16px',
+                color: '#121214',
+                cursor: 'pointer',
+                textDecoration: 'underline',
+                padding: 0
+              }}
+            >
+              I'll do this later
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -1035,54 +1062,48 @@ export default function PlacementTest() {
 
   // Main test interface
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: '#f9fafb' }}>
+    <div style={{ minHeight: '100vh', backgroundColor: '#E8EBFB' }}>
       {/* Minimal Header */}
-      <div style={{ backgroundColor: 'white', padding: '10px 20px', boxShadow: '0 1px 3px rgba(0,0,0,0.08)', position: 'sticky', top: 0, zIndex: 100 }}>
-        <div style={{ maxWidth: '1200px', margin: '0 auto', position: 'relative', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          {/* Overall Counter - Left */}
-          <span style={{ fontSize: '22px', color: '#000', fontWeight: 'bold' }}>
-            {answeredCount} / {totalQuestions}
-          </span>
-
-          {/* Timer - Center */}
+      <div style={{ backgroundColor: 'white', padding: '20px', border: 'none', position: 'sticky', top: 0, zIndex: 100 }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          {/* Timer - Left */}
           <div style={{ 
-            fontSize: '22px', 
+            fontSize: '24px', 
             fontWeight: 'bold', 
-            color: getTimeColor(),
+            color: '#121214',
+            fontFamily: 'Outfit, sans-serif',
             display: 'flex',
             alignItems: 'center',
-            gap: '8px',
-            position: 'absolute',
-            left: '50%',
-            transform: 'translateX(-50%)'
+            gap: '8px'
           }}>
             <span>⏱️</span>
             <span>{formatTime(timeRemaining)}</span>
           </div>
 
-          {/* Exit Button - Right */}
-          <button 
-            onClick={handleExit}
-            style={{ 
-              fontSize: '26px', 
-              border: 'none', 
-              backgroundColor: 'transparent', 
-              cursor: 'pointer',
-              padding: '0',
-              lineHeight: 1,
-              color: '#666'
-            }}
-          >
-            ✕
-          </button>
+          {/* Progress Counter and Bar - Right */}
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '8px' }}>
+            <span style={{ fontSize: '24px', color: '#121214', fontWeight: 'bold', fontFamily: 'Outfit, sans-serif' }}>
+              {answeredCount} / {totalQuestions}
+            </span>
+            <div style={{ width: '200px', height: '8px', backgroundColor: '#e5e7eb', overflow: 'hidden' }}>
+              <div 
+                style={{ 
+                  width: `${progress}%`, 
+                  height: '100%', 
+                  backgroundColor: '#121214',
+                  transition: 'width 0.3s ease'
+                }}
+              />
+            </div>
+          </div>
         </div>
       </div>
 
       {/* Question Content */}
-      <div style={{ maxWidth: '1200px', margin: '40px auto', padding: '0 20px' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '320px 1fr', gap: '30px' }}>
+      <div style={{ maxWidth: '1200px', margin: '40px auto', padding: '0 20px', minHeight: 'calc(100vh - 160px)' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '320px 1fr', gap: '30px', height: '100%' }}>
           {/* Question Navigator Sidebar */}
-          <div style={{ backgroundColor: 'white', padding: '20px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)', height: 'fit-content', position: 'sticky', top: '100px', borderRadius: '4px' }}>
+          <div style={{ backgroundColor: 'white', padding: '20px', display: 'flex', flexDirection: 'column' }}>
             {COMPREHENSIVE_TEST.sections.map((section, sectionIdx) => {
               const isSectionVisible = sectionIdx === currentSectionIndex;
               const sectionQs = section.questions.map(q => q.id);
@@ -1108,36 +1129,49 @@ export default function PlacementTest() {
                 <div
                   key={section.id}
                   style={{
-                    marginBottom: '16px',
-                    backgroundColor: isSectionLocked ? '#f3f4f6' : '#f9fafb',
-                    padding: '12px',
-                    borderRadius: '6px',
-                    border: '1px solid #e5e7eb',
+                    marginBottom: '8px',
+                    border: '1px solid #121214',
+                    backgroundColor: 'white',
                     opacity: isSectionLocked ? 0.6 : 1
                   }}
                 >
-                  <div style={{ 
-                    fontSize: '15px', 
-                    fontWeight: isSectionVisible ? '600' : '500',
-                    color: '#1f2937',
-                    marginBottom: isSectionVisible ? '12px' : '0',
-                    display: 'flex',
-                    gap: '10px',
-                    alignItems: 'center'
-                  }}>
+                  <button
+                    onClick={() => {
+                      if (!isSectionLocked && sectionIdx !== currentSectionIndex) {
+                        setCurrentSectionIndex(sectionIdx);
+                        setCurrentQuestionIndex(0);
+                      }
+                    }}
+                    disabled={isSectionLocked}
+                    style={{
+                      width: '100%',
+                      textAlign: 'left',
+                      padding: '12px',
+                      border: 'none',
+                      background: 'none',
+                      cursor: isSectionLocked ? 'default' : 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px'
+                    }}
+                  >
                     <div style={{ flex: 1 }}>
-                      <div style={{ marginBottom: '2px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <div style={{ 
+                        fontSize: '16px', 
+                        fontWeight: isSectionVisible ? '600' : '500',
+                        fontFamily: 'Outfit, sans-serif',
+                        color: '#121214',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '6px'
+                      }}>
                         {isSectionLocked && <span style={{ fontSize: '16px' }}>✓</span>}
                         {section.name}
                       </div>
-                      <div style={{ fontSize: '13px', fontWeight: 'normal', color: '#6b7280' }}>
-                        {sectionAnswered}/{section.questions.length} answered
-                      </div>
                     </div>
-                  </div>
+                  </button>
                   
-                  {isSectionVisible && (
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '8px' }}>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', padding: '0 12px 12px' }}>
                     {section.questions.map((q, qIdx) => {
                       const isAnswered = progressedQuestions.has(q.id) && answers[q.id] !== undefined;
                       const isCurrent = sectionIdx === currentSectionIndex && qIdx === currentQuestionIndex;
@@ -1153,15 +1187,15 @@ export default function PlacementTest() {
                       } else if (isAnswered) {
                         bgColor = '#121214';
                         textColor = 'white';
-                        borderStyle = 'none';
+                        borderStyle = '2px solid #121214';
                       } else if (isSkipped) {
                         bgColor = '#e5e7eb';
-                        textColor = '#666';
-                        borderStyle = 'none';
+                        textColor = '#121214';
+                        borderStyle = '1px solid #121214';
                       } else {
                         bgColor = 'white';
-                        textColor = '#666';
-                        borderStyle = '1px solid #e5e7eb';
+                        textColor = '#121214';
+                        borderStyle = '1px solid #121214';
                       }
                       
                       return (
@@ -1170,20 +1204,22 @@ export default function PlacementTest() {
                           onClick={isClickable ? () => handleGoToQuestion(sectionIdx, qIdx) : undefined}
                           disabled={!isClickable}
                           style={{
-                            width: '44px',
-                            height: '44px',
-                            borderRadius: '4px',
+                            minWidth: '32px',
+                            width: '32px',
+                            height: '32px',
                             backgroundColor: bgColor,
-                    color: textColor,
+                            color: textColor,
                             border: borderStyle,
                             cursor: isClickable ? 'pointer' : 'default',
                             fontSize: '14px',
-                            fontWeight: isCurrent ? 'bold' : 'normal',
-                    display: 'flex',
-                    alignItems: 'center',
+                            fontFamily: 'Outfit, sans-serif',
+                            fontWeight: '500',
+                            display: 'flex',
+                            alignItems: 'center',
                             justifyContent: 'center',
+                            flexShrink: 0,
                             opacity: isClickable ? 1 : 0.7
-                  }}
+                          }}
                           title={isSectionCompleted ? 'Section completed - locked' : isCurrent ? 'Current' : isAnswered ? 'Answered - Click to review' : isSkipped ? 'Skipped - Click to answer' : 'Not answered'}
                         >
                           {qIdx + 1}
@@ -1191,42 +1227,23 @@ export default function PlacementTest() {
               );
             })}
           </div>
-          )}
         </div>
               );
             })}
       </div>
 
           {/* Main Question Area */}
-          <div style={{ backgroundColor: 'white', padding: '24px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)', borderRadius: '4px', position: 'sticky', top: '100px', height: 'fit-content' }}>
-            {/* Section Progress */}
-            <div style={{ marginBottom: '16px', paddingBottom: '12px', borderBottom: '1px solid #e5e7eb' }}>
-              <div style={{ marginBottom: '8px' }}>
-                <span style={{ fontSize: '20px', color: '#000', fontWeight: '600' }}>
-                  {sectionAnsweredCount} of {currentSection.questions.length} answered
-                </span>
+          <div style={{ backgroundColor: 'white', padding: '40px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+            <div>
+              {/* Question Header */}
+              <div style={{ marginBottom: '32px' }}>
+                <h2 style={{ fontSize: '20px', margin: 0, fontFamily: 'Outfit, sans-serif', fontWeight: 600, lineHeight: '1.4', color: '#121214', textTransform: 'none' }}>
+                  {currentQuestionIndex + 1}.{currentQuestion.question}
+                </h2>
               </div>
-              <div style={{ width: '100%', height: '6px', backgroundColor: '#e5e7eb', overflow: 'hidden' }}>
-                <div 
-                  style={{ 
-                    width: `${sectionProgress}%`, 
-                    height: '100%', 
-                    backgroundColor: '#3b82f6',
-                    transition: 'width 0.3s ease'
-                  }}
-                />
-              </div>
-            </div>
 
-            {/* Question Header */}
-            <div style={{ marginBottom: '20px' }}>
-              <h2 style={{ fontSize: '18px', margin: 0, fontFamily: 'Outfit', fontWeight: 500, lineHeight: '1.6', textTransform: 'none' }}>
-                {currentQuestion.question}
-              </h2>
-            </div>
-
-          {/* Answer Options */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '24px' }}>
+              {/* Answer Options */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
             {currentQuestion.options.map((option) => {
               const isSelected = answers[currentQuestion.id] === option.id;
               
@@ -1235,74 +1252,69 @@ export default function PlacementTest() {
                   key={option.id}
                   onClick={() => handleSelectAnswer(currentQuestion.id, option.id)}
                   style={{
-                    padding: '20px',
-                    border: isSelected ? '3px solid #3b82f6' : '2px solid #e5e7eb',
-                    backgroundColor: isSelected ? '#eff6ff' : 'white',
+                    padding: '0',
+                    border: 'none',
+                    backgroundColor: 'transparent',
                     cursor: 'pointer',
                     textAlign: 'left',
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '15px',
+                    gap: '12px',
                     fontSize: '16px',
-                    transition: 'all 0.2s'
+                    fontFamily: 'Outfit, sans-serif',
+                    color: '#121214'
                   }}
                 >
                   <div style={{
-                    width: '30px',
-                    height: '30px',
+                    width: '24px',
+                    height: '24px',
                     borderRadius: '50%',
-                    backgroundColor: isSelected ? '#3b82f6' : '#e5e7eb',
-                    color: isSelected ? 'white' : '#666',
+                    border: '2px solid #121214',
+                    backgroundColor: isSelected ? '#121214' : 'white',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    fontWeight: 'bold',
-                    flexShrink: 0
+                    flexShrink: 0,
+                    position: 'relative'
                   }}>
-                    {option.id.toUpperCase()}
+                    {isSelected && (
+                      <div style={{
+                        width: '8px',
+                        height: '8px',
+                        borderRadius: '50%',
+                        backgroundColor: 'white'
+                      }} />
+                    )}
                   </div>
-                  <span>{option.text}</span>
+                  <span><strong>{option.id.toUpperCase()}.</strong> {option.text}</span>
                 </button>
               );
             })}
-          </div>
-
-          {/* Navigation Buttons */}
-          <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', paddingTop: '20px', borderTop: '1px solid #e5e7eb' }}>
-            <div style={{ display: 'flex', gap: '10px' }}>
-              {/* Skip Button */}
-              <button
-                onClick={handleSkip}
-                style={{
-                  padding: '14px 40px',
-                  backgroundColor: 'transparent',
-                  color: 'black',
-                  border: '2px solid black',
-                  cursor: 'pointer',
-                  fontSize: '14px',
-                  minWidth: '120px',
-                }}
-              >
-                Skip
-              </button>
-
-              {/* Next Button */}
-              <button
-                onClick={handleNext}
-                disabled={answers[currentQuestion.id] === undefined}
-                style={{
-                  padding: '14px 40px',
-                  backgroundColor: answers[currentQuestion.id] !== undefined ? 'black' : '#e5e7eb',
-                  color: answers[currentQuestion.id] !== undefined ? 'white' : '#9ca3af',
-                  border: 'none',
-                  cursor: answers[currentQuestion.id] !== undefined ? 'pointer' : 'not-allowed',
-                  fontSize: '14px',
-                  minWidth: '120px',
-                }}
-              >
-                Next
-              </button>
               </div>
+            </div>
+
+            {/* Navigation Buttons */}
+            <div className="flex justify-end space-x-4 mt-6">
+            {/* Skip Button */}
+            <button
+              onClick={handleSkip}
+              className="px-8 py-3 border-2 border-gray-900 bg-transparent font-outfit text-base uppercase font-medium text-gray-900"
+            >
+              Skip
+            </button>
+
+            {/* Next Button */}
+            <button
+              onClick={handleNext}
+              disabled={answers[currentQuestion.id] === undefined}
+              className={`px-8 py-3 font-outfit text-base uppercase font-medium ${
+                answers[currentQuestion.id] !== undefined 
+                  ? 'bg-gray-900 text-white' 
+                  : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+              }`}
+            >
+              Next
+            </button>
             </div>
           </div>
         </div>
@@ -1313,43 +1325,28 @@ export default function PlacementTest() {
         <div style={{
           position: 'fixed',
           inset: 0,
-          backgroundColor: 'rgba(0,0,0,0.5)',
+          backgroundColor: 'rgba(0, 0, 0, 0.6)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           zIndex: 1000
         }}>
           <div style={{ backgroundColor: 'white', padding: '40px', maxWidth: '500px', margin: '20px' }}>
-            <h3 style={{ marginTop: 0, marginBottom: '15px' }}>Exit Placement Test?</h3>
-            <p style={{ marginBottom: '25px' }}>
+            <h3 style={{ marginTop: 0, marginBottom: '15px', fontFamily: 'Outfit, sans-serif', fontSize: '24px', textTransform: 'uppercase', color: '#121214' }}>Exit Placement Test?</h3>
+            <p style={{ marginBottom: '25px', fontFamily: 'Outfit, sans-serif', fontSize: '16px', lineHeight: '1.6', color: '#121214' }}>
               Your progress will be saved and you can resume the test later. 
               The timer will continue from where you left off.
             </p>
-            <div style={{ display: 'flex', gap: '15px' }}>
+            <div className="flex space-x-4">
               <button
                 onClick={() => setShowExitModal(false)}
-                style={{
-                  flex: 1,
-                  padding: '12px',
-                  border: '2px solid black',
-                  backgroundColor: 'white',
-                  cursor: 'pointer',
-                  fontWeight: 'bold'
-                }}
+                className="flex-1 px-8 py-3 border-2 border-gray-900 bg-transparent font-outfit text-base uppercase font-medium text-gray-900"
               >
                 Continue Test
               </button>
               <button
                 onClick={confirmExit}
-                style={{
-                  flex: 1,
-                  padding: '12px',
-                  backgroundColor: 'black',
-                  color: 'white',
-                  border: 'none',
-                  cursor: 'pointer',
-                  fontWeight: 'bold'
-                }}
+                className="flex-1 px-8 py-3 bg-gray-900 font-outfit text-base uppercase font-medium text-white"
               >
                 Exit & Save
               </button>
@@ -1363,42 +1360,27 @@ export default function PlacementTest() {
         <div style={{
           position: 'fixed',
           inset: 0,
-          backgroundColor: 'rgba(0,0,0,0.5)',
+          backgroundColor: 'rgba(0, 0, 0, 0.6)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           zIndex: 1000
         }}>
           <div style={{ backgroundColor: 'white', padding: '40px', maxWidth: '500px', margin: '20px' }}>
-            <h3 style={{ marginTop: 0, marginBottom: '15px' }}>Submit Your Test?</h3>
-            <p style={{ marginBottom: '30px', lineHeight: '1.6', color: '#4b5563' }}>
+            <h3 style={{ marginTop: 0, marginBottom: '15px', fontFamily: 'Outfit, sans-serif', fontSize: '24px', textTransform: 'uppercase', color: '#121214' }}>Submit Your Test?</h3>
+            <p style={{ marginBottom: '30px', lineHeight: '1.6', fontFamily: 'Outfit, sans-serif', fontSize: '16px', color: '#121214' }}>
               Great work! You've completed the placement test. Your responses will help us create a personalized learning path tailored just for you. Ready to see where your journey begins?
             </p>
-            <div style={{ display: 'flex', gap: '15px' }}>
+            <div className="flex space-x-4">
               <button
                 onClick={() => setShowSubmitModal(false)}
-                style={{
-                  flex: 1,
-                  padding: '12px',
-                  border: '2px solid black',
-                  backgroundColor: 'white',
-                  cursor: 'pointer',
-                  fontWeight: 'bold'
-                }}
+                className="flex-1 px-8 py-3 border-2 border-gray-900 bg-transparent font-outfit text-base uppercase font-medium text-gray-900"
               >
                 Review Answers
               </button>
               <button
                 onClick={confirmSubmit}
-                style={{
-                  flex: 1,
-                  padding: '12px',
-                  backgroundColor: '#10b981',
-                  color: 'white',
-                  border: 'none',
-                  cursor: 'pointer',
-                  fontWeight: 'bold'
-                }}
+                className="flex-1 px-8 py-3 bg-gray-900 font-outfit text-base uppercase font-medium text-white"
               >
                 Submit Now
               </button>
@@ -1412,43 +1394,28 @@ export default function PlacementTest() {
         <div style={{
           position: 'fixed',
           inset: 0,
-          backgroundColor: 'rgba(0,0,0,0.5)',
+          backgroundColor: 'rgba(0, 0, 0, 0.6)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           zIndex: 1000
         }}>
           <div style={{ backgroundColor: 'white', padding: '40px', maxWidth: '500px', margin: '20px' }}>
-            <h3 style={{ marginTop: 0, marginBottom: '15px' }}>Ready to Submit?</h3>
-            <p style={{ marginBottom: '30px' }}>
+            <h3 style={{ marginTop: 0, marginBottom: '15px', fontFamily: 'Outfit, sans-serif', fontSize: '24px', textTransform: 'uppercase', color: '#121214' }}>Ready to Submit?</h3>
+            <p style={{ marginBottom: '30px', fontFamily: 'Outfit, sans-serif', fontSize: '16px', lineHeight: '1.6', color: '#121214' }}>
               Once you finish this section, you won't be able to go back and change your answers. 
               Make sure you've reviewed all questions before continuing.
             </p>
-            <div style={{ display: 'flex', gap: '15px' }}>
+            <div className="flex space-x-4">
               <button
                 onClick={() => setShowFinishSectionModal(false)}
-                style={{
-                  flex: 1,
-                  padding: '12px',
-                  border: '2px solid black',
-                  backgroundColor: 'white',
-                  cursor: 'pointer',
-                  fontWeight: 'bold'
-                }}
+                className="flex-1 px-8 py-3 border-2 border-gray-900 bg-transparent font-outfit text-base uppercase font-medium text-gray-900"
               >
                 Review Answers
               </button>
               <button
                 onClick={confirmFinishSection}
-                style={{
-                  flex: 1,
-                  padding: '12px',
-                  backgroundColor: '#3b82f6',
-                  color: 'white',
-                  border: 'none',
-                  cursor: 'pointer',
-                  fontWeight: 'bold'
-                }}
+                className="flex-1 px-8 py-3 bg-gray-900 font-outfit text-base uppercase font-medium text-white"
               >
                 Finish Section
               </button>
